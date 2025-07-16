@@ -23,7 +23,7 @@ export function AppHeader() {
         <header className="app-header">
             <nav className=''>
                 
-                <NavLink to="/" className="/logo"><img src='../../img/StationOneLogo.png' onerror="this.onerror=null; this.src='../../dist/img/StationOneLogo.png';"/></NavLink>
+                <NavLink to="/StationOne/" className="/logo"><img src='../../img/StationOneLogo.png' onerror="this.onerror=null; this.src='../../dist/img/StationOneLogo.png';"/></NavLink>
 
                 <div className="header-middle">
 
@@ -31,13 +31,13 @@ export function AppHeader() {
 
 
                     <div className="search-bar">
-                        <NavLink to="/search/searchparams" className="search-link">
+                        <NavLink to="/StationOne/search/searchparams" className="search-link">
                             <img src='../../img/search.svg' onerror="this.onerror=null; this.src='../../dist/img/search.svg';" className="colored-svg"/>
                         </NavLink>
 
                         <input type="text" placeholder="What do you want to play?"/>
 
-                        <NavLink to="/search" className="explore-link">
+                        <NavLink to="/StationOne/search" className="explore-link">
                             <img src='../../img/explore.png' onerror="this.onerror=null; this.src='../../dist/img/explore.png';"/>
                         </NavLink>
                     </div>

@@ -27,8 +27,8 @@ export function RootCmp() {
             <div className="main-librarybar"><LibraryBar /></div>
                 <div className="main-content">
                     <Routes>
-                        <Route path="" element={<HomePage />} />
-                        <Route path="search" element={<Browse/>}/>
+                        <Route path="/StationOne/" element={<HomePage />} />
+                        <Route path="/StationOne/search" element={<Browse/>}/>
                         <Route path="user/:id" element={<UserDetails />} />
 
                         <Route path="login" element={<LoginSignup />}>
