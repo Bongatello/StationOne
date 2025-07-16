@@ -1,0 +1,113 @@
+.app-header {
+    background-color: $clrblack;
+    position: sticky;
+    align-self: flex-start;
+    height: fit-content;
+    top: 0;
+    align-items: center;
+    nav {
+        justify-content: space-between;
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        font-size: 0.8em;
+
+        .active {
+            color: $clrwhite;
+        }
+
+        .login-link {
+            margin-inline-start: auto;
+        }
+
+        button {
+            margin-inline-end: 0;
+        }
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-inline-start: auto;
+        color: $clrwhite;
+
+
+
+        .btn-link {
+            color: $clrdarkgray;
+        }
+    }
+
+    img {
+        width: 55px;
+        aspect-ratio: 1;
+        
+    }
+
+    .header-middle{
+        flex: 1;
+        align-items: center;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+
+        img {
+            width: 35px;
+            aspect-ratio:1;
+        }
+    }
+
+    .search-bar{
+        
+        display:flex;
+        align-items: center;
+        position: relative;
+        min-width: 400px;
+        width: 400px;
+
+        img {
+            width: 30px;
+            aspect-ratio:1;
+            border-radius: 40%;
+        }
+
+        input{
+            padding: 0.75em 2.5em;
+            width: 100%;
+            border-radius: 20px;
+            color: $clrsubtxt;
+            background-color: $clrgray;
+            border-color: $clrgray;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        input:focus{
+            outline: 2px solid $clrwhite;
+            outline-offset: 2px;
+        }
+
+        .search-link, .explore-link{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .explore-link{
+            right: 0.75em;
+        } 
+
+        .search-link{
+            left: 0.75em;
+        }
+
+    }
+
+    .colored-svg{
+        filter: invert(1);
+    }
+}

@@ -1,0 +1,12 @@
+.app-footer {
+    background-color: $clrblack;
+
+    section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        p {
+            margin: 0;
+        }
+    }
+}
