@@ -23,22 +23,22 @@ export function AppHeader() {
         <header className="app-header">
             <nav className=''>
                 
-                <NavLink to="/" className="/logo"><img src='../../img/StationOneLogo.png'/></NavLink>
+                <NavLink to="/" className="/logo"><img src='../../img/StationOneLogo.png' onerror="this.onerror=null; this.src='../../dist/img/StationOneLogo.png';"/></NavLink>
 
                 <div className="header-middle">
 
-                    <NavLink to="/"><img src='../../img/home.svg'/></NavLink>
+                    <NavLink to="/"><img src='../../img/home.svg' onerror="this.onerror=null; this.src='../../dist/img/home.svg';"/></NavLink>
 
 
                     <div className="search-bar">
                         <NavLink to="/search/searchparams" className="search-link">
-                            <img src='../../img/search.svg' className="colored-svg"/>
+                            <img src='../../img/search.svg' onerror="this.onerror=null; this.src='../../dist/img/search.svg';" className="colored-svg"/>
                         </NavLink>
 
                         <input type="text" placeholder="What do you want to play?"/>
 
                         <NavLink to="/search" className="explore-link">
-                            <img src='../../img/explore.png'/>
+                            <img src='../../img/explore.png' onerror="this.onerror=null; this.src='../../dist/img/explore.png';"/>
                         </NavLink>
                     </div>
 
