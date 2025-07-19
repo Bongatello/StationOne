@@ -16,13 +16,8 @@
 
 @import "pages/AboutUs";
 @import "pages/HomePage";
-
-
-@import "pages/UserDetails";
-
-
-@import "pages/LoginSignup";
-
+@import "pages/NotFound";
+@import "pages/StationPreview";
 
 
 // Components
@@ -31,3 +26,4 @@
 @import "cmps/LibraryBar.scss";
 @import "cmps/AppHeader";
 @import "cmps/AppFooter";
+@import "cmps/SongList";

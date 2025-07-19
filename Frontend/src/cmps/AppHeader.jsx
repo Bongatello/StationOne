@@ -27,7 +27,7 @@ export function AppHeader() {
 
                 <div className="header-middle">
 
-                    <NavLink to="/"><img src='../../img/home.svg' onerror="this.onerror=null; this.src='../../dist/img/home.svg';"/></NavLink>
+                    <NavLink to="/StationOne/"><img src='../../img/home.svg' onerror="this.onerror=null; this.src='../../dist/img/home.svg';"/></NavLink>
 
 
                     <div className="search-bar">

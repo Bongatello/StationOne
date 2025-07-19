@@ -1,0 +1,36 @@
+.song-preview{
+    display: grid;
+    grid-template-columns: 2% 4% 64% 25% 5%;
+    grid-template-areas: '_index _thumb _title _added _length';
+    padding-left: 2%;
+    font-size: 0.85em;
+    color: $clrwhite;
+    align-items: center;
+    border-radius: 7px;
+    
+
+    .song-index{
+        grid-area: _index;
+    }
+
+    .song-thumbnail{
+        grid-area: _thumb;
+    }
+
+    .song-title{
+        grid-area: _title;
+    }
+
+    .song-addedAt{
+        grid-area: _added;
+    }
+
+    .song-length{
+        grid-area: _length;
+    }
+
+}
+
+.song-preview:hover{
+    background-color: $clrsubtxt;
+}

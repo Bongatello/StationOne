@@ -1,14 +1,42 @@
 .library-bar{
-
+  h1{
+    color: $clrwhite;
+  }
   button{
     width: 100%;
     height: 60px;
   }
-  .create{
+  .create, .test-station{
     text-align: left;
     font-size: 1em;
     border-radius: 8px;
   }
+
+  .test-station{
+    width: 100%;
+	  margin-left: 5px;
+    background-color: $clrgray;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+    
+
+    img{
+      height: 90%;
+      aspect-ratio: 1;
+    }
+  }
+
+  .test-station:visited{
+    color: $clrwhite;
+  }
+  
+  a{
+    text-decoration: none;
+  }
+
 
 
 }

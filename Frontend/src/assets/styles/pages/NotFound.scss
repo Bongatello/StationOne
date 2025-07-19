@@ -1,0 +1,20 @@
+.not-found-page{
+    background-color: $clrdarkgray;
+
+    h1{
+        color: $clrwhite;
+    }
+
+    p{
+        color: $clrsubtxt;
+    }
+
+    .not-found-back, .not-found-back:visited{
+        border-radius: 10px;
+        width: 4vw;
+        text-align: center;
+        font-size: 1vw;
+        background-color: $clrwhite;
+        color: $clrblack;
+    }
+}
