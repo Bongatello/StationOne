@@ -13,7 +13,6 @@
     }
 
     .station-details-container{
-        padding-top: 3%;
         display: grid;
         grid-template-columns: 15% 85%;
         grid-column-gap: 5px;
@@ -53,10 +52,13 @@
             justify-content: flex-end;
             padding-left: 1%;
 
+            p{
+                margin: 0;
+            }
             h1{
-                font-size: 100px;
-                margin-bottom: -2%;
-                margin-top: -5%;
+                font-size: 90px;
+                margin-top: -30px;
+                margin-bottom: -20px;
             }
 
             .station-details{
@@ -95,7 +97,7 @@
     
             .song-preview-headlines{
                 margin-top:1%;
-                margin-bottom: -1.5%;
+                margin-bottom: -1%;
                 display: grid;
                 grid-template-columns: 2% 68% 25% 5%;
                 grid-template-areas: '_index _title _added _length';
