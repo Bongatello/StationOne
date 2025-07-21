@@ -1,155 +1,65 @@
 import { Link } from "react-router-dom";
+import { stationService } from "../services/station/station.service.js"
+import { useEffect, useState } from "react";
+import { StationsHomeList } from "../cmps/StationsHomeList.jsx"
+import { loadFromStorage } from "../services/util.service.js";
+
 
 export function HomePage() {
+
+    const [stations, setStations] = useState(null)
+
+    useEffect(() => {
+        const stations = stationService.loadStations()
+        setStations(stations)
+    }, [])
+
+    if (!stations || !stations.length) {
+        return <p>Loading stations...</p>
+    }
+    console.log('loaded stations', stations)
     return (
         <section>
             <h1>Here I will add some stations that are related to the user</h1>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt ea omnis blanditiis
-                deleniti impedit illo ullam, magnam aut minus veritatis corporis quos iure fugiat repellat assumenda
-                fugit mollitia illum! Delectus velit fugit dolores maiores quam laudantium minima similique sapiente
-                minus deserunt vel cum tenetur molestias commodi eos distinctio, consequatur ducimus dolorum odio
-                itaque natus soluta fuga! Deserunt in hic harum magnam quos. Expedita, quis corrupti quia esse excepturi
-                alias aperiam repudiandae soluta animi modi temporibus veniam vero eveniet nemo ipsa?
-            </p>
+            {stations.map(station => {
+                if(station.tags.includes('Funk')){
+                    return (
+                        <div>
+                            <StationsHomeList station={station} genre={'Funk'}/>
+                        </div>
+                        )
+                }
+                else if(station.tags.includes('Electronic')){
+                    return (
+                        <div>
+                            <StationsHomeList station={station} genre={'Electronic'}/>
+                        </div>
+                        )
+                }
+                else if(station.tags.includes('Hip-Hop')){
+                    return (
+                        <div>
+                            <StationsHomeList station={station} genre={'Hip-Hop'}/>
+                        </div>
+                        )
+                }
+                else if(station.tags.includes('Rock')){
+                    return (
+                        <div>
+                            <StationsHomeList station={station} genre={'Rock'}/>
+                        </div>
+                        )
+                }
+                else if(station.tags.includes('R&B')){
+                    return (
+                        <div>
+                            <StationsHomeList station={station} genre={'R&B'}/>
+                        </div>
+                        )
+                }
+            }
+
+            )}
         </section >
     )
 }

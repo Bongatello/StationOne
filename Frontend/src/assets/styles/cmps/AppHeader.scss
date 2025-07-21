@@ -4,8 +4,11 @@
     align-self: flex-start;
     height: fit-content;
     top: 0;
+    margin-left: 18px;
+    margin-right: 18px;
     
     nav {
+        height: 64px;
         justify-content: space-between;
         display: flex;
         width: 100%;
@@ -49,12 +52,41 @@
         flex: 1;
         align-items: center;
         display: flex;
-        gap: 15px;
+        gap: 8px;
         justify-content: center;
 
+        .when-home, .when-not-home{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .when-not-home{
+            fill:none;
+            stroke: $clrsubtxt;
+            stroke-width: 2px;
+            
+        }
+
+        .when-home{
+            fill: $clrwhite;
+            stroke: $clrwhite;
+        }
         img {
             width: 35px;
             aspect-ratio:1;
+        }
+
+        .home-logo-wrapper{
+            position: relative;
+            height: 48px;
+            width: 48px;
+            background-color: $clrgray;
+            border-radius: 50%;
         }
     }
 
@@ -63,8 +95,8 @@
         display:flex;
         align-items: center;
         position: relative;
-        min-width: 400px;
-        width: 400px;
+        height: 48px;
+        width: 474px;
 
         img {
             width: 30px;
@@ -73,14 +105,15 @@
         }
 
         input{
-            padding: 0.75em 2.5em;
+            padding-left: 40px;
             width: 100%;
-            border-radius: 20px;
+            height: 44px;
+            border-radius: 50px;
             color: $clrsubtxt;
             background-color: $clrgray;
             border-color: $clrgray;
-            font-size: 0.9rem;
-            text-align: center;
+            font-size: 1rem;
+            text-align:left;
         }
 
         input:focus{
@@ -95,6 +128,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            
+        }
+        .explore-active{
+            fill: $clrwhite;
+        }
+        .explore-default{
+            fill: $clrsubtxt;
         }
 
         .explore-link{
@@ -103,11 +143,8 @@
 
         .search-link{
             left: 0.75em;
+            fill: $clrsubtxt;
         }
 
-    }
-
-    .colored-svg{
-        filter: invert(1);
     }
 }

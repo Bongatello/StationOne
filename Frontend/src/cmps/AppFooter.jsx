@@ -1,7 +1,7 @@
-import { useSelector } from 'react-redux'
+import React from 'react'
+import ReactPlayer from 'react-player'
 
 export function AppFooter() {
-    const count = useSelector(storeState => storeState.userModule.count)
 
     return (
         <footer className="app-footer">
