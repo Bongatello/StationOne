@@ -1,8 +1,7 @@
 .station-page-container {
     background-color: $clrdarkgray;
     height: 100%;
-    width: 98%;
-    padding: 1% ;
+    width: 100%;
     
     color: $clrwhite;
 
@@ -12,34 +11,31 @@
         grid-template-columns: x;
     }
 
-    .station-details-container{
+    .station-cover-details-wrapper{
+        margin-bottom: 24px;
+        padding-left: 24px;
+        padding-right: 24px;
         display: grid;
-        grid-template-columns: 15% 85%;
+        grid-template-columns: minmax(128px, 232px) 77.5%;
         grid-column-gap: 5px;
-        grid-template-rows: 25% 75%;
         grid-template-areas: 
-            '_cover .'
             '_cover _details';
         
         p{
             margin-left: 6px;
-            font-size: 0.85em;
             line-height: 3;
         }
         
         .station-cover{
             grid-area: _cover;
             display: flex;
-            flex-direction:row;
-            align-items: center;
+            align-items:start;
             justify-content: center;
-            
+            margin-top: 49.6px;      
             img{
-                border: 2px solid $clrgreen;
-                border-radius: 10px;
+                border-radius: 6px;
                 width: 100%;
                 aspect-ratio: 1;
-                filter:invert(1);
             }
 
         }
@@ -50,13 +46,15 @@
             display:flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding-left: 1%;
-
+            margin-left: 24px;
+            font-size: 0.875rem;
+            margin-top: 104px;
             p{
                 margin: 0;
             }
             h1{
-                font-size: 90px;
+                font-size: clamp(2rem, 8.2vw, 6rem);
+                
                 margin-top: -30px;
                 margin-bottom: -20px;
             }
@@ -65,11 +63,15 @@
 
                 display: flex;
                 align-items: center;
+                gap: 4px;
+                color: $clrsubtxt;
+                height: 24px;
+                margin-top: 8px;
 
                 .createdby-img{
                     object-fit: cover;
                     display: block;
-                    width: 4%;
+                    width: 24px;
                     border-radius: 50%;
                     aspect-ratio: 1;
                 }
@@ -79,33 +81,90 @@
 
     .station-actions-songs-wrapper{
         .station-actions{
-            display:flex;
+            display: flex;
             flex-direction: row;
-            gap: 2%;
-            padding-left: 1%;
-            padding-top: 2%;
-    
-            img{
-                width: 50px;
+            padding-left: 24px;
+            height: 104px;
+            align-items: center;
+
+            .play-pause-button-wrapper{
+                display: flex;
+                position: relative;
+                height: 56px;
                 aspect-ratio: 1;
-                filter:invert(1);
+                margin-right: 24px;
+                border-radius: 50%;
+                background-color: $clrgreen;
+    
+                .play-pause-button{
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
             }
     
+            .play-pause-button-wrapper:hover{
+                background-color: #3be477;
+            }
+    
+            .extra-options-wrapper{
+                display: flex;
+                position: relative;
+                height: 56px;
+                width: 32px;
+                margin-right: 24px;
+                fill: $clrsubtxt;
+                .extra-options{
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+            .extra-options-wrapper:hover{
+                fill: $clrwhite;
+            }
+
+            .add-remove-library-wrapper{
+                display: flex;
+                position: relative;
+                margin-right: 24px;
+
+                .add-to-library{
+                    fill: $clrsubtxt;
+                }
+                .add-to-library:hover{
+                    fill: $clrwhite;
+                }
+    
+                .remove-from-library{
+                    fill: $clrgreen;
+                }
+                .remove-from-library:hover{
+                    fill: #3be477;;
+                }
+            }
         }
+
         .station-songs-container{
-    
-    
+            padding-left: 24px;
+            padding-right: 24px;
+            
             .song-preview-headlines{
-                margin-top:1%;
-                margin-bottom: -1%;
+                margin-bottom: 16px;
+                padding-left: 16px;
+                padding-right: 16px;
+                color: $clrsubtxt;
+                font-size: 0.85em;
+                border-bottom: 1px solid #313131;
+                height: 35px;
+
                 display: grid;
                 grid-template-columns: 2% 68% 25% 5%;
                 grid-template-areas: '_index _title _added _length';
-                padding-left: 2%;
-                color: $clrsubtxt;
-                font-size: 0.85em;
-            
-            
+                
+                
                 .song-index{
                     grid-area: _index;
                 }
@@ -121,7 +180,13 @@
                 .song-length{
                     grid-area: _length;
                 }
+
+                p {
+                    margin: 0;
+                }
             }
         }
     }
+
+
 }

@@ -1,0 +1,42 @@
+.homepage-container{
+    
+    padding-left: 40px;
+    display: grid;
+
+    grid-template-columns: auto;
+    grid-template-rows: 140px 303.5px;
+
+    grid-auto-rows: 303.5px;
+    grid-auto-flow: row;
+    grid-row-gap: 32px;
+
+    .home-stations-by-genre-container{
+        display: grid;
+    
+        grid-template-rows: 247.5px;
+        grid-template-columns: 195.5px;
+    
+        grid-auto-columns: 195.5px;
+        grid-auto-flow: column;
+
+        .home-station-wrapper{
+            padding:12px;
+            border-radius: 6px;
+        }
+        .home-station-wrapper:hover{
+            background-color: $clrgray;
+        }
+        
+    }
+
+
+    h1, h2{
+        color: $clrwhite;
+    }
+
+    a, a:visited, a:active{
+        color: $clrwhite;
+        text-decoration:none;
+    }
+}
+

@@ -4,10 +4,14 @@ import { carReducer } from './car.reducer'
 import { userReducer } from './user.reducer'
 import { reviewReducer } from './review.reducer'
 import { systemReducer } from './system.reducer'
+import { stationsReducer } from './stations.reducer'
+import { currentlyReducer } from './currently.reducer'
 
 const rootReducer = combineReducers({
     carModule: carReducer,
+    stationsModule: stationsReducer,
     userModule: userReducer,
+    currentlyModule: currentlyReducer,
     systemModule: systemReducer,
     reviewModule: reviewReducer,
 })

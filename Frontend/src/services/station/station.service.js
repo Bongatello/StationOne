@@ -1,4 +1,4 @@
-import { storageService } from '../async-storage.service'
+import { storageService } from '../async-storage.service.js'
 import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.service'
 
 export const stationService = {
@@ -38,7 +38,7 @@ function loadStations(){
 }
 
 function get(stationId){
-    return storageSerivce.get(STORAGE_KEY, stationId)
+    return storageService.get(STORAGE_KEY, stationId)
 }
 
 
@@ -63,6 +63,7 @@ const stations = [ //demodata
       _id: 'b2c3d',
       name: 'Groove Street',
       tags: ['Funk', 'Soul'],
+      addedBy: 'StationOne',
       thumbnail: 'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qb9q2pfgdss7mjmseqx86h%2F1753130330_img_0.webp?st=2025-07-21T19%3A10%3A33Z&se=2025-07-27T20%3A10%3A33Z&sks=b&skt=2025-07-21T19%3A10%3A33Z&ske=2025-07-27T20%3A10%3A33Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=rW2lRdsjHw9y%2BQD2X4%2Faa3R3QotwmRHDQiW46Q5sTY8%3D&az=oaivgprodscus',
       songs: [
         { id: 'v1w2x', title: 'Parliament - Give Up The Funk', url: 'https://www.youtube.com/watch?v=R4_PdBhJSYQ', imgUrl: 'https://i.ytimg.com/vi/R4_PdBhJSYQ/mqdefault.jpg', addedAt: 1689945600, length: '5:46' },
@@ -76,6 +77,7 @@ const stations = [ //demodata
       _id: 'c3d4e',
       name: 'Soul Revival',
       tags: ['Soul', 'Funk'],
+      addedBy: 'StationOne',
       thumbnail: 'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qbnw1jff293beqmdarjvq6%2F1753130726_img_1.webp?st=2025-07-21T19%3A12%3A05Z&se=2025-07-27T20%3A12%3A05Z&sks=b&skt=2025-07-21T19%3A12%3A05Z&ske=2025-07-27T20%3A12%3A05Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=7Mj3Hll2AWg7iMY0x4AhJJ%2Bfjijrw54r%2FEflo9j2dNQ%3D&az=oaivgprodscus',
       songs: [
         { id: 'k1l2m', title: 'Al Green - Let’s Stay Together', url: 'https://www.youtube.com/watch?v=COiIC3A0ROM', imgUrl: 'https://i.ytimg.com/vi/COiIC3A0ROM/mqdefault.jpg', addedAt: 1689945600, length: '3:18' },
@@ -90,6 +92,7 @@ const stations = [ //demodata
       _id: 'd4e5f',
       name: 'Funky Fresh',
       tags: ['Funk', 'Dance'],
+      addedBy: 'StationOne',
       thumbnail: 'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qbvr1zf08r80hsm846972t%2F1753130914_img_0.webp?st=2025-07-21T19%3A13%3A23Z&se=2025-07-27T20%3A13%3A23Z&sks=b&skt=2025-07-21T19%3A13%3A23Z&ske=2025-07-27T20%3A13%3A23Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=HE0mvCob8B9xot2cc3WWSoEv0%2FWw%2BGhtHzjpFTc9%2Few%3D&az=oaivgprodscus',
       songs: [
         { id: 'z1a2b', title: 'Chic - Le Freak', url: 'https://www.youtube.com/watch?v=h1qQ1SKNlgY', imgUrl: 'https://i.ytimg.com/vi/h1qQ1SKNlgY/mqdefault.jpg', addedAt: 1689945600, length: '5:27' },
@@ -103,6 +106,7 @@ const stations = [ //demodata
       _id: 'e5f6g',
       name: 'Soul Groove',
       tags: ['Soul', 'Funk'],
+      addedBy: 'StationOne',
       thumbnail: 'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qby34ae35szcgevj4jc6b4%2F1753130983_img_1.webp?st=2025-07-21T19%3A13%3A23Z&se=2025-07-27T20%3A13%3A23Z&sks=b&skt=2025-07-21T19%3A13%3A23Z&ske=2025-07-27T20%3A13%3A23Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=H0bMOZmYSh5PTZDW%2BBGN6bnHoAT2fcWU1%2FeMgq%2FGoJ0%3D&az=oaivgprodscus',
       songs: [
         { id: 'o1p2q', title: 'The Temptations - My Girl', url: 'https://www.youtube.com/watch?v=6IUG-9jZD-g', imgUrl: 'https://i.ytimg.com/vi/6IUG-9jZD-g/mqdefault.jpg', addedAt: 1689945600, length: '2:48' },
@@ -118,6 +122,7 @@ const stations = [ //demodata
       _id: 'f6g7h',
       name: 'Electric Dreams',
       tags: ['Electronic', 'Dance'],
+      addedBy: 'StationOne',
       thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qc0gffewj8c7s55kj80pc2%2F1753131067_img_1.webp?st=2025-07-21T19%3A11%3A56Z&se=2025-07-27T20%3A11%3A56Z&sks=b&skt=2025-07-21T19%3A11%3A56Z&ske=2025-07-27T20%3A11%3A56Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=wUnmXfeTgPRakmN1dMI4wASrMMpcKDc8P2GTDUCrgGc%3D&az=oaivgprodscus',
       songs: [
         { id: 'd1e2f', title: 'Daft Punk - One More Time', url: 'https://www.youtube.com/watch?v=FGBhQbmPwH8', imgUrl: 'https://i.ytimg.com/vi/FGBhQbmPwH8/mqdefault.jpg', addedAt: 1689945600, length: '5:20' },
@@ -131,6 +136,7 @@ const stations = [ //demodata
       _id: 'g7h8i',
       name: 'Chill Vibes',
       tags: ['Electronic', 'Chill'],
+      addedBy: 'StationOne',
       thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qc2xd9f59se28p4631pav4%2F1753131110_img_1.webp?st=2025-07-21T19%3A12%3A01Z&se=2025-07-27T20%3A12%3A01Z&sks=b&skt=2025-07-21T19%3A12%3A01Z&ske=2025-07-27T20%3A12%3A01Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=R9wtp5Owh5E5%2FpdPkvmbDVRYoKmyaIMsPUb8PxZ9%2Fpg%3D&az=oaivgprodscus',
       songs: [
         { id: 's1t2u', title: 'ODESZA - A Moment Apart', url: 'https://www.youtube.com/watch?v=F3YHzFqF3yQ', imgUrl: 'https://i.ytimg.com/vi/F3YHzFqF3yQ/mqdefault.jpg', addedAt: 1689945600, length: '4:02' },
@@ -144,6 +150,7 @@ const stations = [ //demodata
       _id: 'h8i9j',
       name: 'Synthwave Nights',
       tags: ['Electronic', 'Synthwave'],
+      addedBy: 'StationOne',
       thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qc4019f2qsjx2854bdbvc0%2F1753131178_img_1.webp?st=2025-07-21T19%3A12%3A13Z&se=2025-07-27T20%3A12%3A13Z&sks=b&skt=2025-07-21T19%3A12%3A13Z&ske=2025-07-27T20%3A12%3A13Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=5ZEz7LaANkVuHnFYdZ7%2Bf2Bj2oilRypvMChekJdNAdY%3D&az=oaivgprodscus',
       songs: [
         { id: 'h1i2j', title: 'The Midnight - Days of Thunder', url: 'https://www.youtube.com/watch?v=lzvqDBr8PGo', imgUrl: 'https://i.ytimg.com/vi/lzvqDBr8PGo/mqdefault.jpg', addedAt: 1689945600, length: '4:50' },
@@ -157,6 +164,7 @@ const stations = [ //demodata
     _id: 'i9j0k',
     name: 'Future Bass Flow',
     tags: ['Electronic', 'Future Bass'],
+    addedBy: 'StationOne',
     thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qc614hek3s6sr4h43zzjkt%2F1753131249_img_0.webp?st=2025-07-21T19%3A12%3A13Z&se=2025-07-27T20%3A12%3A13Z&sks=b&skt=2025-07-21T19%3A12%3A13Z&ske=2025-07-27T20%3A12%3A13Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=B%2FtHvRGX7XaLV8CPke2RGcWGSzk60stDM4PocHSR8gg%3D&az=oaivgprodscus',
     songs: [
       { id: 'w1x2y', title: 'Flume - Never Be Like You', url: 'https://www.youtube.com/watch?v=PeonBmeFR8o', imgUrl: 'https://i.ytimg.com/vi/PeonBmeFR8o/mqdefault.jpg', addedAt: 1689945600, length: '3:54' },
@@ -172,7 +180,8 @@ const stations = [ //demodata
     _id: 'j0k1l',
     name: 'Urban Legends',
     tags: ['Hip-Hop', 'Rap'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0v8dbqvft59jht119s8jdhq%2F1753261521_img_0.webp?st=2025-07-23T07%3A21%3A32Z&se=2025-07-29T08%3A21%3A32Z&sks=b&skt=2025-07-23T07%3A21%3A32Z&ske=2025-07-29T08%3A21%3A32Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=%2B8XcBZxYymwgt1VoACrEVKv0OsI9mm53IHeHTpJGfY0%3D&az=oaivgprodscus',
     songs: [
       { id: 'j1k2l', title: 'Kendrick Lamar - HUMBLE.', url: 'https://www.youtube.com/watch?v=tvTRZJ-4EyI', imgUrl: 'https://i.ytimg.com/vi/tvTRZJ-4EyI/mqdefault.jpg', addedAt: 1689945600, length: '2:57' },
       { id: 'm3n4o', title: 'J. Cole - No Role Modelz', url: 'https://www.youtube.com/watch?v=7e3LaJH8_3A', imgUrl: 'https://i.ytimg.com/vi/7e3LaJH8_3A/mqdefault.jpg', addedAt: 1689945600, length: '4:52' },
@@ -185,6 +194,7 @@ const stations = [ //demodata
     _id: 'k1l2m',
     name: 'Golden Era',
     tags: ['Hip-Hop', 'Classic'],
+    addedBy: 'StationOne',
     thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qcb95kfje9w6cy3t7tesds%2F1753131435_img_1.webp?st=2025-07-21T19%3A10%3A27Z&se=2025-07-27T20%3A10%3A27Z&sks=b&skt=2025-07-21T19%3A10%3A27Z&ske=2025-07-27T20%3A10%3A27Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=Nx6YNc8m%2FcuDa%2FQMEuqLR7NlYi%2BvESGKwj42k2yze5M%3D&az=oaivgprodscus',
     songs: [
       { id: 'y1z2a', title: 'A Tribe Called Quest - Can I Kick It?', url: 'https://www.youtube.com/watch?v=13EifDbTx74', imgUrl: 'https://i.ytimg.com/vi/13EifDbTx74/mqdefault.jpg', addedAt: 1689945600, length: '4:11' },
@@ -198,6 +208,7 @@ const stations = [ //demodata
     _id: 'l2m3n',
     name: 'Rap Radar',
     tags: ['Hip-Hop', 'Rap'],
+    addedBy: 'StationOne',
     thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qcdqmpfwxs9b7xcds55m61%2F1753131482_img_0.webp?st=2025-07-21T19%3A12%3A05Z&se=2025-07-27T20%3A12%3A05Z&sks=b&skt=2025-07-21T19%3A12%3A05Z&ske=2025-07-27T20%3A12%3A05Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=rWEkeL9j9P%2FhodCfHgRcxLvwBBut4sz6lIeNkzfJiCQ%3D&az=oaivgprodscus',
     songs: [
       { id: 'n1o2p', title: 'Travis Scott - SICKO MODE', url: 'https://www.youtube.com/watch?v=6ONRf7h3Mdk', imgUrl: 'https://i.ytimg.com/vi/6ONRf7h3Mdk/mqdefault.jpg', addedAt: 1689945600, length: '5:12' },
@@ -211,7 +222,8 @@ const stations = [ //demodata
     _id: 'm3n4o',
     name: 'Street Beats',
     tags: ['Hip-Hop', 'Trap'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0v8gkdhe528em0b1hdjvgy5%2F1753261625_img_1.webp?st=2025-07-23T07%3A23%3A17Z&se=2025-07-29T08%3A23%3A17Z&sks=b&skt=2025-07-23T07%3A23%3A17Z&ske=2025-07-29T08%3A23%3A17Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=ul7ra8VzKHQoys7VcJeWXs0COjeqJ%2BlSYetfUEwRNHw%3D&az=oaivgprodscus',
     songs: [
       { id: 'c1d2e', title: 'Future - Mask Off', url: 'https://www.youtube.com/watch?v=G2isf1DeYng', imgUrl: 'https://i.ytimg.com/vi/G2isf1DeYng/mqdefault.jpg', addedAt: 1689945600, length: '3:25' },
       { id: 'f3g4h', title: 'Migos - Bad and Boujee', url: 'https://www.youtube.com/watch?v=S-sJp1FfG7Q', imgUrl: 'https://i.ytimg.com/vi/S-sJp1FfG7Q/mqdefault.jpg', addedAt: 1689945600, length: '5:34' },
@@ -226,7 +238,8 @@ const stations = [ //demodata
     _id: 'n4o5p',
     name: 'Classic Rockers',
     tags: ['Rock', 'Classic'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0v8kbrvef9am5vptdvjpfd6%2F1753261716_img_0.webp?st=2025-07-23T07%3A23%3A27Z&se=2025-07-29T08%3A23%3A27Z&sks=b&skt=2025-07-23T07%3A23%3A27Z&ske=2025-07-29T08%3A23%3A27Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=tHpI7F%2FwpAh%2FdHG%2FLGqz9ZmIyVH7bwMkWWzbFBsQO0g%3D&az=oaivgprodscus',
     songs: [
       { id: 'r1s2t', title: 'Led Zeppelin - Stairway to Heaven', url: 'https://www.youtube.com/watch?v=QkF3oxziUI4', imgUrl: 'https://i.ytimg.com/vi/QkF3oxziUI4/mqdefault.jpg', addedAt: 1689945600, length: '8:02' },
       { id: 'u3v4w', title: 'The Rolling Stones - Paint It Black', url: 'https://www.youtube.com/watch?v=O4irXQhgMqg', imgUrl: 'https://i.ytimg.com/vi/O4irXQhgMqg/mqdefault.jpg', addedAt: 1689945600, length: '3:45' },
@@ -239,7 +252,8 @@ const stations = [ //demodata
     _id: 'o6p7q',
     name: 'Modern Rock Vibes',
     tags: ['Rock', 'Alternative'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0v8pnpye1gv272012jkvz0q%2F1753261816_img_0.webp?st=2025-07-23T07%3A23%3A17Z&se=2025-07-29T08%3A23%3A17Z&sks=b&skt=2025-07-23T07%3A23%3A17Z&ske=2025-07-29T08%3A23%3A17Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=Yrq3qREEPkB6%2FYj8ag50l%2BRKLcSX5p%2F8fbgAyWUWqGM%3D&az=oaivgprodscus',
     songs: [
       { id: 'g1h2i', title: 'Imagine Dragons - Radioactive', url: 'https://www.youtube.com/watch?v=ktvTqknDobU', imgUrl: 'https://i.ytimg.com/vi/ktvTqknDobU/mqdefault.jpg', addedAt: 1689945600, length: '3:06' },
       { id: 'j3k4l', title: 'Foo Fighters - The Pretender', url: 'https://www.youtube.com/watch?v=SBjQ9tuuTJQ', imgUrl: 'https://i.ytimg.com/vi/SBjQ9tuuTJQ/mqdefault.jpg', addedAt: 1689945600, length: '4:27' },
@@ -252,7 +266,8 @@ const stations = [ //demodata
     _id: 'r8s9t',
     name: 'Punk Rock Rebels',
     tags: ['Rock', 'Punk'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0v8s5n3fzhr7wb6hnc7mtyy%2F1753261900_img_1.webp?st=2025-07-23T08%3A17%3A13Z&se=2025-07-29T09%3A17%3A13Z&sks=b&skt=2025-07-23T08%3A17%3A13Z&ske=2025-07-29T09%3A17%3A13Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=BtCeXDPJeAxqikQxbOctOvxG3c2M6atWUlExbLD%2FWSs%3D&az=oaivgprodscus',
     songs: [
       { id: 'v1w2x', title: 'Green Day - Basket Case', url: 'https://www.youtube.com/watch?v=NUTGr5t3MoY', imgUrl: 'https://i.ytimg.com/vi/NUTGr5t3MoY/mqdefault.jpg', addedAt: 1689945600, length: '3:01' },
       { id: 'y3z4a', title: 'The Ramones - Blitzkrieg Bop', url: 'https://www.youtube.com/watch?v=MmB9b5njVbA', imgUrl: 'https://i.ytimg.com/vi/MmB9b5njVbA/mqdefault.jpg', addedAt: 1689945600, length: '2:12' },
@@ -265,7 +280,8 @@ const stations = [ //demodata
     _id: 'u1v2w',
     name: 'Indie Rock Showcase',
     tags: ['Rock', 'Indie'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0vam377eenaghazwjk2gtcr%2F1753263836_img_1.webp?st=2025-07-23T08%3A41%3A15Z&se=2025-07-29T09%3A41%3A15Z&sks=b&skt=2025-07-23T08%3A41%3A15Z&ske=2025-07-29T09%3A41%3A15Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=KHqVoFZ5RlbsnakzMpLf68uwvxEferLbEQPi1%2FPSEuo%3D&az=oaivgprodscus',
     songs: [
       { id: 'k1l2m', title: 'The Strokes - Last Nite', url: 'https://www.youtube.com/watch?v=TOypSnKFHrE', imgUrl: 'https://i.ytimg.com/vi/TOypSnKFHrE/mqdefault.jpg', addedAt: 1689945600, length: '3:13' },
       { id: 'n3o4p', title: 'Vampire Weekend - A-Punk', url: 'https://www.youtube.com/watch?v=J8W8Qb0l6mE', imgUrl: 'https://i.ytimg.com/vi/J8W8Qb0l6mE/mqdefault.jpg', addedAt: 1689945600, length: '2:17' },
@@ -278,7 +294,8 @@ const stations = [ //demodata
     _id: 'x3y4z',
     name: 'Hard Rock Hits',
     tags: ['Rock', 'Hard Rock'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0vap6q4eg9a6kwh5cf1b06j%2F1753263897_img_0.webp?st=2025-07-23T08%3A16%3A49Z&se=2025-07-29T09%3A16%3A49Z&sks=b&skt=2025-07-23T08%3A16%3A49Z&ske=2025-07-29T09%3A16%3A49Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=qndpNYiebUAE%2Fjx3RKXHtAUj9z9dSKpg8YM8CfKtqaQ%3D&az=oaivgprodscus',
     songs: [
       { id: 'z1a2b', title: 'AC/DC - Back In Black', url: 'https://www.youtube.com/watch?v=pAgnJDJN4VA', imgUrl: 'https://i.ytimg.com/vi/pAgnJDJN4VA/mqdefault.jpg', addedAt: 1689945600, length: '4:14' },
       { id: 'c3d4e', title: 'Guns N\' Roses - Sweet Child O\' Mine', url: 'https://www.youtube.com/watch?v=1w7OgIMMRc4', imgUrl: 'https://i.ytimg.com/vi/1w7OgIMMRc4/mqdefault.jpg', addedAt: 1689945600, length: '5:56' },
@@ -291,7 +308,8 @@ const stations = [ //demodata
     _id: 'y5z6a',
     name: 'Smooth R&B',
     tags: ['R&B', 'Soul'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0var5h0efss2mpnpfxsd390%2F1753263964_img_0.webp?st=2025-07-23T08%3A18%3A17Z&se=2025-07-29T09%3A18%3A17Z&sks=b&skt=2025-07-23T08%3A18%3A17Z&ske=2025-07-29T09%3A18%3A17Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=OVeVvd4V6uYusAsIjBzfiH0J6sWliYk%2B%2B%2FCLgtMAl%2Bk%3D&az=oaivgprodscus',
     songs: [
       { id: 'm1n2o', title: 'Alicia Keys - If I Ain\'t Got You', url: 'https://www.youtube.com/watch?v=Ju8Hr50Ckwk', imgUrl: 'https://i.ytimg.com/vi/Ju8Hr50Ckwk/mqdefault.jpg', addedAt: 1689945600, length: '3:48' },
       { id: 'p3q4r', title: 'John Legend - All of Me', url: 'https://www.youtube.com/watch?v=450p7goxZqg', imgUrl: 'https://i.ytimg.com/vi/450p7goxZqg/mqdefault.jpg', addedAt: 1689945600, length: '4:30' },
@@ -304,7 +322,8 @@ const stations = [ //demodata
     _id: 'b6c7d',
     name: 'Neo-Soul Gems',
     tags: ['R&B', 'Neo-Soul'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0vatyzhfy1asqr8stghfgn0%2F1753264045_img_0.webp?st=2025-07-23T08%3A17%3A13Z&se=2025-07-29T09%3A17%3A13Z&sks=b&skt=2025-07-23T08%3A17%3A13Z&ske=2025-07-29T09%3A17%3A13Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=ZQ8up3j9eYQo%2Bo0nSVxihUDE5HK1d2%2BDBSgS1GqX%2BtI%3D&az=oaivgprodscus',
     songs: [
       { id: 'e1f2g', title: 'Erykah Badu - On & On', url: 'https://www.youtube.com/watch?v=VW3Lq6DeQUA', imgUrl: 'https://i.ytimg.com/vi/VW3Lq6DeQUA/mqdefault.jpg', addedAt: 1689945600, length: '4:54' },
       { id: 'h3i4j', title: 'D’Angelo - Untitled (How Does It Feel)', url: 'https://www.youtube.com/watch?v=HJf9v46hLhI', imgUrl: 'https://i.ytimg.com/vi/HJf9v46hLhI/mqdefault.jpg', addedAt: 1689945600, length: '6:46' },
@@ -317,7 +336,8 @@ const stations = [ //demodata
     _id: 'c8d9e',
     name: 'R&B Classics',
     tags: ['R&B', 'Classic'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0vaxha0ehfrcsh04ea59zw0%2F1753264132_img_1.webp?st=2025-07-23T08%3A20%3A11Z&se=2025-07-29T09%3A20%3A11Z&sks=b&skt=2025-07-23T08%3A20%3A11Z&ske=2025-07-29T09%3A20%3A11Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=pPbZVMsLxEIxbYkXFJYBD%2Flc%2BD24uI1FRusbUmHcM6A%3D&az=oaivgprodscus',
     songs: [
       { id: 't1u2v', title: 'Marvin Gaye - Let\'s Get It On', url: 'https://www.youtube.com/watch?v=x6QZn9xiuOE', imgUrl: 'https://i.ytimg.com/vi/x6QZn9xiuOE/mqdefault.jpg', addedAt: 1689945600, length: '4:05' },
       { id: 'w3x4y', title: 'Al Green - Let\'s Stay Together', url: 'https://www.youtube.com/watch?v=COiIC3A0ROM', imgUrl: 'https://i.ytimg.com/vi/COiIC3A0ROM/mqdefault.jpg', addedAt: 1689945600, length: '3:18' },
@@ -330,7 +350,8 @@ const stations = [ //demodata
     _id: 'd1e2f',
     name: 'Contemporary R&B',
     tags: ['R&B', 'Contemporary'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0vazyjde77becrr6w7mzhhp%2F1753264212_img_0.webp?st=2025-07-23T07%3A56%3A43Z&se=2025-07-29T08%3A56%3A43Z&sks=b&skt=2025-07-23T07%3A56%3A43Z&ske=2025-07-29T08%3A56%3A43Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=C%2B6YeRssRmg1lo0f7uIMVmceeCLxa0KGyYmL7eyRoN0%3D&az=oaivgprodscus',
     songs: [
       { id: 'i1j2k', title: 'Bruno Mars - That’s What I Like', url: 'https://www.youtube.com/watch?v=PMivT7MJ41M', imgUrl: 'https://i.ytimg.com/vi/PMivT7MJ41M/mqdefault.jpg', addedAt: 1689945600, length: '3:26' },
       { id: 'l3m4n', title: 'The Weeknd - Blinding Lights', url: 'https://www.youtube.com/watch?v=4NRXx6U8ABQ', imgUrl: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/mqdefault.jpg', addedAt: 1689945600, length: '3:20' },
@@ -343,7 +364,8 @@ const stations = [ //demodata
     _id: 'e3f4g',
     name: 'R&B Grooves',
     tags: ['R&B', 'Groove'],
-    thumbnail:'https://i.scdn.co/image/ab67616100005174249453f6fa558610f9b4e68d',
+    addedBy: 'StationOne',
+    thumbnail:'https://videos.openai.com/vg-assets/assets%2Ftask_01k0vb2kq0ecdbfbfzrzsg87wg%2F1753264304_img_0.webp?st=2025-07-23T08%3A20%3A11Z&se=2025-07-29T09%3A20%3A11Z&sks=b&skt=2025-07-23T08%3A20%3A11Z&ske=2025-07-29T09%3A20%3A11Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=88oHSPt6LbwYJhFhR2HmVOUDBVjm5p9Z4Wg6N1uS8%2FQ%3D&az=oaivgprodscus',
     songs: [
       { id: 'x1y2z', title: 'TLC - No Scrubs', url: 'https://www.youtube.com/watch?v=FrLequ6dUdM', imgUrl: 'https://i.ytimg.com/vi/FrLequ6dUdM/mqdefault.jpg', addedAt: 1689945600, length: '3:39' },
       { id: 'a3b4c', title: 'Beyoncé - Crazy In Love', url: 'https://www.youtube.com/watch?v=ViwtNLUqkMY', imgUrl: 'https://i.ytimg.com/vi/ViwtNLUqkMY/mqdefault.jpg', addedAt: 1689945600, length: '3:56' },
@@ -356,6 +378,7 @@ const stations = [ //demodata
     _id: 'a1b2c',
     name: 'Funky Monks',
     tags: ['Funk', 'Happy'],
+    addedBy: 'StationOne',
     thumbnail: 'https://videos.openai.com/vg-assets/assets%2Ftask_01k0qb8qdpfvzbb9s7bhrx46sh%2F1753130256_img_0.webp?st=2025-07-21T20%3A05%3A28Z&se=2025-07-27T21%3A05%3A28Z&sks=b&skt=2025-07-21T20%3A05%3A28Z&ske=2025-07-27T21%3A05%3A28Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=%2Bxj%2BmpQ3%2FG52Uo8%2Bj0DyG0dyfbiK0w7MeqNYBmizvds%3D&az=oaivgprodscus',
     songs: [
       { id: 'f1g2h', title: 'The Meters - Cissy Strut', url: 'https://www.youtube.com/watch?v=4_iC0MyIykM&list=RD4_iC0MyIykM', imgUrl: 'https://i.ytimg.com/vi/4_iC0MyIykM/mqdefault.jpg', addedAt: 1689945600, length: '4:13' },

@@ -14,53 +14,64 @@ export function HomePage() {
         setStations(stations)
     }, [])
 
+    function postByGenre(genre){
+        return stations.map(station => {
+            if(station.tags.includes(genre)){
+                console.log('found station with', genre, ' genre, station name: ', station.name)
+                return (
+                    <div className="home-station-wrapper">
+                        <StationsHomeList station={station} genre={genre}/>
+                    </div>
+                    )
+            }
+        
+        })
+    }
+
+
+
     if (!stations || !stations.length) {
         return <p>Loading stations...</p>
     }
     console.log('loaded stations', stations)
     return (
-        <section>
-            <h1>Here I will add some stations that are related to the user</h1>
-            {stations.map(station => {
-                if(station.tags.includes('Funk')){
-                    return (
-                        <div>
-                            <StationsHomeList station={station} genre={'Funk'}/>
-                        </div>
-                        )
-                }
-                else if(station.tags.includes('Electronic')){
-                    return (
-                        <div>
-                            <StationsHomeList station={station} genre={'Electronic'}/>
-                        </div>
-                        )
-                }
-                else if(station.tags.includes('Hip-Hop')){
-                    return (
-                        <div>
-                            <StationsHomeList station={station} genre={'Hip-Hop'}/>
-                        </div>
-                        )
-                }
-                else if(station.tags.includes('Rock')){
-                    return (
-                        <div>
-                            <StationsHomeList station={station} genre={'Rock'}/>
-                        </div>
-                        )
-                }
-                else if(station.tags.includes('R&B')){
-                    return (
-                        <div>
-                            <StationsHomeList station={station} genre={'R&B'}/>
-                        </div>
-                        )
-                }
-            }
+        <div className="homepage-container">
+            <h1>*Here I will add some stations that were recently played by the user*</h1>
 
-            )}
-        </section >
+            <section className="homepage-genre-section">
+                <h2>Funk Stations</h2>
+                <div className="home-stations-by-genre-container">
+                    {postByGenre('Funk')}
+                </div>
+            </section>
+
+            <section>
+                <h2>EDM Stations</h2>
+                <div className="home-stations-by-genre-container">
+                    {postByGenre('Electronic')}
+                </div>
+            </section>
+
+            <section>
+                <h2>Hip-Hop and Rap Stations</h2>
+                <div className="home-stations-by-genre-container">
+                    {postByGenre('Hip-Hop')}
+                </div>
+            </section>
+
+            <section>
+                <h2>Rock Stations</h2>
+                <div className="home-stations-by-genre-container">
+                    {postByGenre('Rock')}
+                </div>
+            </section>
+
+            <section>
+                <h2>R&B and Soul Stations</h2>
+                <div className="home-stations-by-genre-container">
+                    {postByGenre('R&B')}
+                </div>
+            </section>
+        </div >
     )
 }
-

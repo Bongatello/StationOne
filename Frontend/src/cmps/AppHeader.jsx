@@ -1,11 +1,10 @@
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 
 
 export function AppHeader() {
-    const user = useSelector(storeState => storeState.userModule.user) //will use to get image
+    //const user = useSelector(storeState => storeState.userModule.user)
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -64,24 +63,14 @@ export function AppHeader() {
 
                         <input type="text" placeholder="What do you want to play?"/>
 
-                        <NavLink to="/StationOne/search" className="explore-link">
+                        <NavLink to="/StationOne/search">
                             {isExplorePage(location)}
                         </NavLink>
                     </div>
 
                 </div>
 
-                {!user && <NavLink to="login" className="login-link">Login</NavLink>}
-
-                {user && (
-                    <div className="user-info">
-                        <Link to={`user/${user._id}`}>
-                            {user.imgUrl && <img src={user.imgUrl} />}
-                            {user.fullname}
-                        </Link>
-                        <button onClick={onLogout}>logout</button>
-                    </div>
-                )}
+                <p>U</p>
             </nav>
         </header >
     )

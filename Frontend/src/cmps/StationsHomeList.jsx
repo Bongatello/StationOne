@@ -1,10 +1,13 @@
+import { Link } from 'react-router-dom'
 
-
-export function StationsHomeList({station, genre}) {
+export function StationsHomeList({ station, genre }) {
     console.log(station.name)
-    return(
-        <div>
-            <p>The station {station.name} is in the {genre} genre</p>
-        </div>
+    return (
+        <Link to={`/StationOne/station/${station._id}`}>
+            <div className='home-station-object'>
+                <img src={station.thumbnail}/>
+                <p>{station.name}</p>
+            </div>
+        </Link>
     )
 }

@@ -2,23 +2,39 @@
     display: grid;
     grid-template-columns: 2% 4% 64% 25% 5%;
     grid-template-areas: '_index _thumb _title _added _length';
-    padding-left: 2%;
+    padding-left: 16px;
+    padding-right: 16px;
     font-size: 0.85em;
-    color: $clrwhite;
+    color: $clrsubtxt;
     align-items: center;
     border-radius: 7px;
-    
+    height: 54px;
+
+    svg{
+        fill: $clrwhite;
+        display:none;
+        margin-left: -4px;
+    }
 
     .song-index{
         grid-area: _index;
+        p{
+            display:block;
+        }
     }
 
     .song-thumbnail{
         grid-area: _thumb;
+        img{
+            border-radius: 6px;
+            height: 40px;
+        }
     }
 
     .song-title{
         grid-area: _title;
+        margin-left: 12px;
+        color: $clrwhite;
     }
 
     .song-addedAt{
@@ -33,4 +49,13 @@
 
 .song-preview:hover{
     background-color: $clrgray;
+    .song-index{
+        p{
+            display:none;
+        }
+    }
+    svg{
+        display:block;
+    }
+
 }

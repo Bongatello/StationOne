@@ -21,8 +21,8 @@ export function RootCmp() {
             <div className="main-content">
                 <Routes>
                     <Route path="/StationOne/" element={<HomePage />} />
-                    <Route path="/StationOne/Test" element={<StationPreview/>} />
-                    <Route path="/StationOne/:stationID" element={<Browse />} />
+                    <Route path="/StationOne/search" element={<Browse />} />
+                    <Route path="/StationOne/station/:stationId" element={<StationPreview/>} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>
