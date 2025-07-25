@@ -45,28 +45,28 @@ export function HomePage() {
                 </div>
             </section>
 
-            <section>
+            <section className="homepage-genre-section">
                 <h2>EDM Stations</h2>
                 <div className="home-stations-by-genre-container">
                     {postByGenre('Electronic')}
                 </div>
             </section>
 
-            <section>
+            <section className="homepage-genre-section">
                 <h2>Hip-Hop and Rap Stations</h2>
                 <div className="home-stations-by-genre-container">
                     {postByGenre('Hip-Hop')}
                 </div>
             </section>
 
-            <section>
+            <section className="homepage-genre-section">
                 <h2>Rock Stations</h2>
                 <div className="home-stations-by-genre-container">
                     {postByGenre('Rock')}
                 </div>
             </section>
 
-            <section>
+            <section className="homepage-genre-section">
                 <h2>R&B and Soul Stations</h2>
                 <div className="home-stations-by-genre-container">
                     {postByGenre('R&B')}

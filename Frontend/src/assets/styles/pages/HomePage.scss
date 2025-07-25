@@ -1,6 +1,6 @@
 .homepage-container{
     
-    padding-left: 40px;
+    padding-left: 28px;
     display: grid;
 
     grid-template-columns: auto;
@@ -9,6 +9,13 @@
     grid-auto-rows: 303.5px;
     grid-auto-flow: row;
     grid-row-gap: 32px;
+
+    .homepage-genre-section{
+        h2{
+            font-size: 1.5rem;
+            padding-left: 12px;
+        }
+    }
 
     .home-stations-by-genre-container{
         display: grid;

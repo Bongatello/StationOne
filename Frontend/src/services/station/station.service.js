@@ -1,11 +1,14 @@
 import { storageService } from '../async-storage.service.js'
 import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.service'
+import { userService } from '../user/user.service.js'
+
 
 export const stationService = {
     query,
     get,
     addSong,
     loadStations,
+    combineUserDefaultStations,
 }
 
 
@@ -41,7 +44,6 @@ function get(stationId){
     return storageService.get(STORAGE_KEY, stationId)
 }
 
-
 function addSong(stationID, title, url, imgUrl, addedAt, length) {
     const index = stations.findIndex(station => station._id === stationID)
     const newSong= {}
@@ -57,7 +59,28 @@ function addSong(stationID, title, url, imgUrl, addedAt, length) {
     saveToStorage(STORAGE_KEY, stations)
 }
 
-const stations = [ //demodata
+
+function combineUserDefaultStations() {
+
+  const userStations = userService.loadUserStations()
+
+  for(var i = 0; i<userStations.length; i++){
+    if (!stations.some(station => station._id === userStations[i]._id)){
+      stations.push(userStations[i])
+    }
+  }
+
+  saveToStorage(STORAGE_KEY, stations)
+
+}
+
+
+
+
+
+
+
+let stations = [ //demodata
     // 5 Funk/Soul stations
     {
       _id: 'b2c3d',

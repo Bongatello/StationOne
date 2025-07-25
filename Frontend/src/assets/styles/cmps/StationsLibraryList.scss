@@ -1,0 +1,41 @@
+.library-station-object{
+    display: flex;
+    align-items: center;
+    height: 48px;
+    width: 95%;
+    padding: 8px;
+    margin-right: 8px;
+    margin-left: 8px;
+    gap: 8px;
+    color: $clrwhite;
+    border-radius: 6px;
+
+    img{
+        width:48px;
+        aspect-ratio: 1;
+        border-radius: 6px;
+    }
+
+    .library-station-details{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        height: 48px;
+
+        p, h1{
+            margin: 0;
+        }
+        h1{
+            font-size: 1rem;
+        }
+        p{
+            color: $clrsubtxt;
+            font-size: 0.875rem;
+        }
+    }
+}
+
+.library-station-object:hover{
+    background-color: $clrgray;
+}

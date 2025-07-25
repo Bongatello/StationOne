@@ -1,44 +1,48 @@
 .library-bar{
-  h1{
-    color: $clrwhite;
-    font-size: 1rem;
-  }
-  button{
-    width: 100%;
-    height: 60px;
-  }
-  .create, .test-station{
-    text-align: left;
-    font-size: 1em;
-    border-radius: 8px;
-  }
 
-  .test-station{
-    width: 100%;
-	  margin-left: 5px;
-    background-color: $clrgray;
-    height: 60px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2px;
-    margin-bottom: 4px;
-    
-
-    img{
-      height: 90%;
-      aspect-ratio: 1;
-    }
-  }
-
-  .test-station:visited{
-    color: $clrwhite;
-  }
-  
   a{
     text-decoration: none;
   }
 
+  .header-create-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 8px;
+    padding-right: 16px;
+    padding-left: 16px;
+    
+    height: 36px;
+    width: 388px;
+    h1{
+      color: $clrwhite;
+      font-size: 1rem;
+      margin: 0;
+    }
 
+
+    .create{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $clrgray;
+      border-radius: 50px;
+      border:0;
+      margin: 8px;
+      width: 100px;
+      height: 36px;
+      fill: $clrsubtxt;
+      gap: 3px;
+
+      h1{
+        height: 19px;
+        margin: 0;
+        color: $clrwhite;
+        font-size: 0.875rem;
+      }
+    }
+  }
 
 }

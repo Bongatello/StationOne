@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { SongList } from '../cmps/SongList.jsx'
 import { stationService } from "../services/station/station.service.js"
 import { useParams } from 'react-router-dom'
+import { userService } from '../services/user/user.service.js'
 
 
 export function StationPreview() {
@@ -12,7 +13,7 @@ export function StationPreview() {
 	
 	    loadStation()
 	
-	}, [])
+	}, [params])
 	
 	function loadStation() {
 		console.log(params.stationId)
@@ -34,12 +35,30 @@ export function StationPreview() {
 
 
 
+	function addRemoveFromList() {
+		const likedStations = userService.loadUserStations()
+		if (!likedStations.some(userStation => userStation === station)){
+			userService.addToLikedStations(station)
+		}
+		else if (likedStations.some(userStation => userStation === station)){
+			return removeFromLibrary
+		}
+	}
+
+
+	function isLikedByUser (targetID){
+		const likedByUser = userService.loadUserStations()
+		if (!likedByUser.some(userStation => userStation._id === targetID)){
+			return addToLibrary
+		}
+		return removeFromLibrary
+	}
+
+
 	function isPlayPause () {
 		if (playerService.isPlaying === true) return {stopButton}
 		return {playButton}
 	}
-
-
 
 	if (!station) {
         return <p>Loading station...</p>
@@ -59,7 +78,7 @@ export function StationPreview() {
 
 					<div className="station-details">
 						<img src="../../img/StationOneLogo.png" className="createdby-img" />
-						<p style={{color:'white', fontWeight:'bold'}}>StationOne</p>
+						<p style={{color:'white', fontWeight:'bold'}}>{station.addedBy}</p>
 						<p>• {station.songs.length} songs</p>
 					</div>
 
@@ -75,8 +94,8 @@ export function StationPreview() {
 						</svg>
 					</div>
 
-					<div className="add-remove-library-wrapper">
-						{addToLibrary}
+					<div className="add-remove-library-wrapper" onClick={addRemoveFromList}>
+						{isLikedByUser(station._id)}
 					</div>
 
 					<div className="extra-options-wrapper">
