@@ -61,17 +61,20 @@ function addSong(stationID, title, url, imgUrl, addedAt, length) {
 
 
 function combineUserDefaultStations() {
+  const userStations = userService.loadUserData()
 
-  const userStations = userService.loadUserStations()
+  const currentStationList = loadStations()
 
-  for(var i = 0; i<userStations.length; i++){
-    if (!stations.some(station => station._id === userStations[i]._id)){
-      stations.push(userStations[i])
-    }
-  }
+  const mergedStations = [...currentStationList]
 
-  saveToStorage(STORAGE_KEY, stations)
+  userStations.likedStations.forEach(userStation => {
+    const exists = currentStationList.some(station => station._id === userStation._id)
+    if (!exists) mergedStations.push(userStation)
+  })
 
+  saveToStorage(STORAGE_KEY, mergedStations)
+
+  return mergedStations
 }
 
 
@@ -80,7 +83,7 @@ function combineUserDefaultStations() {
 
 
 
-let stations = [ //demodata
+export const stations = [ //demodata
     // 5 Funk/Soul stations
     {
       _id: 'b2c3d',

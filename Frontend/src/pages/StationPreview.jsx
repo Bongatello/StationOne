@@ -3,16 +3,22 @@ import { SongList } from '../cmps/SongList.jsx'
 import { stationService } from "../services/station/station.service.js"
 import { useParams } from 'react-router-dom'
 import { userService } from '../services/user/user.service.js'
-
+import { useSelector } from 'react-redux'
+import { loadUser, addLikedStation, removeLikedStation } from '../store/user.actions.js'
+import { setStations, updateDefaultAndLikedList } from '../store/stations.actions.js'
 
 export function StationPreview() {
 	const [station, setStation] = useState(null)
 	const params = useParams()
+	const userData = useSelector(state => state.userModule.user)
+	
+
 
 	useEffect(()=> {
 	
 	    loadStation()
-	
+		loadUser()
+
 	}, [params])
 	
 	function loadStation() {
@@ -36,19 +42,27 @@ export function StationPreview() {
 
 
 	function addRemoveFromList() {
-		const likedStations = userService.loadUserStations()
-		if (!likedStations.some(userStation => userStation === station)){
-			userService.addToLikedStations(station)
+		const likedStations = userData
+
+		const index = likedStations.likedStations.findIndex(likedStation => likedStation._id === station._id)
+
+		if (index === -1) {
+			addLikedStation(station)
+			console.log('added station ', station._id,' to liked list')
 		}
-		else if (likedStations.some(userStation => userStation === station)){
-			return removeFromLibrary
+
+		else {
+			removeLikedStation(station)
+			console.log('removed station ', station._id,' from liked list')
 		}
+		updateDefaultAndLikedList()
+		loadStation()
 	}
 
 
 	function isLikedByUser (targetID){
-		const likedByUser = userService.loadUserStations()
-		if (!likedByUser.some(userStation => userStation._id === targetID)){
+		const likedByUser = userData
+		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)){
 			return addToLibrary
 		}
 		return removeFromLibrary

@@ -1,82 +1,72 @@
-import { userService } from '../services/user'
-import { socketService } from '../services/socket.service'
+import { userService } from '../services/user/user.service.js'
+
 import { store } from '../store/store'
 
-import { showErrorMsg } from '../services/event-bus.service'
-import { LOADING_DONE, LOADING_START } from './system.reducer'
-import { REMOVE_USER, SET_USER, SET_USERS, SET_WATCHED_USER } from './user.reducer'
+import { SET_USER, REMOVE_LIKED_STATION, ADD_LIKED_STATION } from './user.reducer'
 
-export async function loadUsers() {
+//export const userService = {
+//    addStation,
+//    loadUserData,
+//    addToLikedStations,
+//    removeFromUserLiked,
+//}
+
+
+export async function loadUser() {
     try {
-        store.dispatch({ type: LOADING_START })
-        const users = await userService.getUsers()
-        store.dispatch({ type: SET_USERS, users })
-    } catch (err) {
-        console.log('UserActions: err in loadUsers', err)
-    } finally {
-        store.dispatch({ type: LOADING_DONE })
+        const user = await userService.loadUserData()
+        store.dispatch(getCmdSetUser(user))
+        console.log(user)
     }
-}
-
-export async function removeUser(userId) {
-    try {
-        await userService.remove(userId)
-        store.dispatch({ type: REMOVE_USER, userId })
-    } catch (err) {
-        console.log('UserActions: err in removeUser', err)
-    }
-}
-
-export async function login(credentials) {
-    try {
-        const user = await userService.login(credentials)
-        store.dispatch({
-            type: SET_USER,
-            user
-        })
-        socketService.login(user._id)
-        return user
-    } catch (err) {
-        console.log('Cannot login', err)
+    catch (err) {
+        console.log('UserActions: unable to load user', err)
         throw err
     }
 }
 
-export async function signup(credentials) {
+
+export async function addLikedStation(station) {
     try {
-        const user = await userService.signup(credentials)
-        store.dispatch({
-            type: SET_USER,
-            user
-        })
-        socketService.login(user)
-        return user
-    } catch (err) {
-        console.log('Cannot signup', err)
+        await userService.addToLikedStations(station)
+        store.dispatch(getCmdAddLikedStation(station))
+    }
+    catch (err) {
+        console.log('UserActions: unable to add station to user', err)
         throw err
     }
 }
 
-export async function logout() {
+export async function removeLikedStation(station) {
     try {
-        await userService.logout()
-        store.dispatch({
-            type: SET_USER,
-            user: null
-        })
-        socketService.logout()
-    } catch (err) {
-        console.log('Cannot logout', err)
+        await userService.removeFromLikedStations(station)
+        store.dispatch(getCmdRemoveLikedStation(station))
+    }
+    catch (err) {
+        console.log('UserActions: unable to remove station from user', err)
         throw err
     }
 }
 
-export async function loadUser(userId) {
-    try {
-        const user = await userService.getById(userId)
-        store.dispatch({ type: SET_WATCHED_USER, user })
-    } catch (err) {
-        showErrorMsg('Cannot load user')
-        console.log('Cannot load user', err)
+
+
+// Command Creators:
+function getCmdSetUser(user) {
+    return {
+        type: SET_USER,
+        user
+    }
+}
+
+function getCmdAddLikedStation(station) {
+    return {
+        type: ADD_LIKED_STATION,
+        station
+    }
+}
+
+function getCmdRemoveLikedStation(station) {
+    return {
+        type: REMOVE_LIKED_STATION,
+        station
     }
 }

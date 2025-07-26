@@ -3,21 +3,22 @@ import { stationService } from "../services/station/station.service.js"
 import { useEffect, useState } from "react";
 import { StationsHomeList } from "../cmps/StationsHomeList.jsx"
 import { loadFromStorage } from "../services/util.service.js";
-
+import { useSelector } from 'react-redux'
+import { setStations } from "../store/stations.actions.js";
 
 export function HomePage() {
-
-    const [stations, setStations] = useState(null)
+    
+    const stations = useSelector(state => state.stationsModule.stations)
 
     useEffect(() => {
-        const stations = stationService.loadStations()
-        setStations(stations)
+
+        setStations()
+
     }, [])
 
     function postByGenre(genre){
         return stations.map(station => {
             if(station.tags.includes(genre)){
-                console.log('found station with', genre, ' genre, station name: ', station.name)
                 return (
                     <div className="home-station-wrapper">
                         <StationsHomeList station={station} genre={genre}/>
@@ -33,7 +34,6 @@ export function HomePage() {
     if (!stations || !stations.length) {
         return <p>Loading stations...</p>
     }
-    console.log('loaded stations', stations)
     return (
         <div className="homepage-container">
             <h1>*Here I will add some stations that were recently played by the user*</h1>

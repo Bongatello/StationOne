@@ -5,32 +5,34 @@ import { useSelector } from 'react-redux'
 import { stationService } from '../services/station/station.service.js'
 import { userService } from '../services/user/user.service.js'
 import { StationsLibraryList } from './StationsLibraryList.jsx'
+import { loadUser } from '../store/user.actions.js'
 //import { StationList } from './StationList.jsx'
 
 export function LibraryBar() {
 
-	const [userData, setUserData] = useState(null)
+	//const [userData, setUserData] = useState(null)
 	
-	function loadUserStations(){
-		const data = userService.loadUserStations()
-        setUserData(data)
-	}
+	const userData = useSelector(state => state.userModule.user)
+
+	//function loadUserData(){
+	//	const data = userService.loadUserData()
+    //    setUserData(data.likedStations)
+	//}
 
 
 	useEffect(() => {
-        loadUserStations()
-		
+        //loadUserData()
+		loadUser()
 	}, [])
 
 	function addNewUserStation(){
 		userService.addStation()
-		loadUserStations()
+		loadUser()
 		stationService.combineUserDefaultStations()
 	}
 
-
     
-	if (userData === null) {
+	if (userData === undefined) {
 		return (
 			<div>Stations Loading...</div>
 		)
@@ -48,7 +50,7 @@ export function LibraryBar() {
 				</button>
 			</div>
 
-			{userData.map(station => <StationsLibraryList station={station}/>)}
+			{userData.likedStations.map(station => <StationsLibraryList station={station}/>)}
 
 
         </div>
