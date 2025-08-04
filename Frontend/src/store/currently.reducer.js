@@ -1,8 +1,9 @@
-
+export const SET_CURRENT_SONG = 'SET_CURRENT_SONG'
+export const GET_CURRENT_SONG = 'GET_CURRENT_SONG'
 
 
 const initialState = {
-    currentlyPlaying: {
+    currently: {
         currentStation: {},
         currentVolume: {},
         currentSong: {},
@@ -12,21 +13,28 @@ const initialState = {
 }
 
 export function currentlyReducer(state = initialState, action = {}) {
-    //switch (action.type) {
-    //    case SET_REVIEWS:
-    //        return { ...state, currentlyPlaying: action.currentlyPlaying }
-    //    case ADD_REVIEW:
-    //        return { ...state, reviews: [...state.reviews, action.review] }
-    //    case REMOVE_REVIEW:
-    //        return { ...state, reviews: state.reviews.filter(review => review._id !== action.reviewId) }
-    //    case UPDATE_REVIEW:
-    //        return {
-    //            ...state,
-    //            reviews: state.reviews.map(review =>
-    //                review._id === action.review._id ? action.review : review
-    //            )
-    //        }
-    //        default:
-            return state
-    //}
+    var newState = state
+    switch (action.type) {
+        case GET_CURRENT_SONG:
+            var nowPlaying = action.currentSongUrl
+            var newCurrently = {
+                ...state.currently,
+                currentSong: nowPlaying
+            }
+
+            newState = {...state, currently: newCurrently}
+            break
+
+        case SET_CURRENT_SONG:
+            var nowPlaying = action.currentSongUrl
+            var newCurrently = {
+                ...state.currently,
+                currentSong: nowPlaying
+            }
+    
+                newState = {...state, currently: newCurrently}
+                break
+            default:
+    }
+    return newState
 }

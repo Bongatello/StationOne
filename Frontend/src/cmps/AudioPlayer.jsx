@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 
 export function AudioPlayer({url}) {
   const station = useSelector(state => state.stationsModule.stations)
+  const currentlyData = useSelector(state => state.currentlyModule.currently)
+
 
   const playerRef = useRef(null)
   const lastVolume = useRef(0.5)
@@ -61,19 +63,16 @@ export function AudioPlayer({url}) {
 
 
 
-  if (station[4] === undefined || station[4].songs[0] === undefined) {
+  if (!currentlyData.currentSong) {
     return <div>Loading Player...</div>
   }
-  else{
-    let song = station[4].songs[0]
-  
   return (
     <div>
       {/* Hidden Player */}
       <div style={{display:'none'}}>
         <ReactPlayer
           ref={playerRef}
-          src={song.url}
+          src={currentlyData.currentSong}
           playing={isPlaying}
           volume={userVolume}
           controls={false}
@@ -86,11 +85,11 @@ export function AudioPlayer({url}) {
       <div className='audio-player-wrapper'>
 
         <div className='song-details-wrapper'>
-          <img src={song.imgUrl}/>
+          <p>img src=song.imgUrl</p>
 
           <div className='title-artists'>
-            <h1>{song.title}</h1>
-            <p>{song.title}</p>
+            <h1>song.title</h1>
+            <p>song.title</p>
           </div>
         </div>
 
@@ -104,7 +103,7 @@ export function AudioPlayer({url}) {
           <div className='timeline-wrapper'>
             <p>0:00</p>
             <input type="range" min={0} max={0.999999} step={"any"}></input>
-            <p>{song.length}</p>
+            <p>song.length</p>
           </div>
         </div>
 
@@ -116,5 +115,4 @@ export function AudioPlayer({url}) {
       </div>
     </div>
   )
-}
 }
