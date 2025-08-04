@@ -16,7 +16,7 @@ export const user = {
     likedSongs: ['v1w2x'],
     likedStations: [],
     recentStations: ['b2c3d'],
-    createdStationsCount: 1,
+    createdStationsCount: 0,
 }
 
 function getEmptyStation(index){
@@ -41,14 +41,10 @@ function addStation() {
 		saveToStorage(STORAGE_KEY, storedUser)
 	}
 
-	if (!Array.isArray(storedUser.likedStations)) {
-		storedUser.likedStations = []
-	}
-
-	const newIndex = storedUser.createdPlaylistsCount + 1
+	const newIndex = storedUser.createdStationsCount + 1
 	const myNewStation = getEmptyStation(newIndex)
 
-	storedUser.createdPlaylistsCount = newIndex
+	storedUser.createdStationsCount = newIndex
 	storedUser.likedStations.unshift(myNewStation)
 
 	saveToStorage(STORAGE_KEY, storedUser)

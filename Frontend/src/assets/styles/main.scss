@@ -11,8 +11,6 @@
 
 // pages
 @import "RootCmp";
-
-@import "pages/AboutUs";
 @import "pages/HomePage";
 @import "pages/NotFound";
 @import "pages/StationPreview";
@@ -20,10 +18,10 @@
 
 
 // Components
-@import "cmps/list";
 @import "cmps/StationsHomeList";
 @import "cmps/LibraryBar";
 @import "cmps/AppHeader";
 @import "cmps/AppFooter";
 @import "cmps/SongList";
-@import "cmps/StationsLibraryList"
+@import "cmps/StationsLibraryList";
+@import "cmps/AudioPlayer";

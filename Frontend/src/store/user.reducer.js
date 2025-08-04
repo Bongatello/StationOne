@@ -1,6 +1,3 @@
-import { userService } from '../services/user'
-import { user } from '../services/user/user.service'
-
 export const INCREMENT = 'INCREMENT'
 export const DECREMENT = 'DECREMENT'
 export const CHANGE_COUNT = 'CHANGE_COUNT'

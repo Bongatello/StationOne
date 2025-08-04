@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { userService } from '../services/user/user.service.js'
 import { useSelector } from 'react-redux'
 import { loadUser, addLikedStation, removeLikedStation } from '../store/user.actions.js'
-import { setStations, updateDefaultAndLikedList } from '../store/stations.actions.js'
+import { updateDefaultAndLikedList } from '../store/stations.actions.js'
 
 export function StationPreview() {
 	const [station, setStation] = useState(null)

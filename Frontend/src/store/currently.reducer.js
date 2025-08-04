@@ -2,7 +2,13 @@
 
 
 const initialState = {
-    currentlyPlaying: [],
+    currentlyPlaying: {
+        currentStation: {},
+        currentVolume: {},
+        currentSong: {},
+        previousSong: {},
+        nextSong: {},
+    }
 }
 
 export function currentlyReducer(state = initialState, action = {}) {

@@ -2,7 +2,6 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 
-
 export function AppHeader() {
     //const user = useSelector(storeState => storeState.userModule.user)
     const navigate = useNavigate()
@@ -40,14 +39,14 @@ export function AppHeader() {
             <nav className=''>
                 
                 <NavLink to="/StationOne/" className="/logo">
-                    <img src='../../img/StationOneLogo.png'/>
+                    <img src='/StationOne/img/sologo.png'/>
                 </NavLink>
 
                 <div className="header-middle">
 
                     <NavLink to="/StationOne/">
                         <div className="home-logo-wrapper">
-                            <svg className={homeClass} height="24px" width="24px" viewBox="0 0 24 24">
+                            <svg className={homeClass} {...svgProps}>
                                 <path d={homeLogo}/>
                             </svg>
                         </div>
