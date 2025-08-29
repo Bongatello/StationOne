@@ -35,16 +35,6 @@ export function randomPastTime() {
     return Date.now() - pastTime
 }
 
-export function debounce(func, timeout = 300) {
-    let timer
-    return (...args) => {
-        clearTimeout(timer)
-        timer = setTimeout(() => {
-            func.apply(this, args)
-        }, timeout)
-    }
-}
-
 export function saveToStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value))
 }
@@ -52,4 +42,26 @@ export function saveToStorage(key, value) {
 export function loadFromStorage(key) {
     const data = localStorage.getItem(key)
     return (data) ? JSON.parse(data) : undefined
+}
+
+export function throttle(func, wait) {
+    let isWaiting = false
+    return (...args) => {
+        if (isWaiting) return
+        func(...args)
+        isWaiting = true
+        setTimeout(() => {
+            isWaiting = false
+        }, wait)
+    }
+}
+
+export function debounce(func, wait) {
+    let timeoutId
+    return (...args) => {
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout(() => {
+            func(...args)
+        }, wait)
+    }
 }
