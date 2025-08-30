@@ -37,12 +37,13 @@
         color: $clrwhite;
     }
 
-    .song-addedAt{
+    .song-added{
         grid-area: _added;
     }
 
     .song-length{
         grid-area: _length;
+        text-align: end;
     }
 
 }

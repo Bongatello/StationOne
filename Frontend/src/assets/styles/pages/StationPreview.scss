@@ -1,7 +1,10 @@
 .station-page-container {
     background-color: $clrdarkgray;
     height: 100%;
-    width: 100%;
+    width: 97%;
+    padding-left: 24px;
+    padding-right: 24px;
+
     
     color: $clrwhite;
 
@@ -13,8 +16,6 @@
 
     .station-cover-details-wrapper{
         margin-bottom: 24px;
-        padding-left: 24px;
-        padding-right: 24px;
         display: grid;
         grid-template-columns: minmax(128px, 232px) 77.5%;
         grid-column-gap: 5px;
@@ -80,19 +81,26 @@
     }
 
     .station-actions-songs-wrapper{
+        .action {
+
+        }
+        .action:hover {
+            
+        }
+        .action-wrapper {
+            display: flex;
+            position: relative;
+            margin-right: 24px;
+        }
         .station-actions{
             display: flex;
             flex-direction: row;
-            padding-left: 24px;
             height: 104px;
             align-items: center;
 
             .play-pause-button-wrapper{
-                display: flex;
-                position: relative;
                 height: 56px;
                 aspect-ratio: 1;
-                margin-right: 24px;
                 border-radius: 50%;
                 background-color: $clrgreen;
     
@@ -109,11 +117,8 @@
             }
     
             .extra-options-wrapper{
-                display: flex;
-                position: relative;
                 height: 56px;
                 width: 32px;
-                margin-right: 24px;
                 fill: $clrsubtxt;
                 .extra-options{
                     position: absolute;
@@ -127,9 +132,6 @@
             }
 
             .add-remove-library-wrapper{
-                display: flex;
-                position: relative;
-                margin-right: 24px;
 
                 .add-to-library{
                     fill: $clrsubtxt;
@@ -142,15 +144,19 @@
                     fill: $clrgreen;
                 }
                 .remove-from-library:hover{
-                    fill: #3be477;;
+                    fill: #3be477;
                 }
+            }
+            .invite-collaborators{
+                fill: $clrsubtxt;
+                
+            }
+            .invite-collaborators:hover{
+                fill: $clrwhite;
             }
         }
 
         .station-songs-container{
-            padding-left: 24px;
-            padding-right: 24px;
-            
             .song-preview-headlines{
                 margin-bottom: 16px;
                 padding-left: 16px;
@@ -167,18 +173,23 @@
                 
                 .song-index{
                     grid-area: _index;
+                    font-size: 0.875rem;
                 }
             
                 .song-title{
                     grid-area: _title;
+                    font-size: 0.875rem;
                 }
             
-                .song-addedAt{
+                .song-added{
                     grid-area: _added;
+                    font-size: 0.875rem;
                 }
             
                 .song-length{
                     grid-area: _length;
+                    font-size: 0.875rem;
+                    text-align: end;
                 }
 
                 p {

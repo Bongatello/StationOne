@@ -1,0 +1,72 @@
+.station-query-song-list-wrapper{
+    height: 56px;
+    border-radius: 7px;
+    .content{
+        height: 56px;
+        display: grid;
+        grid-template-columns: 44px 50.6% 27.4% 18%;
+        grid-template-areas: '_cover _details _album _add';
+        padding-left: 16px;
+        padding-right: 16px;
+        font-size: 0.85em;
+        color: $clrsubtxt;
+        align-items: center;
+
+        .song-cover{
+            grid-area: _cover;
+            margin-left: -8px;
+            margin-right: 12px;
+            img{
+                height: 40px;
+                width: 40px;
+                border-radius: 7px;
+            }
+        }
+
+        .song-details{
+            grid-area: _details;
+            display: flex;
+            flex-direction: column;
+
+            p{
+                font-size: 1rem;
+                color: $clrwhite;
+            }
+            .explicit-and-artists{
+                display: flex;
+                flex-direction: row;
+
+                p{
+                    font-size: 0.875rem;
+                    color: $clrsubtxt;
+                }
+                h6{
+                    font-size: 0.875rem;
+                }
+            }
+        }
+
+        .song-album{
+            grid-area: _album;
+        }
+
+        .song-add{
+            grid-area: _add;
+        }
+    }
+}
+.station-query-song-list-wrapper:hover{
+    background-color: $clrgray;
+    
+    svg{
+        display:block;
+    }
+}
+p, h5, h6{
+    margin: 0;
+}
+
+//details = 52%
+//cover = 2.6%
+//album = 27.3%
+//add = 18.1%

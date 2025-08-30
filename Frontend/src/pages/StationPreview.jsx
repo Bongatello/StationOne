@@ -6,6 +6,7 @@ import { userService } from '../services/user/user.service.js'
 import { useSelector } from 'react-redux'
 import { loadUser, addLikedStation, removeLikedStation } from '../store/user.actions.js'
 import { updateDefaultAndLikedList } from '../store/stations.actions.js'
+import { StationSongQuery } from '../cmps/StationSongQuery.jsx'
 
 export function StationPreview() {
 	const [station, setStation] = useState(null)
@@ -100,19 +101,20 @@ export function StationPreview() {
 			</div>
 
 
+			{station.songs.length>0 && // if station includes songs, the user will see the actions and the song list, else will see the next option
 			<div className="station-actions-songs-wrapper">
 				<div className="station-actions">
-					<div className="play-pause-button-wrapper">
+					<div className="play-pause-button-wrapper action-wrapper">
 						<svg height="24px" width="24px" viewBox="0 0 24 24" className='play-pause-button'>
 							{playButton}
 						</svg>
 					</div>
 
-					<div className="add-remove-library-wrapper" onClick={addRemoveFromList}>
+					<div className="add-remove-library-wrapper action-wrapper" onClick={addRemoveFromList}>
 						{isLikedByUser(station._id)}
 					</div>
 
-					<div className="extra-options-wrapper">
+					<div className="extra-options-wrapper action-wrapper">
 						<svg height="32px" width="32px" viewBox="0 0 24 24" className='extra-options'>
 							<path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
 						</svg>
@@ -137,6 +139,24 @@ export function StationPreview() {
 
 				</div>
 			</div>
+			}
+
+			{station.songs.length<1 &&
+			<div className="station-actions-songs-wrapper">
+				<div className="station-actions">
+					<div className='invite-collaborators-wrapper action-wrapper'>
+						<svg height="32px" width="32px" viewBox="0 0 24 24" className='invite-collaborators'><path d="M4.99 3h2.993v2H4.99v3H2.994V5H0V3h2.994V0h1.995zm7.288-.533a5.49 5.49 0 0 1 6.275 1.322 5.5 5.5 0 0 1 1.133 1.953c.18.532.33 1.474.277 2.378-.098 1.659-.8 3.02-1.749 4.156l-.432.52a.5.5 0 0 0 .134.752l3.59 2.077A5 5 0 0 1 24 19.955V22H4.99v-2.045a5 5 0 0 1 2.494-4.33l3.59-2.077a.5.5 0 0 0 .133-.753l-.43-.518-.002-.001c-.949-1.135-1.65-2.497-1.749-4.156-.053-.904.097-1.846.277-2.378a5.5 5.5 0 0 1 1.133-1.953 5.5 5.5 0 0 1 1.842-1.322M14.494 4a3.5 3.5 0 0 0-2.586 1.14 3.5 3.5 0 0 0-.715 1.245c-.092.272-.213.954-.174 1.617.066 1.124.536 2.092 1.287 2.99l.001.002.433.52a2.503 2.503 0 0 1-.669 3.767l-3.589 2.076a3 3 0 0 0-1.497 2.598V20h15.02v-.045a3 3 0 0 0-1.498-2.598l-3.589-2.076a2.503 2.503 0 0 1-.669-3.766l.433-.52.002-.003c.75-.898 1.22-1.866 1.287-2.99.039-.663-.082-1.345-.174-1.617-.163-.48-.4-.9-.715-1.245A3.5 3.5 0 0 0 14.494 4"/>
+						</svg>
+					</div>
+					<div className="extra-options-wrapper action-wrapper">
+						<svg height="32px" width="32px" viewBox="0 0 24 24" className='extra-options'>
+							<path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+						</svg>
+					</div>
+				</div>
+			</div>
+			}
+			<StationSongQuery station={station} setStation={setStation}/>
 		</div>
 	)
 }

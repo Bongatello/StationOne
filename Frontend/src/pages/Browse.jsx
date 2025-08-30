@@ -9,8 +9,6 @@ import { useSelector } from 'react-redux'
 export function Browse() {
     const currentlyData = useSelector(state => state.currentlyModule.currently)
 
-    //const [songUrl, setSongUrl] = useState(null)
-    //const [inputData, setInputData] = useState('')
     const [query, setQuery] = useState('')
     const [songs, setSongs] = useState([])
 
@@ -18,12 +16,6 @@ export function Browse() {
     useEffect(() => {
         initialSpotifyQuery()
     }, [])
-
-
-    //async function getDataFromYoutubeInput(data) {
-    //    console.log('new input data: '+data)
-    //    setInputData(data)
-    //}
 
     async function getDataFromSpotifyInput(data) {
         console.log('new input data: '+data)
@@ -60,8 +52,7 @@ export function Browse() {
             <div className='music-player'>
                 <AudioPlayer url={currentlyData.currentSong}/>
             </div>
-            {/* <input type='text' onChange={(e) => getDataFromYoutubeInput(e.target.value)} placeholder='Enter song name with artist'></input>
-            <button onClick={findOnYoutube}>Lookup on youtube</button> */}
+
             <p>my youtube api key is: {import.meta.env.VITE_YOUTUBE_DATA_API_KEY}</p>
 
             <div className='lookup-spotify-songs'>
