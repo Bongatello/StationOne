@@ -1,5 +1,6 @@
 import { storageService } from '../async-storage.service.js'
 import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.service'
+import Axios from 'axios'
 
 export const userService = {
     addStation,
@@ -7,6 +8,12 @@ export const userService = {
     addToLikedStations,
     removeFromLikedStations,
 }
+
+var axios = Axios.create({
+    withCredentials: true,
+})
+
+const BASE_URL = '//localhost:3000/api/station'
 
 
 const STORAGE_KEY = "userDB"
@@ -19,8 +26,9 @@ export const user = {
     createdStationsCount: 0,
 }
 
-function getEmptyStation(index){
+async function getEmptyStation(index){
     const newStation = {
+      index: index,
       _id: makeId(5),
       name: `My Station #${index}`,
       tags: [],
@@ -32,8 +40,8 @@ function getEmptyStation(index){
 }
 
 
-function addStation() {
-	let storedUser = loadFromStorage(STORAGE_KEY)
+async function addStation() {
+	let storedUser = await loadFromStorage(STORAGE_KEY)
 
 	
 	if (!storedUser) {
@@ -42,7 +50,9 @@ function addStation() {
 	}
 
 	const newIndex = storedUser.createdStationsCount + 1
-	const myNewStation = getEmptyStation(newIndex)
+	const myNewStation = await getEmptyStation(newIndex)
+
+  await axios.post(BASE_URL, myNewStation)
 
 	storedUser.createdStationsCount = newIndex
 	storedUser.likedStations.unshift(myNewStation)
@@ -52,8 +62,8 @@ function addStation() {
 }
 
 
-function loadUserData() {
-	let storedUser = loadFromStorage(STORAGE_KEY)
+async function loadUserData() {
+	/* let storedUser = loadFromStorage(STORAGE_KEY)
 
 	
 	if (!storedUser) {
@@ -61,7 +71,15 @@ function loadUserData() {
 		saveToStorage(STORAGE_KEY, storedUser)
 	}
 
-	return storedUser
+	return storedUser */
+
+  const stations = await axios.get(BASE_URL)
+
+  if (!stations) stations = []
+  
+  return stations.data
+
+
 }
 
 

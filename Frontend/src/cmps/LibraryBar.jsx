@@ -12,7 +12,7 @@ export function LibraryBar() {
 
 	//const [userData, setUserData] = useState(null)
 	
-	const userData = useSelector(state => state.userModule.user)
+	const Stations = useSelector(state => state.userModule.user)
 
 	//function loadUserData(){
 	//	const data = userService.loadUserData()
@@ -31,8 +31,9 @@ export function LibraryBar() {
 		stationService.combineUserDefaultStations()
 	}
 
+	console.log('LibraryBar cmp: ', Stations)
     
-	if (userData === undefined) {
+	if (Stations === undefined) {
 		return (
 			<div>Stations Loading...</div>
 		)
@@ -50,7 +51,7 @@ export function LibraryBar() {
 				</button>
 			</div>
 
-			{userData.likedStations.map(station => <StationsLibraryList station={station}/>)}
+			{Stations.map(station => <StationsLibraryList station={station}/>)}
 
 
         </div>

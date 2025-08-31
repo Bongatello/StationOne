@@ -37,11 +37,11 @@ async function getById(stationId) {
 
 async function addStation(station) {
     try {
-        const { name, addedBy } = station
-        if (!name || !addedBy) throw 'Name or user(addedBy) missing'
+        const { index, addedBy } = station
+        if (!index || !addedBy) throw 'Name or user(addedBy) missing'
 
         const collection = await dbService.getCollection(collectionName)
-
+        const name = 'My Station #' + index
         const stationToAdd = { name, addedBy }
 
         stationToAdd.thumbnail = "https://www.vicentenews.com/wp-content/uploads/2024/08/DJ-Maphorisa-Kabza-De-Small-OSKIDO-Afro-Wave-feat.-Olodum-Tman-Xpress-Phila-Dlozi.png"

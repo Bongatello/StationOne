@@ -14,9 +14,8 @@ import { SET_USER, REMOVE_LIKED_STATION, ADD_LIKED_STATION } from './user.reduce
 
 export async function loadUser() {
     try {
-        const user = await userService.loadUserData()
-        store.dispatch(getCmdSetUser(user))
-        console.log(user)
+        const userStations = await userService.loadUserData()
+        store.dispatch(getCmdSetUser(userStations))
     }
     catch (err) {
         console.log('UserActions: unable to load user', err)
