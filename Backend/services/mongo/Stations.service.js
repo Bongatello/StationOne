@@ -49,7 +49,7 @@ async function addStation(station) {
         stationToAdd.tags = []
         stationToAdd.isPrivate = true
         await collection.insertOne(stationToAdd)
-        return 'Station Added Successfully!'
+        return stationToAdd
 
     } catch (err) {
         console.log('StationService Error: Cannot add station')

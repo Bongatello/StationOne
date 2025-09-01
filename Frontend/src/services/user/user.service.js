@@ -29,12 +29,7 @@ export const user = {
 async function getEmptyStation(index){
     const newStation = {
       index: index,
-      _id: makeId(5),
-      name: `My Station #${index}`,
-      tags: [],
       addedBy: 'Default User',
-      thumbnail: 'https://www.vicentenews.com/wp-content/uploads/2024/08/DJ-Maphorisa-Kabza-De-Small-OSKIDO-Afro-Wave-feat.-Olodum-Tman-Xpress-Phila-Dlozi.png',
-      songs: [],
     }
     return newStation
 }
@@ -52,10 +47,10 @@ async function addStation() {
 	const newIndex = storedUser.createdStationsCount + 1
 	const myNewStation = await getEmptyStation(newIndex)
 
-  await axios.post(BASE_URL, myNewStation)
+  const newStation = await axios.post(BASE_URL, myNewStation)
 
 	storedUser.createdStationsCount = newIndex
-	storedUser.likedStations.unshift(myNewStation)
+	storedUser.likedStations.unshift(newStation.data)
 
 	saveToStorage(STORAGE_KEY, storedUser)
 	return storedUser
@@ -63,15 +58,20 @@ async function addStation() {
 
 
 async function loadUserData() {
-	/* let storedUser = loadFromStorage(STORAGE_KEY)
+	 let storedUser = loadFromStorage(STORAGE_KEY)
 
 	
 	if (!storedUser) {
 		storedUser = { ...user }
+
+    const stations = await axios.get(BASE_URL)
+    if (!stations) stations = []
+
+    storedUser.likedStations = stations.data
 		saveToStorage(STORAGE_KEY, storedUser)
 	}
 
-	return storedUser */
+	return storedUser 
 
   const stations = await axios.get(BASE_URL)
 

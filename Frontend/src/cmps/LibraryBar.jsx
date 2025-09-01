@@ -12,7 +12,7 @@ export function LibraryBar() {
 
 	//const [userData, setUserData] = useState(null)
 	
-	const Stations = useSelector(state => state.userModule.user)
+	const userData = useSelector(state => state.userModule.user)
 
 	//function loadUserData(){
 	//	const data = userService.loadUserData()
@@ -23,17 +23,17 @@ export function LibraryBar() {
 	useEffect(() => {
         //loadUserData()
 		loadUser()
-	}, [])
+		console.log('re-render caused!')
+	}, [userData.likedStations.length])
 
-	function addNewUserStation(){
-		userService.addStation()
-		loadUser()
-		stationService.combineUserDefaultStations()
+	async function addNewUserStation(){
+		await userService.addStation()
+		await loadUser()
+		await stationService.combineUserDefaultStations()
 	}
 
-	console.log('LibraryBar cmp: ', Stations)
     
-	if (Stations === undefined) {
+	if (userData === undefined) {
 		return (
 			<div>Stations Loading...</div>
 		)
@@ -51,7 +51,7 @@ export function LibraryBar() {
 				</button>
 			</div>
 
-			{Stations.map(station => <StationsLibraryList station={station}/>)}
+			{userData.likedStations.map(station => <StationsLibraryList station={station}/>)}
 
 
         </div>

@@ -102,9 +102,9 @@ app.get('/api/station/:stationId', async (req, res) => {
 app.post('/api/station', async (req, res) => {
   const station = req.body
   console.log('body: ', req.body)
-  await stationsService.addStation(station) 
-
-  res.send('Added Station')
+  const newStation = await stationsService.addStation(station)
+  console.log('Backend app.post: ', newStation)
+  res.send(newStation)
 })
 //update station
 app.put('/api/station', async (req,res) => {

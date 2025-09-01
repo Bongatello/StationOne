@@ -1,7 +1,9 @@
 import { storageService } from '../async-storage.service.js'
 import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.service'
 import { userService } from '../user/user.service.js'
+import axios from 'axios';
 
+const BASE_URL = '//localhost:3000/api/station'
 
 export const stationService = {
     query,
@@ -31,17 +33,22 @@ function query(filterBy = {}) {
     })
 }
 
-function loadStations(){
-    let storedStations = loadFromStorage(STORAGE_KEY)
+async function loadStations(){
+  const storedStations = await axios.get(BASE_URL)
+
+  return storedStations.data
+  /*   let storedStations = loadFromStorage(STORAGE_KEY)
     if (!storedStations || !storedStations.length) {
         saveToStorage(STORAGE_KEY, stations)
         storedStations = stations
     }
-    return storedStations
+    return storedStations */
 }
 
-function get(stationId){
-    return storageService.get(STORAGE_KEY, stationId)
+async function get(stationId){
+    const station = await axios.get(`${BASE_URL}/${stationId}`)
+    console.log('got station: ', station)
+    return station.data
 }
 
 function addSong(stationID, title, url, imgUrl, addedAt, length) {
@@ -60,10 +67,10 @@ function addSong(stationID, title, url, imgUrl, addedAt, length) {
 }
 
 
-function combineUserDefaultStations() {
-  const userStations = userService.loadUserData()
+async function combineUserDefaultStations() {
+  const userStations = await userService.loadUserData()
 
-  const currentStationList = loadStations()
+  const currentStationList = await loadStations()
 
   const mergedStations = [...currentStationList]
 
