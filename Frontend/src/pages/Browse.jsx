@@ -4,6 +4,7 @@ import { AudioPlayer } from '../cmps/AudioPlayer.jsx'
 import { getYoutubeSong, queryByText } from '../services/youtube-spotify.service.js'
 import { setPlayingSong, getPlayingSong } from '../store/currently.actions.js'
 import { useSelector } from 'react-redux'
+import { songsService } from '../services/songs/songs.service.js'
 
 
 export function Browse() {
@@ -18,7 +19,7 @@ export function Browse() {
     }, [])
 
     async function getDataFromSpotifyInput(data) {
-        console.log('new input data: '+data)
+        console.log('new input data: ' + data)
         setQuery(data)
     }
 
@@ -28,25 +29,23 @@ export function Browse() {
     }
 
 
-    async function findOnYoutube(inputData) { //upon removing notes, add spotifySongId to function dependencies
-        
-        //const firstVideoId = await storedSongs.getYoutubeId(spotifySongId)
-        //if (!firstVideoId) {
-        // const ytApiSearchData = await getYoutubeSong(inputData)
-        // firstVideoId = ytApiSearchData.items[0].id.videoId
-        //}
-        //const ytSongUrl.......
-        const ytApiSearchData = await getYoutubeSong(inputData)
-        const firstVideoId = ytApiSearchData.items[0].id.videoId
+    async function findOnYoutube(spotifySongId, inputData) { //upon removing notes, add spotifySongId to function dependencies
 
+        var firstVideoId = await songsService.getYoutubeId(spotifySongId)
+        if (firstVideoId) console.log('no -100 credits this time :)')
+        if (!firstVideoId) {
+            const ytApiSearchData = await getYoutubeSong(inputData)
+            console.log('Google Api Used, -100 credits :(')
+            firstVideoId = ytApiSearchData.items[0].id.videoId
+            const songToStore = {
+                spotifySongId: spotifySongId,
+                youtubeSongId: firstVideoId
+            }
+            await songsService.addSong(songToStore) // this function should add both ids under the same object in mongo, meaning next time we ask for the youtube id, we can check if there is a spotify id matching to the required song that the user wants to play
+        }
         const ytSongUrl = `https://www.youtube.com/watch?v=${firstVideoId}`
-
         setPlayingSong(ytSongUrl)
-        //setSongUrl(ytSongUrl)
-        console.log(ytSongUrl)
-        //await storedSongs.addSong(spotifySongId, firstVideoId) // this function should add both ids under the same object in mongo, meaning next time we ask for the youtube id, we can check if there is a spotify id matching to the required song that the user wants to play
-
-
+        console.log('Now playing: ', ytSongUrl)
     }
 
     async function spotifyQuery() {
@@ -54,12 +53,12 @@ export function Browse() {
         setSongs(queriedSongs)
     }
 
-    return(
+    return (
         <div className="browse-page">
             <h1>Browse all</h1>
             <p>Here I will add some genres from Youtube and Spotify API</p>
             <div className='music-player'>
-                <AudioPlayer url={currentlyData.currentSong}/>
+                <AudioPlayer url={currentlyData.currentSong} />
             </div>
 
             <p>my youtube api key is: {import.meta.env.VITE_YOUTUBE_DATA_API_KEY}</p>
@@ -70,9 +69,9 @@ export function Browse() {
             </div>
 
             <div className='spotify-query-list'>
-                {songs.length>0 && songs.map(song =>{
-                    return(
-                    <li key={song._id}>{song.artists.join(' ')} - {song.songName} <button onClick={() => findOnYoutube(song.artists.join('') + '-' + song.songName)}>Play Song</button></li>
+                {songs.length > 0 && songs.map(song => {
+                    return (
+                        <li key={song._id}>{song.artists.join(' ')} - {song.songName} <button onClick={() => findOnYoutube(song._id, song.artists.join('') + '-' + song.songName)}>Play Song</button></li>
                     )
                 })}
             </div>

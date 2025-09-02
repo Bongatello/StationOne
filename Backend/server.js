@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import { spotifyYoutubeRoutes } from './api/spotify-youtube/spotifyYoutube.routes.js'
 import { stationsRoutes } from './api/stations/stations.routes.js'
+import { songsRoutes } from './api/songs/songs.routes.js'
 
 //CONFIG
 //env file
@@ -63,6 +64,7 @@ app.get('/api/youtube-search', async (req, res) => {
 
 //MONGODB METHODS
 app.use(stationsRoutes)
+app.use(songsRoutes)
 
 
 

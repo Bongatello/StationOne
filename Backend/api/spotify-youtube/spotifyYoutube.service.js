@@ -64,7 +64,7 @@ async function processSpotifyQueryData(queryData) {
 
 async function getSpotifyQueryData(q, limit) {
   //if we dont have a spotify api token (the temporary one you get using id+secret), we use the function getTempSpotifyToken which sends the credentials again to get a new token, else just go straight into querying spotify api
-  if (!SpotifyTemporaryToken) SpotifyTemporaryToken = await spotifyService.getTempSpotifyToken()
+  if (!SpotifyTemporaryToken) SpotifyTemporaryToken = await getTempSpotifyToken()
 
   //now we get search results from spotify according to our frontend query parameter using a fetch request
   const unprocessedResults = await fetch(`https://api.spotify.com/v1/search?q=${q}&type=track&limit=${limit}`, {
@@ -75,7 +75,7 @@ async function getSpotifyQueryData(q, limit) {
   })
 
   //the response needs to be parsed and cleaned up from properties we dont need, so the next function does just that!
-  const cleanQueryResults = await spotifyService.processSpotifyQueryData(unprocessedResults)
+  const cleanQueryResults = await processSpotifyQueryData(unprocessedResults)
   return cleanQueryResults
 }
 
