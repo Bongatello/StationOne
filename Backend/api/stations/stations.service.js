@@ -1,4 +1,4 @@
-import { dbService } from "./db.service.js"
+import { dbService } from '../../services/mongo/db.service.js'
 import { ObjectId } from 'mongodb'
 
 export const stationsService = {

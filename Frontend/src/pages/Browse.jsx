@@ -28,8 +28,14 @@ export function Browse() {
     }
 
 
-    async function findOnYoutube(inputData) {
+    async function findOnYoutube(inputData) { //upon removing notes, add spotifySongId to function dependencies
         
+        //const firstVideoId = await storedSongs.getYoutubeId(spotifySongId)
+        //if (!firstVideoId) {
+        // const ytApiSearchData = await getYoutubeSong(inputData)
+        // firstVideoId = ytApiSearchData.items[0].id.videoId
+        //}
+        //const ytSongUrl.......
         const ytApiSearchData = await getYoutubeSong(inputData)
         const firstVideoId = ytApiSearchData.items[0].id.videoId
 
@@ -38,6 +44,9 @@ export function Browse() {
         setPlayingSong(ytSongUrl)
         //setSongUrl(ytSongUrl)
         console.log(ytSongUrl)
+        //await storedSongs.addSong(spotifySongId, firstVideoId) // this function should add both ids under the same object in mongo, meaning next time we ask for the youtube id, we can check if there is a spotify id matching to the required song that the user wants to play
+
+
     }
 
     async function spotifyQuery() {
