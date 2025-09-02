@@ -18,10 +18,10 @@ export function SongList ({song, index}){
                     </svg>
                     <p>{index + 1}</p>
                 </div>
-                <div className="song-thumbnail"><img src={song.imgUrl}/></div>
-                <p className="song-title">{song.title}</p>
-                <p className="song-added">{toDate(song.addedAt)}</p>
-                <p className="song-length">{song.length}</p>
+                <div className="song-thumbnail"><img src={song.cover}/></div>
+                <p className="song-title">{song.name}</p>
+                <p className="song-added">{toDate(song.dateAdded)}</p>
+                <p className="song-length">{song.durationMs}</p>
             </div>
         </div>
     )

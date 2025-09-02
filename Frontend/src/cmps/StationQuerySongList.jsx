@@ -1,10 +1,28 @@
-
-
+import { stationService } from "../services/station/station.service.js"
+import { useParams } from "react-router"
 
 export function StationQuerySongList({song}){
-
+    const params = useParams()
     console.log(song.songName)
     
+    async function addSongToStation(){
+        const songs = []
+        const songToAdd = {
+            cover: song.images[2].url,
+            name: song.songName,
+            artists: song.artists.join(', '),
+            durationMs: song.durationMs,
+            album: song.albumName,
+            dateAdded: Date.now(),
+        }
+        songs.push(songToAdd)
+        const editedStation = {
+            _id: params.stationId,
+            songs: songs
+        }
+        await stationService.editStation(editedStation)
+        return console.log('Added song to station')
+    }
     return(
         <div className="station-query-song-list-wrapper">
             <div className="content">
@@ -17,7 +35,9 @@ export function StationQuerySongList({song}){
                     </div>
                 </div>
                 <p className="song-album">{song.albumName}</p>
-                <p className="song-add">button</p>
+                <div className="song-add">
+                    <button onClick={addSongToStation}>Add</button> 
+                </div>
 
             </div>
         </div>

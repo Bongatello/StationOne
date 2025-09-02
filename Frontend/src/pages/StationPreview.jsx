@@ -12,26 +12,16 @@ export function StationPreview() {
 	const [station, setStation] = useState(null)
 	const params = useParams()
 	const userData = useSelector(state => state.userModule.user)
-
-
+	const [songsLength, setSongsLength] = useState(null)
 
 	useEffect(() => {
 
 		loadStation()
 		loadUser()
 
-	}, [params])
+	}, [params, songsLength])
 
 	async function loadStation() {
-		/* console.log(params.stationId)
-		stationService.get(params.stationId)
-			.then(station => {
-				console.log(station)
-				setStation(station)})
-			.then(console.log(station))
-			.catch(err =>{
-				console.log('err:', err)
-			}) */
 		try {
 			console.log('Trying to get station: ', params.stationId)
 			const stationToSet = await stationService.get(params.stationId)
@@ -44,6 +34,15 @@ export function StationPreview() {
 		}
 
 
+	}
+
+	async function getSongsLength() {
+		const idx = userData.likedStations.indexOf(station => station._id === params.stationId)
+		if (idx>0) {
+			const currentSongsLength = userData.likedStations[idx].songs.length
+			setSongsLength(currentSongsLength)
+			console.log('New songs length!')
+		}
 	}
 
 	const stopButton = <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" />

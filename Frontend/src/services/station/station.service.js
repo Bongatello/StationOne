@@ -11,6 +11,7 @@ export const stationService = {
     addSong,
     loadStations,
     combineUserDefaultStations,
+    editStation,
 }
 
 
@@ -80,11 +81,19 @@ async function combineUserDefaultStations() {
   })
 
   saveToStorage(STORAGE_KEY, mergedStations)
-
+  console.log('Station Service: Successfully combined stations')
   return mergedStations
 }
 
+async function editStation(station) {
+  const stationToEdit = await get(station._id)
+  station.songs.unshift(...stationToEdit.songs)
 
+  console.log('Station Service: Trying to add song to station')
+  await axios.put(BASE_URL, station)
+  console.log('Station Service: Successfully added song to station')
+  return combineUserDefaultStations
+}
 
 
 

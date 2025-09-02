@@ -1,7 +1,8 @@
-.station-query-song-list-wrapper{
+.station-query-song-list-wrapper {
     height: 56px;
     border-radius: 7px;
-    .content{
+
+    .content {
         height: 56px;
         display: grid;
         grid-template-columns: 44px 50.6% 27.4% 18%;
@@ -12,58 +13,82 @@
         color: $clrsubtxt;
         align-items: center;
 
-        .song-cover{
+        .song-cover {
             grid-area: _cover;
             margin-left: -8px;
             margin-right: 12px;
-            img{
+
+            img {
                 height: 40px;
                 width: 40px;
                 border-radius: 7px;
             }
         }
 
-        .song-details{
+        .song-details {
             grid-area: _details;
             display: flex;
             flex-direction: column;
 
-            p{
+            p {
                 font-size: 1rem;
                 color: $clrwhite;
             }
-            .explicit-and-artists{
+
+            .explicit-and-artists {
                 display: flex;
                 flex-direction: row;
 
-                p{
+                p {
                     font-size: 0.875rem;
                     color: $clrsubtxt;
                 }
-                h6{
+
+                h6 {
                     font-size: 0.875rem;
                     margin-right: 3px;
                 }
             }
         }
 
-        .song-album{
+        .song-album {
             grid-area: _album;
         }
 
-        .song-add{
+        .song-add {
             grid-area: _add;
+            display: flex;
+            justify-content: end;
+
+            button {
+                font-weight: bold;
+                align-self: flex-start;
+                width: 60px;
+                height: 32px;
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                border: 0.8px solid $clrsubtxt;
+                background-color: $clrdarkgray;
+                color: $clrwhite;
+                border-radius: 500px;
+            }
         }
     }
 }
-.station-query-song-list-wrapper:hover{
+
+.station-query-song-list-wrapper:hover {
     background-color: $clrgray;
-    
-    svg{
-        display:block;
+
+    svg {
+        display: block;
     }
 }
-p, h5, h6{
+
+p,
+h5,
+h6 {
     margin: 0;
 }
 
