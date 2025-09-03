@@ -1,12 +1,25 @@
 //to add functionality to each song like/remove from liked button
 //to add functionality to song index and turn it into the number into play button when hovered over
-
+import { getDuration } from "../services/util.service";
 export function SongList ({song, index}){
     function toDate(timestamp){
         if(!timestamp) return 'no date specified'
         const songDate = new Date(timestamp);
         const dateString = songDate.toLocaleDateString()
         return dateString;
+    }
+    function timeAddedAgo(){
+        const currentTime = Date.now()
+        const timeSinceAdded = currentTime - song.dateAdded
+        const seconds = Math.floor(timeSinceAdded/1000)
+        const minutes = Math.floor(seconds/60)
+        const hours = Math.floor(minutes/60)
+        const days = Math.floor(hours/24)
+        if(days) return days+' days ago'
+        if(hours) return hours +' hours ago'
+        if(minutes) return minutes +' minutes ago'
+        if(seconds) return seconds +' seconds ago'
+        return timeSinceAdded+' ms ago'
     }
 
     return(
@@ -20,8 +33,8 @@ export function SongList ({song, index}){
                 </div>
                 <div className="song-thumbnail"><img src={song.cover}/></div>
                 <p className="song-title">{song.name}</p>
-                <p className="song-added">{toDate(song.dateAdded)}</p>
-                <p className="song-length">{song.durationMs}</p>
+                <p className="song-added">{timeAddedAgo()}</p>
+                <p className="song-length">{getDuration(song.durationMs)}</p>
             </div>
         </div>
     )
