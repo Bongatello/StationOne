@@ -12,13 +12,27 @@ export function AudioPlayer({ url }) {
     getPlayingSong()
   }, [playerData.currentSong.url]) */
 
-  const playerRef = useRef(null)
-  const lastVolume = useRef(0.5)
-  const [played, setPlayed] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [userVolume, setUserVolume] = useState(0.5)
+  const initialState = {
+    volume: 0.5,
+    muted: false,
+    played: 0,
+    loaded: 0,
+    seeking: false,
+    loadedSeconds: 0,
+    playedSeconds: 0,
+    isPlaying: false,
+  }
+
+  const initialRef = {
+    currentTime: 0,
+    duration: 0
+  }
 
 
+  const [state, setState] = useState(initialState);
+  const playerRef = useRef(initialRef)
+
+  
   const svgProps = { height: "16px", width: "16px", viewBox: "0 0 16 16" }
 
   const nextPrevSVG = <svg {...svgProps}><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7z" /></svg>
@@ -29,38 +43,82 @@ export function AudioPlayer({ url }) {
 
 
   function toggleMute() {
-    if (userVolume === 0) { //muted state
-      setUserVolume(lastVolume.current)
-      console.log('unmuted player, volume: ', userVolume)
+    if (state.muted) { //muted state
+      setState(prevState => ({...prevState, muted: false}))
+      console.log('unmuted player, volume: ', state.volume)
     }
     else { //unmuted state
-      lastVolume.current = userVolume
-      setUserVolume(0)
-      console.log('muted player, volume: ', userVolume)
+      setState(prevState => ({...prevState, muted: true}))
+      console.log('muted player, volume: ', state.volume)
     }
   }
 
   function handleInputVolume(inputVolume) {
-    setUserVolume(inputVolume)
+    setState(prevState => ({...prevState, volume: inputVolume}))
     console.log('new volume: ', inputVolume)
   }
 
 
   const togglePlay = () => {
-    setIsPlaying(prev => !prev)
+    setState(prevState => ({...prevState, isPlaying: !state.isPlaying}))
     console.log('now playing ', url)
   }
-
-  function handleProgress(state) {//still doesnt work
-    setPlayed(state.played)
+  //-----------------------------------------------------------------------------------------------------------
+  function setPlayerRef(player) {
+    if (!player) return
+    playerRef.current = player
   }
 
-  function handleSeekChange(newValue) {//still doesnt work
-  setPlayed(newValue)
-  if (playerRef.current) {
-    playerRef.current.seekTo(newValue, 'fraction') // 'fraction' means 0 → 1
+  function handleProgress() {
+    const player = playerRef.current
+    // We only want to update time slider if we are not currently seeking
+    if (!player || state.seeking || !player.buffered?.length) return
+
+
+    setState(prevState => ({
+      ...prevState,
+      loadedSeconds: player.buffered?.end(player.buffered?.length - 1),
+      loaded: player.buffered?.end(player.buffered?.length - 1) / player.duration,
+    }))
   }
-}
+
+
+  function handleTimeUpdate() {
+    const player = playerRef.current
+    // We only want to update time slider if we are not currently seeking
+    if (!player || state.seeking) return
+
+    console.log('onTimeUpdate', player.currentTime, playerRef.current.duration)
+
+    if (!player.duration) return
+
+    setState(prevState => ({
+      ...prevState,
+      playedSeconds: player.currentTime,
+      played: player.currentTime / player.duration,
+    }))
+  }
+
+  function handleSeekMouseDown() {
+    setState(prevState => ({...prevState, seeking: true}))
+  }
+
+  function handleSeekChange(e) {
+    const inputTarget = e.target
+    setState(prevState => ({...prevState, played: parseFloat(inputTarget.value)}))
+  }
+
+  function handleSeekMouseUp(e) {
+    const inputTarget = e.target
+    setState(prevState => ({...prevState, seeking: false}))
+
+    if (playerRef.current) {
+    playerRef.current.currentTime =
+      parseFloat(inputTarget.value) * playerRef.current.duration
+    }
+  }
+
+
 
   if (!playerData.currentSong.url) {
     return <div>Loading Player...</div>
@@ -70,12 +128,15 @@ export function AudioPlayer({ url }) {
       {/* Hidden Player */}
       <div style={{ display: 'none' }}>
         <ReactPlayer
-          ref={playerRef}
+          ref={setPlayerRef}
           src={playerData.currentSong.url}
-          playing={isPlaying}
-          volume={userVolume}
+          playing={state.isPlaying}
+          volume={state.volume}
           onProgress={handleProgress}//still doesnt work with seeking features...
+          onTimeUpdate={handleTimeUpdate}
+          onReady={() => console.log('onReady')}
           controls={false}
+          muted={state.muted}
           width="0px"
           height="0px"
         />
@@ -97,20 +158,31 @@ export function AudioPlayer({ url }) {
         <div className='audio-player-buttons-wrapper'>
           <div className='buttons-wrapper'>
             <button /* onClick={handleSeekBackward} */ className='prev-song'>{nextPrevSVG}</button>
-            <button onClick={togglePlay} className='play-pause'>{isPlaying ? pauseSVG : playSVG}</button>
+            <button onClick={togglePlay} className='play-pause'>{state.isPlaying ? pauseSVG : playSVG}</button>
             <button /* onClick={handleSeekForward} */ className='next-song'>{nextPrevSVG}</button>
           </div>
+
+
           <div className='timeline-wrapper'>
-            <p>0:00</p>
-            <input type="range" min={0} max={0.999999} step={"any"} value={played} onChange={(e) => handleSeekChange(parseFloat(e.target.value))} ></input>
-            <p>{getDuration(playerData.currentSong.durationMs)}</p>
+            <p>{getDuration('seconds', Math.floor(playerRef.current.currentTime))}</p>
+            <input
+              type="range"
+              min={0}
+              max={0.999999}
+              step={"any"}
+              value={state.played}
+              onMouseDown={handleSeekMouseDown}
+              onChange={handleSeekChange}
+              onMouseUp={handleSeekMouseUp}
+            ></input>
+            <p>{getDuration('seconds', playerRef.current.duration)}</p>
           </div>
         </div>
 
 
         <div className='audio-player-volume'>
-          <button onClick={toggleMute} className='mute-button'>{userVolume ? muteSVG : unmuteSVG}</button>
-          <input type="range" min={0} max={1} step={"any"} value={userVolume} onChange={(e) => handleInputVolume(parseFloat(e.target.value))}></input>
+          <button onClick={toggleMute} className='mute-button'>{state.muted ? unmuteSVG : muteSVG}</button>
+          <input type="range" min={0} max={1} step={"any"} value={state.volume} onChange={(e) => handleInputVolume(parseFloat(e.target.value))}></input>
         </div>
       </div>
     </div>

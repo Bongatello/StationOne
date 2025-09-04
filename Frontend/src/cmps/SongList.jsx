@@ -34,7 +34,7 @@ export function SongList ({song, index}){
                 <div className="song-thumbnail"><img src={song.cover}/></div>
                 <p className="song-title">{song.name}</p>
                 <p className="song-added">{timeAddedAgo()}</p>
-                <p className="song-length">{getDuration(song.durationMs)}</p>
+                <p className="song-length">{getDuration('ms', song.durationMs)}</p>
             </div>
         </div>
     )

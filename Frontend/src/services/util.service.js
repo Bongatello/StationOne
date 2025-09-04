@@ -66,8 +66,11 @@ export function debounce(func, wait) {
     }
 }
 
-export function getDuration(ms) {
-  const minutes = Math.floor(ms / 60000)
-  const seconds = Math.floor((ms % 60000) / 1000)
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+export function getDuration(type, value) {
+    var resolution = 1
+    if (type === 'ms') resolution = 1000
+    if (type === 'seconds') resolution = 1
+    const minutes = Math.floor(value / (60 * resolution))
+    const seconds = Math.floor((value % (60 * resolution)) / resolution)
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }

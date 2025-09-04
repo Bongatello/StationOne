@@ -58,6 +58,7 @@ async function processSpotifyQueryData(queryData) {
     return myQueryResults
   } catch (err) {
     console.log('Error in backend spotify.service, processSpotifyQueryData function')
+    SpotifyTemporaryToken = await getTempSpotifyToken()
     throw err
   }
 }
@@ -76,6 +77,7 @@ async function getSpotifyQueryData(q, limit) {
 
   //the response needs to be parsed and cleaned up from properties we dont need, so the next function does just that!
   const cleanQueryResults = await processSpotifyQueryData(unprocessedResults)
+  console.log('got cleanQueryResults: ', cleanQueryResults)
   return cleanQueryResults
 }
 
