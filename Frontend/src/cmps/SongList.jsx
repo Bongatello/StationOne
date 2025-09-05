@@ -1,13 +1,9 @@
 //to add functionality to each song like/remove from liked button
-//to add functionality to song index and turn it into the number into play button when hovered over
+import { togglePlayerState, getPlayingSong, setPlayingSong } from '../store/player.actions'
 import { getDuration } from "../services/util.service";
+import { findOnYoutube } from '../services/songs/songs.service.js';
 export function SongList ({song, index}){
-    function toDate(timestamp){
-        if(!timestamp) return 'no date specified'
-        const songDate = new Date(timestamp);
-        const dateString = songDate.toLocaleDateString()
-        return dateString;
-    }
+    
     function timeAddedAgo(){
         const currentTime = Date.now()
         const timeSinceAdded = currentTime - song.dateAdded
@@ -25,7 +21,9 @@ export function SongList ({song, index}){
     return(
         <div className="song-preview-container">
             <div className="song-preview">
-                <div className="song-index">
+                <div className="song-index" onClick={() => {setPlayingSong(song)
+                    findOnYoutube(song)
+                }}>
                     <svg width='16px' height='16px' viewBox="0 0 24 24">
                         <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606"/>
                     </svg>

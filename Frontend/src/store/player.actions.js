@@ -40,7 +40,6 @@ export async function setPlayerTime(time) {
     try{
         //const newTime = await playerService.setTimeUpdate(time)
         store.dispatch(getCmdSetPlayerTime(time))
-        console.log('PlayerActions: successfully updated player time: ', time)
     } catch (err) {
         console.log('PlayerActions: unable to set new player time: ', err)
         throw err

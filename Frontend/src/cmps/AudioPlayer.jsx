@@ -1,27 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { useSelector } from 'react-redux'
-import { getPlayingSong } from '../store/player.actions'
 import { getDuration } from '../services/util.service'
-import { togglePlayerState, setPlayerTime } from '../store/player.actions'
+import { togglePlayerState, setPlayerTime, getPlayingSong } from '../store/player.actions'
 
-export function AudioPlayer({ url }) {
+export function AudioPlayer() {
   const station = useSelector(state => state.stationsModule.stations)
   const playerData = useSelector(state => state.playerModule.player)
-
-  /* useEffect(() => {
-    getPlayingSong()
-  }, [playerData.currentSong.url]) */
 
   const initialState = {
     volume: 0.5,
     muted: false,
-    //played: 0,
-    //loaded: 0,
     seeking: false,
-    //loadedSeconds: 0,
-    //playedSeconds: 0,
-    //isPlaying: false,
   }
 
   const initialRef = {
@@ -29,10 +19,13 @@ export function AudioPlayer({ url }) {
     duration: 0
   }
 
-
   const [state, setState] = useState(initialState);
   const playerRef = useRef(initialRef)
 
+  useEffect(() => {
+    getPlayingSong()
+    console.log('loaded song: ', playerData.currentSong.url)
+  }, [playerData.currentSong._id])
 
   const svgProps = { height: "16px", width: "16px", viewBox: "0 0 16 16" }
 
@@ -62,8 +55,6 @@ export function AudioPlayer({ url }) {
 
   function togglePlay() {
     togglePlayerState(!playerData.isPlaying)
-    //setState(prevState => ({...prevState, isPlaying: !state.isPlaying}))
-    //console.log('now playing ', !playerData.isPlaying)
   }
   //-----------------------------------------------------------------------------------------------------------
   function setPlayerRef(player) {
@@ -71,36 +62,16 @@ export function AudioPlayer({ url }) {
     playerRef.current = player
   }
 
-  /* function handleProgress() {
-    const player = playerRef.current
-    // We only want to update time slider if we are not currently seeking
-    if (!player || state.seeking || !player.buffered?.length) return
-
-
-    setState(prevState => ({
-      ...prevState,
-      loadedSeconds: player.buffered?.end(player.buffered?.length - 1),
-      loaded: player.buffered?.end(player.buffered?.length - 1) / player.duration,
-    }))
-  }
- */
-
   function handleTimeUpdate() {
     const player = playerRef.current
     // We only want to update time slider if we are not currently seeking
     if (!player || state.seeking) return
 
-    console.log('onTimeUpdate', player.currentTime, playerRef.current.duration)
+    //console.log('onTimeUpdate', player.currentTime, playerRef.current.duration)
 
     if (!player.duration) return
     const played = player.currentTime/player.duration
     setPlayerTime(played)
-    /* setState(prevState => ({
-      ...prevState,
-      //playedSeconds: player.currentTime,
-      played: player.currentTime / player.duration,
-    })) */
-    console.log('setState: ', state.played, 'setPlayerTime: ', playerData.currentTime )
   }
 
   function handleSeekMouseDown() {
@@ -110,7 +81,6 @@ export function AudioPlayer({ url }) {
   function handleSeekChange(e) {
     const inputTarget = e.target
     setPlayerTime(parseFloat(inputTarget.value))
-    //setState(prevState => ({...prevState, played: parseFloat(inputTarget.value)}))
   }
 
   function handleSeekMouseUp(e) {
@@ -137,7 +107,6 @@ export function AudioPlayer({ url }) {
           src={playerData.currentSong.url}
           playing={playerData.isPlaying}
           volume={state.volume}
-          //onProgress={handleProgress}//still doesnt work with seeking features...
           onTimeUpdate={handleTimeUpdate}
           onReady={() => console.log('onReady')}
           controls={false}
@@ -151,11 +120,11 @@ export function AudioPlayer({ url }) {
       <div className='audio-player-wrapper'>
 
         <div className='song-details-wrapper'>
-          <img src={playerData.currentSong.images[0].url} />
+          <img src={playerData.currentSong.cover} />
 
           <div className='title-artists'>
-            <h1>{playerData.currentSong.songName}</h1>
-            <p>{playerData.currentSong.artists.join('')}</p>
+            <h1>{playerData.currentSong.name}</h1>
+            <p>{playerData.currentSong.artists}</p>
           </div>
         </div>
 
@@ -163,7 +132,7 @@ export function AudioPlayer({ url }) {
         <div className='audio-player-buttons-wrapper'>
           <div className='buttons-wrapper'>
             <button /* onClick={handleSeekBackward} */ className='prev-song'>{nextPrevSVG}</button>
-            <button onClick={togglePlay} className='play-pause'>{playerData.isPlaying ? pauseSVG : playSVG}</button>
+            <button onClick={() => togglePlayerState(!playerData.isPlaying)} className='play-pause'>{playerData.isPlaying ? pauseSVG : playSVG}</button>
             <button /* onClick={handleSeekForward} */ className='next-song'>{nextPrevSVG}</button>
           </div>
 

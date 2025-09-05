@@ -1,4 +1,5 @@
 import axios from "axios"
+import { setPlayingSong } from "../../store/player.actions"
 
 export const songsService = {
     getYoutubeId,
@@ -9,6 +10,7 @@ const BASE_URL = "//localhost:3000/api/songs"
 
 async function getYoutubeId(spotifyId) {
     try {
+        console.log('looking for spotifyid: ', spotifyId)
         const youtubeId = await axios.get(`${BASE_URL}/${spotifyId}`)
         console.log('songs.service: ', youtubeId.data)
         return youtubeId.data
@@ -27,4 +29,25 @@ async function addSong(song) {
         console.log('SongsService: There was an error adding the requested song, ', err)
         throw err
     }
+}
+
+export async function findOnYoutube(song) { //upon removing notes, add spotifySongId to function dependencies
+    const spotifySongId = song._id
+    var firstVideoId = await getYoutubeId(spotifySongId)
+    if (firstVideoId) console.log('no -100 credits this time :)')
+    if (!firstVideoId) {
+        const inputData = song.artists.join('') + '-' + song.songName
+        const ytApiSearchData = await getYoutubeSong(inputData)
+        console.log('Google Api Used, -100 credits :(')
+        firstVideoId = ytApiSearchData.items[0].id.videoId
+        const songToStore = {
+            spotifySongId: spotifySongId,
+            youtubeSongId: firstVideoId
+        }
+        await addSong(songToStore) // this function should add both ids under the same object in mongo, meaning next time we ask for the youtube id, we can check if there is a spotify id matching to the required song that the user wants to play
+    }
+    const ytSongUrl = `https://www.youtube.com/watch?v=${firstVideoId}`
+    song.url = ytSongUrl
+    setPlayingSong(song)
+    console.log('Now playing: ', song)
 }

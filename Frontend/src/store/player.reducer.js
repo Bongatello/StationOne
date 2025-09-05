@@ -66,7 +66,6 @@ export function playerReducer(state = initialState, action = {}) {
                 ...state.player,
                 currentTime: playerTime
             }
-            console.log('player reducer currentTime: ', playerTime)
 
             newState={...state, player: newPlayer}
             break

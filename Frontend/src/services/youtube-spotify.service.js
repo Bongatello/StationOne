@@ -29,19 +29,3 @@ export async function queryByText(text) {
 
 
 
-
-
-export async function oldGetYoutubeSong (inputData) {
-    
-    const searchParams = {
-        q: inputData,
-        type: 'video',
-        part: 'id',
-        key: API_KEY,
-    }
-
-
-    const res = await axios.get(`https://www.googleapis.com/youtube/v3/search?key=${searchParams.key}&q=${searchParams.q}&type=${searchParams.type}&part=${searchParams.part}`)
-
-    return res.data
-}

@@ -7,12 +7,15 @@ import { useSelector } from 'react-redux'
 import { loadUser, addLikedStation, removeLikedStation } from '../store/user.actions.js'
 import { updateDefaultAndLikedList } from '../store/stations.actions.js'
 import { StationSongQuery } from '../cmps/StationSongQuery.jsx'
+import { togglePlayerState, getPlayingSong, setPlayingSong } from '../store/player.actions'
 
 export function StationPreview() {
+	const playerData = useSelector(state => state.playerModule.player)
 	const [station, setStation] = useState(null)
 	const params = useParams()
 	const userData = useSelector(state => state.userModule.user)
 	const [songsLength, setSongsLength] = useState(null)
+	
 
 	useEffect(() => {
 
@@ -45,7 +48,7 @@ export function StationPreview() {
 		}
 	}
 
-	const stopButton = <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" />
+	const pauseButton = <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" />
 	const playButton = <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" />
 
 	const addToLibrary = <svg height="32px" width="32px" viewBox="0 0 24 24" className='add-to-library'><path d="M11.999 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18m-11 9c0-6.075 4.925-11 11-11s11 4.925 11 11-4.925 11-11 11-11-4.925-11-11" /><path d="M17.999 12a1 1 0 0 1-1 1h-4v4a1 1 0 1 1-2 0v-4h-4a1 1 0 1 1 0-2h4V7a1 1 0 1 1 2 0v4h4a1 1 0 0 1 1 1" /></svg>
@@ -81,11 +84,6 @@ export function StationPreview() {
 	}
 
 
-	function isPlayPause() {
-		if (playerService.isPlaying === true) return { stopButton }
-		return { playButton }
-	}
-
 	if (!station) {
 		return <p>Loading station...</p>
 	}
@@ -115,9 +113,9 @@ export function StationPreview() {
 			{station.songs.length > 0 && // if station includes songs, the user will see the actions and the song list, else will see the next option
 				<div className="station-actions-songs-wrapper">
 					<div className="station-actions">
-						<div className="play-pause-button-wrapper action-wrapper">
+						<div className="play-pause-button-wrapper action-wrapper" onClick={() => togglePlayerState(!playerData.isPlaying)}>
 							<svg height="24px" width="24px" viewBox="0 0 24 24" className='play-pause-button'>
-								{playButton}
+								{playerData.isPlaying ? pauseButton : playButton}
 							</svg>
 						</div>
 
