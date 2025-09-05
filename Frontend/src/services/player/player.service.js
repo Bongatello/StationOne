@@ -41,6 +41,23 @@ async function getCurrentSong(){
 
 }
 
+
+async function setTimeUpdate(){
+    try{
+
+    } catch (err) {
+        
+    }
+}
+
+async function setToggleState(){
+    try{
+
+    } catch (err) {
+
+    }
+}
+
 /*
 
 function toggleMute() {

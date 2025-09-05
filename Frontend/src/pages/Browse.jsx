@@ -59,9 +59,6 @@ export function Browse() {
         <div className="browse-page">
             <h1>Browse all</h1>
             <p>Here I will add some genres from Youtube and Spotify API</p>
-            <div className='music-player'>
-                <AudioPlayer url={playerData.currentSong} />
-            </div>
 
             <p>my youtube api key is: {import.meta.env.VITE_YOUTUBE_DATA_API_KEY}</p>
 

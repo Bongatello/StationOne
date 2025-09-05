@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player'
 import { useSelector } from 'react-redux'
 import { getPlayingSong } from '../store/player.actions'
 import { getDuration } from '../services/util.service'
+import { togglePlayerState, setPlayerTime } from '../store/player.actions'
 
 export function AudioPlayer({ url }) {
   const station = useSelector(state => state.stationsModule.stations)
@@ -15,12 +16,12 @@ export function AudioPlayer({ url }) {
   const initialState = {
     volume: 0.5,
     muted: false,
-    played: 0,
-    loaded: 0,
+    //played: 0,
+    //loaded: 0,
     seeking: false,
-    loadedSeconds: 0,
-    playedSeconds: 0,
-    isPlaying: false,
+    //loadedSeconds: 0,
+    //playedSeconds: 0,
+    //isPlaying: false,
   }
 
   const initialRef = {
@@ -32,7 +33,7 @@ export function AudioPlayer({ url }) {
   const [state, setState] = useState(initialState);
   const playerRef = useRef(initialRef)
 
-  
+
   const svgProps = { height: "16px", width: "16px", viewBox: "0 0 16 16" }
 
   const nextPrevSVG = <svg {...svgProps}><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7z" /></svg>
@@ -59,9 +60,10 @@ export function AudioPlayer({ url }) {
   }
 
 
-  const togglePlay = () => {
-    setState(prevState => ({...prevState, isPlaying: !state.isPlaying}))
-    console.log('now playing ', url)
+  function togglePlay() {
+    togglePlayerState(!playerData.isPlaying)
+    //setState(prevState => ({...prevState, isPlaying: !state.isPlaying}))
+    //console.log('now playing ', !playerData.isPlaying)
   }
   //-----------------------------------------------------------------------------------------------------------
   function setPlayerRef(player) {
@@ -69,7 +71,7 @@ export function AudioPlayer({ url }) {
     playerRef.current = player
   }
 
-  function handleProgress() {
+  /* function handleProgress() {
     const player = playerRef.current
     // We only want to update time slider if we are not currently seeking
     if (!player || state.seeking || !player.buffered?.length) return
@@ -81,7 +83,7 @@ export function AudioPlayer({ url }) {
       loaded: player.buffered?.end(player.buffered?.length - 1) / player.duration,
     }))
   }
-
+ */
 
   function handleTimeUpdate() {
     const player = playerRef.current
@@ -91,12 +93,14 @@ export function AudioPlayer({ url }) {
     console.log('onTimeUpdate', player.currentTime, playerRef.current.duration)
 
     if (!player.duration) return
-
-    setState(prevState => ({
+    const played = player.currentTime/player.duration
+    setPlayerTime(played)
+    /* setState(prevState => ({
       ...prevState,
-      playedSeconds: player.currentTime,
+      //playedSeconds: player.currentTime,
       played: player.currentTime / player.duration,
-    }))
+    })) */
+    console.log('setState: ', state.played, 'setPlayerTime: ', playerData.currentTime )
   }
 
   function handleSeekMouseDown() {
@@ -105,7 +109,8 @@ export function AudioPlayer({ url }) {
 
   function handleSeekChange(e) {
     const inputTarget = e.target
-    setState(prevState => ({...prevState, played: parseFloat(inputTarget.value)}))
+    setPlayerTime(parseFloat(inputTarget.value))
+    //setState(prevState => ({...prevState, played: parseFloat(inputTarget.value)}))
   }
 
   function handleSeekMouseUp(e) {
@@ -130,9 +135,9 @@ export function AudioPlayer({ url }) {
         <ReactPlayer
           ref={setPlayerRef}
           src={playerData.currentSong.url}
-          playing={state.isPlaying}
+          playing={playerData.isPlaying}
           volume={state.volume}
-          onProgress={handleProgress}//still doesnt work with seeking features...
+          //onProgress={handleProgress}//still doesnt work with seeking features...
           onTimeUpdate={handleTimeUpdate}
           onReady={() => console.log('onReady')}
           controls={false}
@@ -158,7 +163,7 @@ export function AudioPlayer({ url }) {
         <div className='audio-player-buttons-wrapper'>
           <div className='buttons-wrapper'>
             <button /* onClick={handleSeekBackward} */ className='prev-song'>{nextPrevSVG}</button>
-            <button onClick={togglePlay} className='play-pause'>{state.isPlaying ? pauseSVG : playSVG}</button>
+            <button onClick={togglePlay} className='play-pause'>{playerData.isPlaying ? pauseSVG : playSVG}</button>
             <button /* onClick={handleSeekForward} */ className='next-song'>{nextPrevSVG}</button>
           </div>
 
@@ -170,7 +175,7 @@ export function AudioPlayer({ url }) {
               min={0}
               max={0.999999}
               step={"any"}
-              value={state.played}
+              value={playerData.currentTime}
               onMouseDown={handleSeekMouseDown}
               onChange={handleSeekChange}
               onMouseUp={handleSeekMouseUp}

@@ -1,6 +1,5 @@
 
 
-
 var SpotifyTemporaryToken = undefined
 export const spotifyYoutubeService = {
   getTempSpotifyToken,
@@ -32,12 +31,12 @@ async function getTempSpotifyToken() {
   return data.access_token
 }
 
-async function processSpotifyQueryData(queryData) {
+async function processSpotifyQueryData(queryData, q, limit) {
   try {
     const queryResults = await queryData.json()
     const myQueryResults = []
 
-    if (!queryResults) throw 'spotify-service: processSpotifyQueryData: Error:No queryData provided'
+    if (!queryResults) getSpotifyQueryData(q, limit)
     queryResults.tracks.items.forEach(item => {
       const artistNames = item.artists.map(artist => artist.name)
       const newItem = {
@@ -74,9 +73,9 @@ async function getSpotifyQueryData(q, limit) {
       Authorization: `Bearer ${SpotifyTemporaryToken}`
     }
   })
-
+  
   //the response needs to be parsed and cleaned up from properties we dont need, so the next function does just that!
-  const cleanQueryResults = await processSpotifyQueryData(unprocessedResults)
+  const cleanQueryResults = await processSpotifyQueryData(unprocessedResults, q, limit)
   console.log('got cleanQueryResults: ', cleanQueryResults)
   return cleanQueryResults
 }
