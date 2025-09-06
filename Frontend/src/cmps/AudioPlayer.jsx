@@ -5,7 +5,7 @@ import { getDuration } from '../services/util.service'
 import { togglePlayerState, setPlayerTime, getPlayingSong } from '../store/player.actions'
 
 export function AudioPlayer() {
-  const station = useSelector(state => state.stationsModule.stations)
+  const station = useSelector(state => state.stationModule.stations)
   const playerData = useSelector(state => state.playerModule.player)
 
   const initialState = {

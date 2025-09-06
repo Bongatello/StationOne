@@ -83,6 +83,8 @@ async function updateStation(station) {
             {
                 $set: { ...stationUpdates }
             })
+        const editedStation = await collection.findOne({ _id: ObjectId.createFromHexString(_id) })
+        return editedStation
     } catch (err) {
         console.log('StationService Error: Cannot update specified station')
         throw err

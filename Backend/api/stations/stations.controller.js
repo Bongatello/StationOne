@@ -19,8 +19,8 @@ export async function createStation (req, res) {
 
 export async function editStation (req,res) {
   const station = req.body
-  await stationsService.updateStation(station)
-  res.send('Updated Station')
+  const editedStation = await stationsService.updateStation(station)
+  res.send(editedStation)
 }
 
 export async function removeStation (req, res) {

@@ -1,23 +1,17 @@
-export const INCREMENT = 'INCREMENT'
-export const DECREMENT = 'DECREMENT'
-export const CHANGE_COUNT = 'CHANGE_COUNT'
-export const SET_USER = 'SET_USER'
-export const SET_WATCHED_USER = 'SET_WATCHED_USER'
-export const REMOVE_USER = 'REMOVE_USER'
-export const SET_USERS = 'SET_USERS'
-export const SET_SCORE = 'SET_SCORE'
+export const LOAD_USER = 'LOAD_USER'
 export const ADD_LIKED_STATION = 'ADD_LIKED_STATION'
 export const REMOVE_LIKED_STATION = 'REMOVE_LIKED_STATION'
+//export const REMOVE_USER = 'REMOVE_USER'
+//export const SET_USERS = 'SET_USERS'
+
 
 const initialState = {
-    count: 10,
-    users: [],
-    watchedUser : null,
     user: {
-        pfp: 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg',
-        likedSongs: ['v1w2x'],
+        name: '',
+        image: "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_960_720.png",
+        likedSongs: [],
         likedStations: [],
-        recentStations: ['b2c3d'],
+        recentStations: [],
         createdStationsCount: 1,
     }
 }
@@ -25,7 +19,7 @@ const initialState = {
 export function userReducer(state = initialState, action) {
     var newState = state
     switch (action.type) {
-        case SET_USER:
+        case LOAD_USER:
             newState = { ...state, user: action.user }
             break
 

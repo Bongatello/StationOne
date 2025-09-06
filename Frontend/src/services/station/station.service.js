@@ -36,19 +36,12 @@ function query(filterBy = {}) {
 
 async function loadStations(){
   const storedStations = await axios.get(BASE_URL)
-
   return storedStations.data
-  /*   let storedStations = loadFromStorage(STORAGE_KEY)
-    if (!storedStations || !storedStations.length) {
-        saveToStorage(STORAGE_KEY, stations)
-        storedStations = stations
-    }
-    return storedStations */
 }
 
 async function get(stationId){
     const station = await axios.get(`${BASE_URL}/${stationId}`)
-    console.log('got station: ', station)
+    console.log('got station: ', station.data)
     return station.data
 }
 
@@ -90,9 +83,9 @@ async function editStation(station) {
   station.songs.unshift(...stationToEdit.songs)
 
   console.log('Station Service: Trying to add song to station')
-  await axios.put(BASE_URL, station)
+  const editedStation = await axios.put(BASE_URL, station)
   console.log('Station Service: Successfully added song to station')
-  return combineUserDefaultStations
+  return editedStation.data
 }
 
 

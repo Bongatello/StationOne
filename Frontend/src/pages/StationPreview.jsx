@@ -1,90 +1,60 @@
 import React, { useState, useEffect } from 'react'
-import { SongList } from '../cmps/SongList.jsx'
-import { stationService } from "../services/station/station.service.js"
 import { useParams } from 'react-router-dom'
-import { userService } from '../services/user/user.service.js'
 import { useSelector } from 'react-redux'
-import { loadUser, addLikedStation, removeLikedStation } from '../store/user.actions.js'
-import { updateDefaultAndLikedList } from '../store/stations.actions.js'
+import { SongList } from '../cmps/SongList.jsx'
 import { StationSongQuery } from '../cmps/StationSongQuery.jsx'
+import { loadUser, addLikedStation, removeLikedStation } from '../store/user.actions.js'
+import { getStationById, getStations } from '../store/station.actions.js'
 import { togglePlayerState, getPlayingSong, setPlayingSong } from '../store/player.actions'
 
 export function StationPreview() {
+
 	const playerData = useSelector(state => state.playerModule.player)
-	const [station, setStation] = useState(null)
-	const params = useParams()
 	const userData = useSelector(state => state.userModule.user)
-	const [songsLength, setSongsLength] = useState(null)
-	
+	const station = useSelector(state => state.stationModule.selectedStation)
+	const params = useParams()
 
-	useEffect(() => {
-
-		loadStation()
-		loadUser()
-
-	}, [params, songsLength])
-
-	async function loadStation() {
-		try {
-			console.log('Trying to get station: ', params.stationId)
-			const stationToSet = await stationService.get(params.stationId)
-			console.log('Got station')
-			setStation(stationToSet)
-			console.log('station set: ', stationToSet)
-		} catch (err) {
-			console.log('Error getting station, ', err)
-			throw err
-		}
-
-
-	}
-
-	async function getSongsLength() {
-		const idx = userData.likedStations.indexOf(station => station._id === params.stationId)
-		if (idx>0) {
-			const currentSongsLength = userData.likedStations[idx].songs.length
-			setSongsLength(currentSongsLength)
-			console.log('New songs length!')
-		}
-	}
-
+	//icons
 	const pauseButton = <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" />
 	const playButton = <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" />
-
 	const addToLibrary = <svg height="32px" width="32px" viewBox="0 0 24 24" className='add-to-library'><path d="M11.999 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18m-11 9c0-6.075 4.925-11 11-11s11 4.925 11 11-4.925 11-11 11-11-4.925-11-11" /><path d="M17.999 12a1 1 0 0 1-1 1h-4v4a1 1 0 1 1-2 0v-4h-4a1 1 0 1 1 0-2h4V7a1 1 0 1 1 2 0v4h4a1 1 0 0 1 1 1" /></svg>
 	const removeFromLibrary = <svg height="29.35px" width="29.35px" viewBox="0 0 24 24" className='remove-from-library'><path d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12m16.398-2.38a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308z" /></svg>
 
 
+	useEffect(() => {
+		loadUser('68bb2208d5ea1ed6ddb82b4a')
+		getStationById(params.stationId)
+	}, [params, station.songs.length])
+
+	
 
 	function addRemoveFromList() {
-		const likedStations = userData
-
+		const likedStations = userData //probably needs to be edited due to mongoDB and userRedux changes
 		const index = likedStations.likedStations.findIndex(likedStation => likedStation._id === station._id)
-
 		if (index === -1) {
-			addLikedStation(station)
+			//addLikedStation(station) //probably needs to be edited due to mongoDB and userRedux changes
 			console.log('added station ', station._id, ' to liked list')
 		}
-
 		else {
-			removeLikedStation(station)
+			//removeLikedStation(station) //probably needs to be edited due to mongoDB and userRedux changes
 			console.log('removed station ', station._id, ' from liked list')
 		}
-		updateDefaultAndLikedList()
-		loadStation()
 	}
 
+	function getStationDuration(){
+		const stationDuration = 0
 
-	function isLikedByUser(targetID) {
+
+	}
+
+	function isLikedByUser(targetID) { //probably needs to be edited due to mongoDB and userRedux changes
 		const likedByUser = userData
-		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) {
-			return addToLibrary
-		}
+		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return addToLibrary
 		return removeFromLibrary
 	}
 
 
-	if (!station) {
+	if (!station.name) {
 		return <p>Loading station...</p>
 	}
 	return (
@@ -165,7 +135,7 @@ export function StationPreview() {
 					</div>
 				</div>
 			}
-			<StationSongQuery station={station} setStation={setStation} />
+			<StationSongQuery />
 		</div>
 	)
 }

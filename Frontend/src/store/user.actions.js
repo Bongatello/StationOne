@@ -2,7 +2,7 @@ import { userService } from '../services/user/user.service.js'
 
 import { store } from '../store/store'
 
-import { SET_USER, REMOVE_LIKED_STATION, ADD_LIKED_STATION } from './user.reducer'
+import { LOAD_USER, REMOVE_LIKED_STATION, ADD_LIKED_STATION } from './user.reducer'
 
 //export const userService = {
 //    addStation,
@@ -12,10 +12,10 @@ import { SET_USER, REMOVE_LIKED_STATION, ADD_LIKED_STATION } from './user.reduce
 //}
 
 
-export async function loadUser() {
+export async function loadUser(userId) {
     try {
-        const user = await userService.loadUserData()
-        store.dispatch(getCmdSetUser(user))
+        const user = await userService.loadUserData(userId)
+        store.dispatch(getCmdLoadUser(user))
     }
     catch (err) {
         console.log('UserActions: unable to load user', err)
@@ -24,9 +24,9 @@ export async function loadUser() {
 }
 
 
-export async function addLikedStation(station) {
+export async function addLikedStation(userId, station) {
     try {
-        await userService.addToLikedStations(station)
+        await userService.addToLikedStations(userId, station)
         store.dispatch(getCmdAddLikedStation(station))
     }
     catch (err) {
@@ -49,9 +49,9 @@ export async function removeLikedStation(station) {
 
 
 // Command Creators:
-function getCmdSetUser(user) {
+function getCmdLoadUser(user) {
     return {
-        type: SET_USER,
+        type: LOAD_USER,
         user
     }
 }

@@ -2,7 +2,7 @@ import { getYoutubeSong, queryByText } from '../services/youtube-spotify.service
 import React, { useRef, useState, useEffect } from 'react'
 import { StationQuerySongList } from './StationQuerySongList.jsx'
 
-export function StationSongQuery(station, setStation) {
+export function StationSongQuery() {
     const spotifyInputQuery = useRef('')
     const [querySongs, setQuerySongs] = useState([])
 

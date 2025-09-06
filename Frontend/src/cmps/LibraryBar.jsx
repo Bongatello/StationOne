@@ -6,30 +6,19 @@ import { stationService } from '../services/station/station.service.js'
 import { userService } from '../services/user/user.service.js'
 import { StationsLibraryList } from './StationsLibraryList.jsx'
 import { loadUser } from '../store/user.actions.js'
-//import { StationList } from './StationList.jsx'
+
 
 export function LibraryBar() {
-
-	//const [userData, setUserData] = useState(null)
-	
 	const userData = useSelector(state => state.userModule.user)
-
-	//function loadUserData(){
-	//	const data = userService.loadUserData()
-    //    setUserData(data.likedStations)
-	//}
 
 
 	useEffect(() => {
-        //loadUserData()
-		loadUser()
+		loadUser('68bb2208d5ea1ed6ddb82b4a')
 		console.log('re-render caused!')
 	}, [userData.likedStations.length])
 
 	async function addNewUserStation(){
 		await userService.addStation()
-		await loadUser()
-		await stationService.combineUserDefaultStations()
 	}
 
     
@@ -57,8 +46,3 @@ export function LibraryBar() {
         </div>
     )
 }
-
-//            <NavLink to={`/StationOne/station/${station._id}`} className="test-station">
-//<img src={newStation.img}/>
-//<p>{newStation.name}</p>
-//</NavLink>

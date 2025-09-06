@@ -1,5 +1,6 @@
 import { stationService } from "../services/station/station.service.js"
 import { useParams } from "react-router"
+import { getStations, editStation } from "../store/station.actions.js"
 
 export function StationQuerySongList({song}){
     const params = useParams()
@@ -21,7 +22,7 @@ export function StationQuerySongList({song}){
             _id: params.stationId,
             songs: songs
         }
-        await stationService.editStation(editedStation)
+        await editStation(editedStation)
         return console.log('Added song to station')
     }
     return(

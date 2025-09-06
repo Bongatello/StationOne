@@ -1,18 +1,16 @@
-import { Link } from "react-router-dom";
-import { stationService } from "../services/station/station.service.js"
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
 import { StationsHomeList } from "../cmps/StationsHomeList.jsx"
-import { loadFromStorage } from "../services/util.service.js";
 import { useSelector } from 'react-redux'
-import { setStations } from "../store/stations.actions.js";
+import { getStations } from "../store/station.actions.js"
 
 export function HomePage() {
     
-    const stations = useSelector(state => state.stationsModule.stations)
+    const stations = useSelector(state => state.stationModule.stations)
 
     useEffect(() => {
 
-        setStations()
+        getStations()
 
     }, [])
 

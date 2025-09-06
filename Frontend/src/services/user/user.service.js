@@ -13,18 +13,8 @@ var axios = Axios.create({
     withCredentials: true,
 })
 
-const BASE_URL = '//localhost:3000/api/station'
-
-
+const BASE_URL = '//localhost:3000/api/user'
 const STORAGE_KEY = "userDB"
-
-export const user = {
-    pfp: 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg',
-    likedSongs: ['v1w2x'],
-    likedStations: [],
-    recentStations: ['b2c3d'],
-    createdStationsCount: 0,
-}
 
 async function getEmptyStation(index){
     const newStation = {
@@ -57,41 +47,22 @@ async function addStation() {
 }
 
 
-async function loadUserData() {
-	 let storedUser = loadFromStorage(STORAGE_KEY)
-
-	
-	if (!storedUser) {
-		storedUser = { ...user }
-
-    const stations = await axios.get(BASE_URL)
-    if (!stations) stations = []
-
-    storedUser.likedStations = stations.data
-		saveToStorage(STORAGE_KEY, storedUser)
-	}
-
-	return storedUser 
-
-  const stations = await axios.get(BASE_URL)
-
-  if (!stations) stations = []
-  
-  return stations.data
-
-
+async function loadUserData(userId) {
+  const user = await axios.get(`${BASE_URL}/${userId}`)
+  return user.data
 }
 
 
-function addToLikedStations(station) {
+async function addToLikedStations(userId, station) {
+    const {_id, name, addedBy, thumbnail} = station
+    const miniStation = {_id, name, addedBy, thumbnail}
 
-    const storedUser = loadFromStorage(STORAGE_KEY)
+    const userToEdit = {}
+    userToEdit._id = userId
+    userToEdit.likedStations.unshift(miniStation)
 
-    storedUser.likedStations.unshift(station)
-
-	saveToStorage(STORAGE_KEY, storedUser)
-	return storedUser
-
+    await axios.put(BASE_URL, userToEdit)
+	return 'Station added to user liked stations!'
 }
 
 function removeFromLikedStations(station) {
