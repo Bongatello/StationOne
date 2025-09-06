@@ -14,7 +14,6 @@ export function LibraryBar() {
 
 	useEffect(() => {
 		loadUser('68bb2208d5ea1ed6ddb82b4a')
-		console.log('re-render caused!')
 	}, [userData.likedStations.length])
 
 	async function addNewUserStation(){

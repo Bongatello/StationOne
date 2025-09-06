@@ -4,14 +4,6 @@ import { store } from './store.js'
 
 import { EDIT_STATION, GET_STATION_BY_ID, GET_STATIONS, UPDATE_STATION_LIST } from './station.reducer.js'
 
-//export const stationService = {
-//    query,
-//    get,
-//    addSong,
-//    loadStations,
-//    combineUserDefaultStations,
-//}
-
 export async function getStations() {
     try {
         const stations = await stationService.loadStations()

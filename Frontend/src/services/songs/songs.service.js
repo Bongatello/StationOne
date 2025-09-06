@@ -1,5 +1,12 @@
-import axios from "axios"
+import Axios from 'axios'
 import { setPlayingSong } from "../../store/player.actions"
+
+
+var axios = Axios.create({
+    withCredentials: true,
+})
+
+const API_KEY = import.meta.env.VITE_YOUTUBE_DATA_API_KEY //my youtube api key is inside the .env file which is included in .gitignore
 
 export const songsService = {
     getYoutubeId,
@@ -10,9 +17,7 @@ const BASE_URL = "//localhost:3000/api/songs"
 
 async function getYoutubeId(spotifyId) {
     try {
-        console.log('looking for spotifyid: ', spotifyId)
         const youtubeId = await axios.get(`${BASE_URL}/${spotifyId}`)
-        console.log('songs.service: ', youtubeId.data)
         return youtubeId.data
     } catch (err) {
         console.log('SongsService: There was an error finding the requested song, ', err)
@@ -22,7 +27,6 @@ async function getYoutubeId(spotifyId) {
 
 async function addSong(song) {
     try {
-        console.log('debugging: ', song)
         await axios.post(BASE_URL, song)
         return console.log('Successfully added a song!')
     } catch (err) {
@@ -36,7 +40,8 @@ export async function findOnYoutube(song) { //upon removing notes, add spotifySo
     var firstVideoId = await getYoutubeId(spotifySongId)
     if (firstVideoId) console.log('no -100 credits this time :)')
     if (!firstVideoId) {
-        const inputData = song.artists.join('') + '-' + song.songName
+        const inputData = song.artists + '-' + song.name + ' song'
+        console.log('Looking Youtube For: ', inputData)
         const ytApiSearchData = await getYoutubeSong(inputData)
         console.log('Google Api Used, -100 credits :(')
         firstVideoId = ytApiSearchData.items[0].id.videoId
@@ -50,4 +55,15 @@ export async function findOnYoutube(song) { //upon removing notes, add spotifySo
     song.url = ytSongUrl
     setPlayingSong(song)
     console.log('Now playing: ', song)
+}
+
+export async function getYoutubeSong(inputData) {
+    const res = await fetch(`http://localhost:3000/api/youtube-search?q=${encodeURIComponent(inputData)}`);
+    const data = await res.json();
+    return data;
+}
+
+export async function queryByText(text) {
+    const res = await axios.get(`http://localhost:3000/api/get-spotify-songs`, {params: {q: text}})
+    return res.data
 }

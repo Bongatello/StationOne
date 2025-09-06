@@ -6,12 +6,16 @@ export const TOGGLE_PLAY_PLAYER = 'TOGGLE_PLAY_PLAYER'
 export const SET_PLAYER_TIME = 'SET_PLAYER_TIME'
 export const GET_PLAYER_TIME = 'GET_PLAYER_TIME' //maybe ill need that, unsure
 export const GET_PLAYER_STATE = 'GET_PLAYER_STATE'
+export const ON_NEXT_SONG = 'ON_NEXT_SONG'
+export const ON_PREV_SONG = 'ON_PREV_SONG'
+export const SET_CURRENT_STATION = 'SET_CURRENT_STATION'
 
 const song = {
     url: null
 }
 
 const initialState = {
+    station: {},
     player: {
         currentStation: {},
         isPlaying: false,
@@ -19,7 +23,7 @@ const initialState = {
         currentSong: {
             url: null
         },
-        previousSong: song,
+        prevSong: song,
         nextSong: song
     }
 }
@@ -33,8 +37,6 @@ export function playerReducer(state = initialState, action = {}) {
                 ...state.player,
                 currentSong: nowPlaying
             }
-            console.log('reducer: ', newPlayer)
-
             newState = { ...state, player: newPlayer }
             break
 
@@ -44,8 +46,6 @@ export function playerReducer(state = initialState, action = {}) {
                 ...state.player,
                 currentSong: nowPlaying
             }
-            console.log('reducer: ', newPlayer)
-
             newState = { ...state, player: newPlayer }
             break
         
@@ -55,8 +55,6 @@ export function playerReducer(state = initialState, action = {}) {
                 ...state.player,
                 isPlaying: currentState
             }
-            console.log('player reducer isPlaying: ', currentState)
-
             newState = {...state, player: newPlayer}
             break
 
@@ -66,7 +64,53 @@ export function playerReducer(state = initialState, action = {}) {
                 ...state.player,
                 currentTime: playerTime
             }
+            newState={...state, player: newPlayer}
+            break
+        
+        case SET_CURRENT_STATION:
+            var currentStation = action.station
+            var newState = {
+                ...state,
+                station: currentStation
+            }
+            break
 
+/*         case ON_NEXT_SONG:
+            var nextSong = action.nextSong
+            var newPlayer = {
+                ...state.player,
+                nextSong: nextSong,
+                currentSong: state.player.nextSong,
+                prevSong: state.player.currentSong
+            }
+            newState={state, player: newPlayer}
+            break */
+            case ON_NEXT_SONG:
+            var nextSong = action.nextSong
+            var newPlayer = {
+                ...state.player,
+                currentSong: nextSong
+            }
+            newState={...state, player: newPlayer}
+            break
+        
+/*         case ON_PREV_SONG:
+            var prevSong = action.prevSong
+            var newPlayer = {
+                ...state.player,
+                nextSong: state.player.currentSong,
+                currentSong: state.player.prevSong,
+                prevSong: prevSong
+            }
+            newState={state, player: newPlayer}
+            break */
+
+        case ON_PREV_SONG:
+            var prevSong = action.prevSong
+            var newPlayer = {
+                ...state.player,
+                currentSong: prevSong,
+            }
             newState={...state, player: newPlayer}
             break
 

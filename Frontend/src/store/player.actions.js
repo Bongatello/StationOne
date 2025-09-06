@@ -1,6 +1,7 @@
 import { store } from './store.js'
 import { playerService } from '../services/player/player.service.js'
-import { SET_CURRENT_SONG, GET_CURRENT_SONG, TOGGLE_PLAY_PLAYER, SET_PLAYER_TIME } from './player.reducer.js'
+import { SET_CURRENT_SONG, GET_CURRENT_SONG, TOGGLE_PLAY_PLAYER, SET_PLAYER_TIME, ON_NEXT_SONG, ON_PREV_SONG, SET_CURRENT_STATION } from './player.reducer.js'
+import { stationService } from '../services/station/station.service.js'
 
 
 export async function getPlayingSong() {
@@ -38,7 +39,6 @@ export async function togglePlayerState(newState) {
 
 export async function setPlayerTime(time) {
     try{
-        //const newTime = await playerService.setTimeUpdate(time)
         store.dispatch(getCmdSetPlayerTime(time))
     } catch (err) {
         console.log('PlayerActions: unable to set new player time: ', err)
@@ -46,6 +46,36 @@ export async function setPlayerTime(time) {
     }
 }
 
+export async function onNextSong(station, currSongId) {
+    try{
+        const nextSong = await playerService.getPrevNextSong('next', station, currSongId)
+        store.dispatch(getCmdOnNextSong(nextSong))
+    } catch (err){
+        console.log('PlayerActions: unable to get next song: ', err)
+        throw err
+    }
+}
+
+export async function onPrevSong(station, currSongId) {
+    try{
+        const prevSong = await playerService.getPrevNextSong('prev', station, currSongId)
+        store.dispatch(getCmdOnPrevSong(prevSong))
+    } catch (err){
+        console.log('PlayerActions: unable to get previous song: ', err)
+        throw err
+    }
+}
+
+export async function setPlayerStation(stationId) {
+    try{
+        const station = await stationService.get(stationId)
+        console.log('TRIGGERED SET PLAYER STATION!!! -------------------------------------')
+        store.dispatch(getCmdSetPlayerStation(station))
+    } catch(err) {
+        console.log('PlayerActions: Unable to set player station, ', err)
+        throw err
+    }
+}
 
 
 // Command Creators:
@@ -75,5 +105,26 @@ function getCmdSetPlayerTime(time) {
     return {
         type: SET_PLAYER_TIME,
         time
+    }
+}
+
+function getCmdOnNextSong(nextSong) {
+    return {
+        type: ON_NEXT_SONG,
+        nextSong
+    }
+}
+
+function getCmdOnPrevSong(prevSong) {
+    return {
+        type: ON_PREV_SONG,
+        prevSong
+    }
+}
+
+function getCmdSetPlayerStation(station) {
+    return {
+        type: SET_CURRENT_STATION,
+        station
     }
 }

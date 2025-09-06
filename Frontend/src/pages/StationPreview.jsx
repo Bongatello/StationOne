@@ -6,12 +6,13 @@ import { StationSongQuery } from '../cmps/StationSongQuery.jsx'
 import { loadUser, addLikedStation, removeLikedStation } from '../store/user.actions.js'
 import { getStationById, getStations } from '../store/station.actions.js'
 import { togglePlayerState, getPlayingSong, setPlayingSong } from '../store/player.actions'
+import { formatStationDuration } from '../services/util.service.js'
 
 export function StationPreview() {
-
 	const playerData = useSelector(state => state.playerModule.player)
 	const userData = useSelector(state => state.userModule.user)
 	const station = useSelector(state => state.stationModule.selectedStation)
+	const [stationDuration, setStationDuration] = useState('a')
 	const params = useParams()
 
 	//icons
@@ -23,6 +24,7 @@ export function StationPreview() {
 
 	useEffect(() => {
 		loadUser('68bb2208d5ea1ed6ddb82b4a')
+		setStationDuration(getStationDuration())
 		getStationById(params.stationId)
 	}, [params, station.songs.length])
 
@@ -40,11 +42,14 @@ export function StationPreview() {
 			console.log('removed station ', station._id, ' from liked list')
 		}
 	}
-
+	
 	function getStationDuration(){
-		const stationDuration = 0
-
-
+		var totalDuration = 0
+		station.songs.forEach(song => {
+			totalDuration += song.durationMs
+		})
+		const formattedDuration = formatStationDuration(totalDuration)
+		return formattedDuration
 	}
 
 	function isLikedByUser(targetID) { //probably needs to be edited due to mongoDB and userRedux changes
@@ -73,7 +78,8 @@ export function StationPreview() {
 					<div className="station-details">
 						<img src="../../img/StationOneLogo.png" className="createdby-img" />
 						<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy}</p>
-						<p>• {station.songs.length} songs</p>
+						<p>• {station.songs.length} songs, </p>
+						<p>{stationDuration}</p>
 					</div>
 
 				</div>
@@ -83,7 +89,10 @@ export function StationPreview() {
 			{station.songs.length > 0 && // if station includes songs, the user will see the actions and the song list, else will see the next option
 				<div className="station-actions-songs-wrapper">
 					<div className="station-actions">
-						<div className="play-pause-button-wrapper action-wrapper" onClick={() => togglePlayerState(!playerData.isPlaying)}>
+						<div className="play-pause-button-wrapper action-wrapper" onClick={() => {
+							togglePlayerState(!playerData.isPlaying)
+							setPlayerStation(params.stationId)
+						}}>
 							<svg height="24px" width="24px" viewBox="0 0 24 24" className='play-pause-button'>
 								{playerData.isPlaying ? pauseButton : playButton}
 							</svg>

@@ -23,7 +23,6 @@ export function userReducer(state = initialState, action) {
             newState = { ...state, user: action.user }
             break
 
-
         case REMOVE_LIKED_STATION:
             const afterRemoveLikedStations = state.user.likedStations.filter(
                 likedStation => likedStation._id !== action.station._id
@@ -32,10 +31,8 @@ export function userReducer(state = initialState, action) {
                 ...state.user,
                 likedStations: afterRemoveLikedStations
             }
-
             newState = {...state, user: removedStationUser}
             break
-
 
         case ADD_LIKED_STATION:
             const afterAddLikedStations = [action.station, ...state.user.likedStations]
@@ -47,9 +44,5 @@ export function userReducer(state = initialState, action) {
             break
         default:
     }
-    // For debug:
-    // window.userState = newState
-    // console.log('State:', newState)
     return newState
-    
 }

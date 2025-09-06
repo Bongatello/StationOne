@@ -4,7 +4,6 @@ import { getStations, editStation } from "../store/station.actions.js"
 
 export function StationQuerySongList({song}){
     const params = useParams()
-    console.log(song.songName)
     
     async function addSongToStation(){
         const songs = []

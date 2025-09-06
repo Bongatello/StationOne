@@ -74,3 +74,15 @@ export function getDuration(type, value) {
     const seconds = Math.floor((value % (60 * resolution)) / resolution)
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
+
+export function formatStationDuration(value) {
+    var hours = 0
+    if (value>3600000) {
+        hours = Math.floor(value / 60000 / 60)
+        value = value - (hours * 60000 * 60)
+    }
+    const minutes = Math.floor(value / (60000))
+    const seconds = Math.floor((value % (60000)) / 1000)
+    if (hours) return `${hours} hr ${minutes} min`
+    return `${minutes} min ${seconds} sec`
+}

@@ -1,10 +1,12 @@
 //to add functionality to each song like/remove from liked button
-import { togglePlayerState, getPlayingSong, setPlayingSong } from '../store/player.actions'
+import { togglePlayerState, getPlayingSong, setPlayingSong, setPlayerStation } from '../store/player.actions'
 import { getDuration } from "../services/util.service";
 import { findOnYoutube } from '../services/songs/songs.service.js';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 export function SongList({ song, index }) {
     const playerData = useSelector(state => state.playerModule.player)
+    const params = useParams()
 
     const playButton = <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" />
     const pauseButton = <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" />
@@ -26,6 +28,7 @@ export function SongList({ song, index }) {
     function playPauseLogic() {
         if (!(song._id === playerData.currentSong._id)) {
             setPlayingSong(song)
+            setPlayerStation(params.stationId)
             findOnYoutube(song)
             togglePlayerState(true)
         }
@@ -45,7 +48,13 @@ export function SongList({ song, index }) {
                     <p>{index + 1}</p>
                 </div>
                 <div className="song-thumbnail"><img src={song.cover} /></div>
-                <p className="song-title">{song.name}</p>
+                <div className='song-title'>
+                    <p>{song.name}</p>
+                    <div className="explicit-and-artists">
+                        {song.isExplicit && <h6>E</h6>}
+                        <p>{song.artists}</p>
+                    </div>
+                </div>
                 <p className="song-added">{timeAddedAgo()}</p>
                 <p className="song-length">{getDuration('ms', song.durationMs)}</p>
             </div>

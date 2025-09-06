@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 
 export function AppHeader() {
-    //const user = useSelector(storeState => storeState.userModule.user)
     const navigate = useNavigate()
     const location = useLocation()
 

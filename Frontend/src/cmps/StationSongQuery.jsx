@@ -12,18 +12,6 @@ export function StationSongQuery() {
         setQuerySongs(queriedSongs)
     }
 
-    async function getDataFromSpotifyInput(data) {
-        console.log('new input data: ' + data)
-        setQuery(data)
-    }
-
-    async function initialSpotifyQuery() {
-        const queriedSongs = await queryByText('omer adam')
-        setQuerySongs(queriedSongs)
-    }
-
-
-
     return (
         <div>
             <div className="playlist-song-query-wrapper">

@@ -20,7 +20,6 @@ export function stationReducer(state = initialState, action = {}) {
         case UPDATE_STATION_LIST:
             return { ...state, stations: action.updatedStations}
         case EDIT_STATION:
-            console.log('Debugging!!!! ', action.editedStation)
             return { ...state, selectedStation: action.editedStation}
         default:
         return state

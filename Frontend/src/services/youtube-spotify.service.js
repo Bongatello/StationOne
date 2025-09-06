@@ -14,14 +14,8 @@ export async function getYoutubeSong(inputData) {
     return data;
 }
 
-
-
-
-
-
 export async function queryByText(text) {
     const res = await axios.get(`http://localhost:3000/api/get-spotify-songs`, {params: {q: text}})
-
     return res.data
 }
 

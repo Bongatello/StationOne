@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { useSelector } from 'react-redux'
 import { getDuration } from '../services/util.service'
-import { togglePlayerState, setPlayerTime, getPlayingSong } from '../store/player.actions'
+import { togglePlayerState, setPlayerTime, getPlayingSong, onPrevSong, onNextSong } from '../store/player.actions'
 
 export function AudioPlayer() {
-  const station = useSelector(state => state.stationModule.stations)
   const playerData = useSelector(state => state.playerModule.player)
+  const station = useSelector(state => state.playerModule.station)
+  //const station = useSelector(state => state.stationModule.selectedStation)
 
   const initialState = {
     volume: 0.5,
@@ -35,7 +36,6 @@ export function AudioPlayer() {
   const muteSVG = <svg {...svgProps}><path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.64 3.64 0 0 1-1.33-4.967 3.64 3.64 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.14 2.14 0 0 0 0 3.7l5.8 3.35V2.8zm8.683 6.087a4.502 4.502 0 0 0 0-8.474v1.65a3 3 0 0 1 0 5.175z" /></svg>
   const unmuteSVG = <svg {...svgProps}><path d="M13.86 5.47a.75.75 0 0 0-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 0 0 8.8 6.53L10.269 8l-1.47 1.47a.75.75 0 1 0 1.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 0 0 1.06-1.06L12.39 8l1.47-1.47a.75.75 0 0 0 0-1.06" /><path d="M10.116 1.5A.75.75 0 0 0 8.991.85l-6.925 4a3.64 3.64 0 0 0-1.33 4.967 3.64 3.64 0 0 0 1.33 1.332l6.925 4a.75.75 0 0 0 1.125-.649v-1.906a4.7 4.7 0 0 1-1.5-.694v1.3L2.817 9.852a2.14 2.14 0 0 1-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694z" /></svg>
 
-
   function toggleMute() {
     if (state.muted) { //muted state
       setState(prevState => ({...prevState, muted: false}))
@@ -49,7 +49,6 @@ export function AudioPlayer() {
 
   function handleInputVolume(inputVolume) {
     setState(prevState => ({...prevState, volume: inputVolume}))
-    console.log('new volume: ', inputVolume)
   }
 
 
@@ -66,9 +65,6 @@ export function AudioPlayer() {
     const player = playerRef.current
     // We only want to update time slider if we are not currently seeking
     if (!player || state.seeking) return
-
-    //console.log('onTimeUpdate', player.currentTime, playerRef.current.duration)
-
     if (!player.duration) return
     const played = player.currentTime/player.duration
     setPlayerTime(played)
@@ -93,6 +89,17 @@ export function AudioPlayer() {
     }
   }
 
+  async function getNextSong() {
+    await onNextSong(station, playerData.currentSong._id)
+  }
+
+  async function getPrevSong() {
+    await onPrevSong(station, playerData.currentSong._id)
+  }
+
+  async function handleEnded() {
+    await getNextSong()
+  }
 
 
   if (!playerData.currentSong.url) {
@@ -109,6 +116,7 @@ export function AudioPlayer() {
           volume={state.volume}
           onTimeUpdate={handleTimeUpdate}
           onReady={() => console.log('onReady')}
+          onEnded={handleEnded}
           controls={false}
           muted={state.muted}
           width="0px"
@@ -131,9 +139,9 @@ export function AudioPlayer() {
 
         <div className='audio-player-buttons-wrapper'>
           <div className='buttons-wrapper'>
-            <button /* onClick={handleSeekBackward} */ className='prev-song'>{nextPrevSVG}</button>
+            <button onClick={getPrevSong} className='prev-song'>{nextPrevSVG}</button>
             <button onClick={() => togglePlayerState(!playerData.isPlaying)} className='play-pause'>{playerData.isPlaying ? pauseSVG : playSVG}</button>
-            <button /* onClick={handleSeekForward} */ className='next-song'>{nextPrevSVG}</button>
+            <button onClick={getNextSong} className='next-song'>{nextPrevSVG}</button>
           </div>
 
 
