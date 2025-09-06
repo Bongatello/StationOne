@@ -167,9 +167,9 @@
                 height: 35px;
 
                 display: grid;
-                grid-template-columns: 2% 68% 25% 5%;
-                grid-template-areas: '_index _title _added _length';
-                
+                grid-template-columns: 2% 53% 25% 15% 5%;
+                grid-template-areas: '_index _title _album _added _length';
+                align-items: center;
                 
                 .song-index{
                     grid-area: _index;
@@ -180,6 +180,11 @@
                     grid-area: _title;
                     font-size: 0.875rem;
                 }
+
+                .song-album{
+                    grid-area: _album;
+                    font-size: 0.875rem;
+                }
             
                 .song-added{
                     grid-area: _added;
@@ -188,7 +193,7 @@
             
                 .song-length{
                     grid-area: _length;
-                    font-size: 0.875rem;
+                    fill: $clrsubtxt;
                     text-align: end;
                 }
 

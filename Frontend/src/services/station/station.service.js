@@ -64,8 +64,6 @@ async function combineUserDefaultStations() {
 
 async function editStation(station) {
   try {
-    const stationToEdit = await get(station._id)
-    station.songs.unshift(...stationToEdit.songs)
     const editedStation = await axios.put(BASE_URL, station)
     return editedStation.data
   } catch (err) {

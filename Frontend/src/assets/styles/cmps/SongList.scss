@@ -1,7 +1,7 @@
 .song-preview{
     display: grid;
-    grid-template-columns: 2% 4% 64% 25% 5%;
-    grid-template-areas: '_index _thumb _title _added _length';
+    grid-template-columns: 2% 4% 49% 25% 15% 5%;
+    grid-template-areas: '_index _thumb _title _album _added _length';
     padding-left: 16px;
     padding-right: 16px;
     font-size: 0.85em;
@@ -33,8 +33,32 @@
 
     .song-title{
         grid-area: _title;
-        margin-left: 12px;
-        color: $clrwhite;
+        display: flex;
+            flex-direction: column;
+
+            p {
+                font-size: 1rem;
+                color: $clrwhite;
+            }
+
+            .explicit-and-artists {
+                display: flex;
+                flex-direction: row;
+
+                p {
+                    font-size: 0.875rem;
+                    color: $clrsubtxt;
+                }
+
+                h6 {
+                    font-size: 0.875rem;
+                    margin-right: 3px;
+                }
+            }
+    }
+
+    .song-album{
+        grid-area: _album;
     }
 
     .song-added{
@@ -67,5 +91,8 @@
     }
     .song-title{
         color: $clrgreen;
+        p{
+            color: $clrgreen;
+        }
     }
 }

@@ -4,12 +4,16 @@ import { getDuration } from "../services/util.service";
 import { findOnYoutube } from '../services/songs/songs.service.js';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import { editStation } from '../store/station.actions.js';
+
 export function SongList({ song, index }) {
     const playerData = useSelector(state => state.playerModule.player)
+    const station = useSelector(state => state.stationModule.selectedStation)
     const params = useParams()
 
     const playButton = <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" />
     const pauseButton = <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" />
+    const removeSongSVG = <svg height="16px" width="16px" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z" /></svg>
 
     function timeAddedAgo() {
         const currentTime = Date.now()
@@ -23,6 +27,19 @@ export function SongList({ song, index }) {
         if (minutes) return minutes + ' minutes ago'
         if (seconds) return seconds + ' seconds ago'
         return timeSinceAdded + ' ms ago'
+    }
+
+    async function removeSongFromStation() {
+        const songs = station.songs
+        const idx = songs.findIndex(funcSong => funcSong._id === song._id)
+        songs.splice(idx, 1)
+        const editedStation = {
+            _id: station._id,
+            songs: songs
+        }
+        await editStation(editedStation)
+        await setPlayerStation(station._id)
+        return console.log('Removed song from station')
     }
 
     function playPauseLogic() {
@@ -40,7 +57,7 @@ export function SongList({ song, index }) {
     return (
         <div className="song-preview-container">
             <div className={song._id === playerData.currentSong._id ? "playing-song-preview song-preview" : "song-preview"}>
-                <div className="song-index" onClick={() => {playPauseLogic()}}>
+                <div className="song-index" onClick={() => { playPauseLogic() }}>
                     <svg width='16px' height='16px' viewBox="0 0 24 24">
                         {(!playerData.isPlaying || !(song._id === playerData.currentSong._id)) && playButton} {/* song is not playing OR song is not selected, show play button */}
                         {playerData.isPlaying && song._id === playerData.currentSong._id && pauseButton} {/* song is playing AND song is selected, show pause button */}
@@ -55,8 +72,12 @@ export function SongList({ song, index }) {
                         <p>{song.artists}</p>
                     </div>
                 </div>
+                <p className="song-album">{song.album}</p>
                 <p className="song-added">{timeAddedAgo()}</p>
-                <p className="song-length">{getDuration('ms', song.durationMs)}</p>
+                <p className="song-length">
+                    <div onClick={() => removeSongFromStation()}>{removeSongSVG}</div>
+                    {getDuration('ms', song.durationMs)}
+                </p>
             </div>
         </div>
     )
