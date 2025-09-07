@@ -1,7 +1,7 @@
 export const GET_STATIONS = 'GET_STATIONS'
 export const EDIT_STATION = 'EDIT_STATION'
 export const UPDATE_STATION_LIST = 'UPDATE_STATION_LIST'
-export const GET_STATION_BY_ID = 'GET_STATION_BY_ID'
+export const SET_SELECTED_STATION = 'SET_SELECTED_STATION'
 
 
 const initialState = {
@@ -15,8 +15,8 @@ export function stationReducer(state = initialState, action = {}) {
     switch (action.type) {
         case GET_STATIONS:
             return { ...state, stations: action.stations }
-        case GET_STATION_BY_ID:
-            return {...state, selectedStation: action.station}
+        case SET_SELECTED_STATION:
+            return {...state, selectedStation: action.selectedStation}
         case UPDATE_STATION_LIST:
             return { ...state, stations: action.updatedStations}
         case EDIT_STATION:

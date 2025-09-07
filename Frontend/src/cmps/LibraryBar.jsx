@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
-import { stationService } from '../services/station/station.service.js'
 import { userService } from '../services/user/user.service.js'
 import { StationsLibraryList } from './StationsLibraryList.jsx'
 import { loadUser } from '../store/user.actions.js'
@@ -10,7 +7,7 @@ import { loadUser } from '../store/user.actions.js'
 
 export function LibraryBar() {
 	const userData = useSelector(state => state.userModule.user)
-
+	console.log('DEBUGGING:::: ', userData.likedStations)
 
 	useEffect(() => {
 		loadUser('68bb2208d5ea1ed6ddb82b4a')

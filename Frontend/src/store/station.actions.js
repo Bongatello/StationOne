@@ -2,7 +2,7 @@ import { stationService } from '../services/station/station.service.js'
 
 import { store } from './store.js'
 
-import { EDIT_STATION, GET_STATION_BY_ID, GET_STATIONS, UPDATE_STATION_LIST } from './station.reducer.js'
+import { EDIT_STATION, GET_STATIONS, UPDATE_STATION_LIST, SET_SELECTED_STATION } from './station.reducer.js'
 
 export async function getStations() {
     try {
@@ -15,11 +15,11 @@ export async function getStations() {
     }
 }
 
-export async function getStationById(stationId) {
+export async function setSelectedStation(stationId) {
     try {
-        const station = await stationService.get(stationId)
-        store.dispatch(getCmdGetStationById(station))
-        console.log('StationActions: successfully loaded station ', station)
+        const selectedStation = await stationService.get(stationId)
+        store.dispatch(getCmdSetSelectedStation(selectedStation))
+        console.log('StationActions: successfully loaded station ', selectedStation)
     } catch (err) {
         console.log('StationActions: unable to load selected station ', err)
         throw err
@@ -77,5 +77,12 @@ function getCmdEditStation(editedStation) {
     return {
         type: EDIT_STATION,
         editedStation
+    }
+}
+
+function getCmdSetSelectedStation(selectedStation) {
+    return{
+        type: SET_SELECTED_STATION,
+        selectedStation
     }
 }

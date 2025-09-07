@@ -1,4 +1,4 @@
-.song-preview{
+.song-preview {
     display: grid;
     grid-template-columns: 2% 4% 49% 25% 15% 5%;
     grid-template-areas: '_index _thumb _title _album _added _length';
@@ -10,88 +10,107 @@
     border-radius: 7px;
     height: 54px;
 
-    svg{
+    svg {
         fill: $clrwhite;
-        display:none;
+        display: none;
         margin-left: -4px;
     }
 
-    .song-index{
+    .song-index {
         grid-area: _index;
-        p{
-            display:block;
+
+        p {
+            display: block;
         }
     }
 
-    .song-thumbnail{
+    .song-thumbnail {
         grid-area: _thumb;
-        img{
+
+        img {
             border-radius: 6px;
             height: 40px;
         }
     }
 
-    .song-title{
+    .song-title {
         grid-area: _title;
         display: flex;
-            flex-direction: column;
+        flex-direction: column;
+
+        p {
+            font-size: 1rem;
+            color: $clrwhite;
+        }
+
+        .explicit-and-artists {
+            display: flex;
+            flex-direction: row;
 
             p {
-                font-size: 1rem;
-                color: $clrwhite;
+                font-size: 0.875rem;
+                color: $clrsubtxt;
             }
 
-            .explicit-and-artists {
-                display: flex;
-                flex-direction: row;
-
-                p {
-                    font-size: 0.875rem;
-                    color: $clrsubtxt;
-                }
-
-                h6 {
-                    font-size: 0.875rem;
-                    margin-right: 3px;
-                }
+            h6 {
+                font-size: 0.875rem;
+                margin-right: 3px;
             }
+        }
     }
 
-    .song-album{
+    .song-album {
         grid-area: _album;
     }
 
-    .song-added{
+    .song-added {
         grid-area: _added;
     }
 
-    .song-length{
+    .song-length {
         grid-area: _length;
         text-align: end;
-    }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-}
-
-.song-preview:hover{
-    background-color: $clrgray;
-    .song-index{
-        p{
-            display:none;
+        svg {
+            fill: $clrgreen;
         }
     }
-    svg{
-        display:block;
+
+}
+
+.song-preview:hover {
+    background-color: $clrgray;
+
+    .song-index {
+        p {
+            display: none;
+        }
+
+        svg {
+            display: block;
+        }
+    }
+
+    .song-length {
+        svg {
+            display: block;
+        }
     }
 
 }
 
-.playing-song-preview{
-    .song-index{
+.playing-song-preview {
+    .song-index {
         color: $clrgreen;
     }
-    .song-title{
+
+    .song-title {
         color: $clrgreen;
-        p{
+
+        p {
             color: $clrgreen;
         }
     }

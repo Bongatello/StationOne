@@ -7,7 +7,6 @@ import { togglePlayerState, setPlayerTime, getPlayingSong, onPrevSong, onNextSon
 export function AudioPlayer() {
   const playerData = useSelector(state => state.playerModule.player)
   const station = useSelector(state => state.playerModule.station)
-  //const station = useSelector(state => state.stationModule.selectedStation)
 
   const initialState = {
     volume: 0.5,

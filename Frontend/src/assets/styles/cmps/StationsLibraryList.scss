@@ -1,4 +1,4 @@
-.library-station-object{
+.library-station-object {
     display: flex;
     align-items: center;
     height: 48px;
@@ -10,32 +10,59 @@
     color: $clrwhite;
     border-radius: 6px;
 
-    img{
-        width:48px;
-        aspect-ratio: 1;
-        border-radius: 6px;
+    .svg-thumbnail {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        svg {
+            position: absolute;
+            fill: $clrwhite;
+            display: none;
+            z-index: 1;
+            transform: translate(50%, 50%);
+        }
+
+        img {
+            position: absolute;
+            width: 48px;
+            aspect-ratio: 1;
+            border-radius: 6px;
+        }
     }
 
-    .library-station-details{
+    .library-station-details {
         display: flex;
         flex-direction: column;
         justify-content: center;
 
         height: 48px;
 
-        p, h1{
+        p,
+        h1 {
             margin: 0;
         }
-        h1{
+
+        h1 {
             font-size: 1rem;
         }
-        p{
+
+        p {
             color: $clrsubtxt;
             font-size: 0.875rem;
         }
     }
 }
 
-.library-station-object:hover{
+.library-station-object:hover {
     background-color: $clrgray;
+
+    .svg-thumbnail {
+        img {
+            filter: brightness(50%);
+        }
+
+        svg {
+            display: block;
+        }
+    }
 }
