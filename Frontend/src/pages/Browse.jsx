@@ -1,7 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
 import ReactPlayer from 'react-player'
-import { AudioPlayer } from '../cmps/AudioPlayer.jsx'
-import { getYoutubeSong, queryByText } from '../services/youtube-spotify.service.js'
 import { setPlayingSong, getPlayingSong } from '../store/player.actions.js'
 import { useSelector } from 'react-redux'
 import { songsService } from '../services/songs/songs.service.js'
@@ -24,7 +22,7 @@ export function Browse() {
     }
 
     async function initialSpotifyQuery() {
-        const queriedSongs = await queryByText('omer adam')
+        const queriedSongs = await songsService.queryByText('omer adam')
         setSongs(queriedSongs)
     }
 
@@ -35,7 +33,7 @@ export function Browse() {
         if (firstVideoId) console.log('no -100 credits this time :)')
         if (!firstVideoId) {
             const inputData = song.artists.join('') + '-' + song.songName
-            const ytApiSearchData = await getYoutubeSong(inputData)
+            const ytApiSearchData = await songsService.getYoutubeSong(inputData)
             console.log('Google Api Used, -100 credits :(')
             firstVideoId = ytApiSearchData.items[0].id.videoId
             const songToStore = {
@@ -51,7 +49,7 @@ export function Browse() {
     }
 
     async function spotifyQuery() {
-        const queriedSongs = await queryByText(query)
+        const queriedSongs = await songsService.queryByText(query)
         setSongs(queriedSongs)
     }
 
@@ -70,7 +68,7 @@ export function Browse() {
             <div className='spotify-query-list'>
                 {songs.length > 0 && songs.map(song => {
                     return (
-                        <li key={song._id}>{song.artists.join(' ')} - {song.songName} <button onClick={() => findOnYoutube(song)}>Play Song</button></li>
+                        <li key={song._id}>{song.artists.join(' ')} - {song.songName} <button onClick={() => songsService.findOnYoutube(song)}>Play Song</button></li>
                     )
                 })}
             </div>

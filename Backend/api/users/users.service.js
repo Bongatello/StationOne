@@ -37,7 +37,6 @@ async function getById(userId) {
 async function addUser(user) {
     try {
         const { userName } = user
-        if (!userName) throw 'Username missing'
         const collection = await dbService.getCollection(collectionName)
         const checkAvaialbe = await collection.findOne({ name: ObjectId.createFromHexString(userName) })
         if (checkAvaialbe) throw 'Username already taken'
@@ -59,7 +58,6 @@ async function addUser(user) {
 
 async function deleteUser(userId) {
     try {
-        if (!userId) throw 'Cannot get userId or userId not provided'
         const collection = await dbService.getCollection(collectionName)
         await collection.deleteOne({ _id: ObjectId.createFromHexString(userId) })
     } catch (err) {

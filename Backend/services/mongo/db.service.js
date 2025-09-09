@@ -1,4 +1,4 @@
-import {MongoClient} from 'mongodb'
+import { MongoClient, ServerApiVersion } from 'mongodb'
 
 export const dbService = {
     getCollection
@@ -18,7 +18,7 @@ async function _connect() {
     if (dbConn) return dbConn
 
     try {
-        const client = await MongoClient.connect(mongoUrl)
+        const client = await MongoClient.connect(process.env.MONGO_DB_URI)
         const db = client.db(dbName)
         dbConn = db
         return db
@@ -27,3 +27,11 @@ async function _connect() {
         throw err
     }
 }
+
+/* const client = new MongoClient(process.env.MONGO_DB_URI, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+}) */

@@ -14,15 +14,12 @@
 
     .song-index {
         grid-area: _index;
-
         p {
             display: block;
         }
-
         svg {
             fill: $clrwhite;
             display: none;
-            margin-left: -4px;
         }
     }
 
@@ -95,8 +92,6 @@
         svg {
             fill: $clrwhite;
             display: block;
-            margin-left: -4px;
-            
         }
     }
 

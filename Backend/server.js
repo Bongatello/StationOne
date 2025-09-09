@@ -35,8 +35,6 @@ app.use('/api/songs', songsRoutes)
 app.use('/api/user', usersRoutes)
 
 
-
-
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })

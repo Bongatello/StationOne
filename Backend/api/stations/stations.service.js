@@ -1,5 +1,7 @@
 import { dbService } from '../../services/mongo/db.service.js'
 import { ObjectId } from 'mongodb'
+import { MongoClient, ServerApiVersion } from 'mongodb'
+
 
 export const stationsService = {
     query,
@@ -10,7 +12,6 @@ export const stationsService = {
 }
 
 const collectionName = "Stations"
-
 
 async function query() {
 
@@ -38,8 +39,6 @@ async function getById(stationId) {
 async function addStation(station) {
     try {
         const { index, addedBy } = station
-        if (!index || !addedBy) throw 'Index or user(addedBy) missing'
-
         const collection = await dbService.getCollection(collectionName)
         const name = 'My Station #' + index
         const stationToAdd = { ..._getEmptyStation(), name, addedBy }
@@ -54,7 +53,6 @@ async function addStation(station) {
 
 async function deleteStation(stationId) {
     try {
-        if (!stationId) throw 'Cannot get stationId or stationId not provided'
         const collection = await dbService.getCollection(collectionName)
         await collection.deleteOne({ _id: ObjectId.createFromHexString(stationId) })
     } catch (err) {

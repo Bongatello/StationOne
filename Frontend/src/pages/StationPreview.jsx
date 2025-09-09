@@ -11,7 +11,7 @@ import { loadUser, addLikedStation, removeLikedStation } from '../store/user.act
 import { setSelectedStation, getStations } from '../store/station.actions.js'
 import { togglePlayerState, getPlayingSong, setPlayingSong, setPlayerStation } from '../store/player.actions'
 import { formatStationDuration } from '../services/util.service.js'
-import { findOnYoutube } from '../services/songs/songs.service.js'
+import { songsService } from '../services/songs/songs.service.js'
 
 export function StationPreview() {
 	const playerData = useSelector(state => state.playerModule)
@@ -21,7 +21,7 @@ export function StationPreview() {
 	const params = useParams()
 
 	useEffect(() => {
-		loadUser('68bd55e48bcc464f50c11920')
+		loadUser('68bb2208d5ea1ed6ddb82b4a')
 		setStationDuration(getStationDuration())
 		setSelectedStation(params.stationId)
 		console.log('Set selected station to: ', params.stationId)
@@ -62,7 +62,7 @@ export function StationPreview() {
 		if (!(station._id === playerData.station._id)) {
 			setPlayingSong(station.songs[0])
 			setPlayerStation(params.stationId)
-			findOnYoutube(station.songs[0])
+			songsService.findOnYoutube(station.songs[0])
 			togglePlayerState(true)
 		}
 		else {
@@ -108,6 +108,12 @@ export function StationPreview() {
 						<div className="add-remove-library-wrapper action-wrapper" onClick={addRemoveFromList}>
 							{isLikedByUser(station._id)}
 						</div>
+
+						{station.addedBy === userData.name && //very dangerous, will change it to station._id === userData._id later on, since having 2 users with same name could cause collision!!
+							<div className='invite-collaborators-wrapper action-wrapper'>
+								<SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
+							</div>
+						}
 
 						<div className="extra-options-wrapper action-wrapper">
 							<SvgIcon iconName={"extraOptions"} />

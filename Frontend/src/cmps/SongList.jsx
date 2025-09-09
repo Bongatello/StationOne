@@ -1,7 +1,7 @@
 //to add functionality to each song like/remove from liked button
 import { togglePlayerState, getPlayingSong, setPlayingSong, setPlayerStation } from '../store/player.actions'
 import { getDuration } from "../services/util.service";
-import { findOnYoutube } from '../services/songs/songs.service.js';
+import { songsService } from '../services/songs/songs.service.js';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { editStation } from '../store/station.actions.js';
@@ -11,10 +11,6 @@ export function SongList({ song, index }) {
     const playerData = useSelector(state => state.playerModule)
     const station = useSelector(state => state.stationModule.selectedStation)
     const params = useParams()
-
-    const playButton = <svg><path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" /></svg>
-    const pauseButton = <svg><path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" /></svg>
-    const removeSongSVG = <svg height="16px" width="16px" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z" /></svg>
 
     function timeAddedAgo() {
         const currentTime = Date.now()
@@ -45,7 +41,7 @@ export function SongList({ song, index }) {
 
     function playPauseLogic() {
         if (!(song._id === playerData.player.currentSong._id)) {
-            findOnYoutube(song)
+            songsService.findOnYoutube(song)
             console.log('DEBUGGING::::: ', song)
             setPlayerStation(params.stationId)
             togglePlayerState(true)

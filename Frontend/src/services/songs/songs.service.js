@@ -10,7 +10,10 @@ const API_KEY = import.meta.env.VITE_YOUTUBE_DATA_API_KEY //my youtube api key i
 
 export const songsService = {
     getYoutubeId,
-    addSong
+    addSong,
+    findOnYoutube,
+    getYoutubeSong,
+    queryByText
 }
 
 const BASE_URL = "//localhost:3000/api/songs"
@@ -35,7 +38,7 @@ async function addSong(song) {
     }
 }
 
-export async function findOnYoutube(song) { //upon removing notes, add spotifySongId to function dependencies
+async function findOnYoutube(song) { //upon removing notes, add spotifySongId to function dependencies
     const spotifySongId = song._id
     var firstVideoId = await getYoutubeId(spotifySongId)
     if (firstVideoId) console.log('no -100 credits this time :)')
@@ -57,13 +60,13 @@ export async function findOnYoutube(song) { //upon removing notes, add spotifySo
     console.log('Now playing: ', song)
 }
 
-export async function getYoutubeSong(inputData) {
+async function getYoutubeSong(inputData) {
     const res = await fetch(`http://localhost:3000/api/sy/youtube?q=${encodeURIComponent(inputData)}`);
     const data = await res.json();
     return data;
 }
 
-export async function queryByText(text) {
-    const res = await axios.get(`http://localhost:3000/api/sy/songs`, {params: {q: text}})
+async function queryByText(text) {
+    const res = await axios.get(`http://localhost:3000/api/sy/songs`, { params: { q: text } })
     return res.data
 }

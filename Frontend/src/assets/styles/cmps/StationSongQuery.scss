@@ -28,7 +28,7 @@
                 display:flex;
                 align-items: center;
                 position: relative;
-                .query-button{
+                svg{
                     fill: $clrsubtxt;
                     position: absolute;
                     top: 50%;
@@ -38,7 +38,7 @@
                     justify-content: center;
 
                 }
-                .query-button:hover{
+                svg:hover{
                     fill: $clrwhite;
                 }
 
@@ -68,11 +68,11 @@
 
         }
 
-        .close-button{
+        svg{
             fill: $clrsubtxt;
             margin-right: 8px;
         }
-        .close-button:hover{
+        svg:hover{
             fill: $clrwhite;
         }
     }

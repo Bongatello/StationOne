@@ -1,5 +1,5 @@
 import { storageService } from '../async-storage.service.js'
-import { findOnYoutube } from '../songs/songs.service.js'
+import { songsService } from '../songs/songs.service.js'
 import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.service.js'
 
 export const playerService = {
@@ -48,17 +48,17 @@ async function getPrevNextSong(prevNext, station, currSongId) {
     if (prevNext === 'prev') prevNextIdx = currentIdx - 1
     if (prevNextIdx >= 0 && prevNextIdx < station.songs.length) {
       const prevNextSong = station.songs[prevNextIdx]
-      prevNextSong.url = await findOnYoutube(prevNextSong)
+      prevNextSong.url = await songsService.findOnYoutube(prevNextSong)
       return prevNextSong
     }
     if (prevNextIdx >= station.songs.length) {
       const prevNextSong = station.songs[0]
-      prevNextSong.url = await findOnYoutube(prevNextSong)
+      prevNextSong.url = await songsService.findOnYoutube(prevNextSong)
       return prevNextSong
     }
     if (prevNextIdx < 0) {
       const prevNextSong = station.songs[station.songs.length - 1]
-      prevNextSong.url = await findOnYoutube(prevNextSong)
+      prevNextSong.url = await songsService.findOnYoutube(prevNextSong)
       return prevNextSong
     }
     throw 'playerService.getPrevNextSong: Unable to find prev song'
