@@ -104,7 +104,7 @@
                 border-radius: 50%;
                 background-color: $clrgreen;
     
-                .play-pause-button{
+                svg{
                     position: absolute;
                     top: 50%;
                     left: 50%;
@@ -120,7 +120,7 @@
                 height: 56px;
                 width: 32px;
                 fill: $clrsubtxt;
-                .extra-options{
+                svg{
                     position: absolute;
                     top: 50%;
                     left: 50%;
@@ -132,18 +132,19 @@
             }
 
             .add-remove-library-wrapper{
-
+                
                 .add-to-library{
+                    justify-self: center;
                     fill: $clrsubtxt;
                 }
                 .add-to-library:hover{
                     fill: $clrwhite;
                 }
     
-                .remove-from-library{
+                svg{
                     fill: $clrgreen;
                 }
-                .remove-from-library:hover{
+                svg:hover{
                     fill: #3be477;
                 }
             }
@@ -193,6 +194,9 @@
             
                 .song-length{
                     grid-area: _length;
+                    i{
+                        justify-content: end;
+                    }
                     fill: $clrsubtxt;
                     text-align: end;
                 }

@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux'
 import { userService } from '../services/user/user.service.js'
 import { StationsLibraryList } from './StationsLibraryList.jsx'
 import { loadUser } from '../store/user.actions.js'
+import SvgIcon from './SvgIcon.jsx'
 
 
 export function LibraryBar() {
 	const userData = useSelector(state => state.userModule.user)
-	console.log('DEBUGGING:::: ', userData.likedStations)
 
 	useEffect(() => {
-		loadUser('68bb2208d5ea1ed6ddb82b4a')
+		loadUser('68bd55e48bcc464f50c11920')
 	}, [userData.likedStations.length])
 
 	async function addNewUserStation(){
@@ -28,9 +28,7 @@ export function LibraryBar() {
 			<div className="header-create-wrapper">
 				<h1>Your Library</h1>
             	<button className="create" onClick={addNewUserStation}>
-					<svg height='16px' width='16px' viewBox="0 0 16 16">
-						<path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75"/>
-					</svg> 
+					<SvgIcon iconName={"plusCreateButtonSVG"} />
 
 					<h1>Create</h1>
 				</button>

@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/songs', getSpotifySongs)
 
 //youtube get video
-router.get('/youtube-search', async (req, res) => {
+router.get('/youtube', async (req, res) => {
   const inputData = req.query.q
   const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY
 

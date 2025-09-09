@@ -10,17 +10,19 @@
     border-radius: 7px;
     height: 54px;
 
-    svg {
-        fill: $clrwhite;
-        display: none;
-        margin-left: -4px;
-    }
+
 
     .song-index {
         grid-area: _index;
 
         p {
             display: block;
+        }
+
+        svg {
+            fill: $clrwhite;
+            display: none;
+            margin-left: -4px;
         }
     }
 
@@ -76,6 +78,7 @@
 
         svg {
             fill: $clrgreen;
+            display: none;
         }
     }
 
@@ -90,13 +93,18 @@
         }
 
         svg {
+            fill: $clrwhite;
             display: block;
+            margin-left: -4px;
+            
         }
     }
 
     .song-length {
         svg {
             display: block;
+            align-self: center;
+            justify-self: center;
         }
     }
 

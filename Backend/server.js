@@ -31,8 +31,8 @@ app.use(cors(corsOptions))
 //API METHODS
 app.use('/api/sy', spotifyYoutubeRoutes)
 app.use('/api/station', stationsRoutes)
-app.use('api/songs', songsRoutes)
-app.use('api/user', usersRoutes)
+app.use('/api/songs', songsRoutes)
+app.use('/api/user', usersRoutes)
 
 
 

@@ -58,12 +58,12 @@ export async function findOnYoutube(song) { //upon removing notes, add spotifySo
 }
 
 export async function getYoutubeSong(inputData) {
-    const res = await fetch(`http://localhost:3000/api/youtube-search?q=${encodeURIComponent(inputData)}`);
+    const res = await fetch(`http://localhost:3000/api/sy/youtube?q=${encodeURIComponent(inputData)}`);
     const data = await res.json();
     return data;
 }
 
 export async function queryByText(text) {
-    const res = await axios.get(`http://localhost:3000/api/get-spotify-songs`, {params: {q: text}})
+    const res = await axios.get(`http://localhost:3000/api/sy/songs`, {params: {q: text}})
     return res.data
 }

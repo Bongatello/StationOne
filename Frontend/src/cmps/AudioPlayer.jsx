@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player'
 import { useSelector } from 'react-redux'
 import { getDuration } from '../services/util.service'
 import { togglePlayerState, setPlayerTime, getPlayingSong, onPrevSong, onNextSong } from '../store/player.actions'
+import SvgIcon from './SvgIcon'
 
 export function AudioPlayer() {
   const playerData = useSelector(state => state.playerModule.player)
@@ -26,14 +27,6 @@ export function AudioPlayer() {
     getPlayingSong()
     console.log('loaded song: ', playerData.currentSong.url)
   }, [playerData.currentSong._id])
-
-  const svgProps = { height: "16px", width: "16px", viewBox: "0 0 16 16" }
-
-  const nextPrevSVG = <svg {...svgProps}><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7z" /></svg>
-  const pauseSVG = <svg {...svgProps}><path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7z" /></svg>
-  const playSVG = <svg {...svgProps}><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288z" /></svg>
-  const muteSVG = <svg {...svgProps}><path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.64 3.64 0 0 1-1.33-4.967 3.64 3.64 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.14 2.14 0 0 0 0 3.7l5.8 3.35V2.8zm8.683 6.087a4.502 4.502 0 0 0 0-8.474v1.65a3 3 0 0 1 0 5.175z" /></svg>
-  const unmuteSVG = <svg {...svgProps}><path d="M13.86 5.47a.75.75 0 0 0-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 0 0 8.8 6.53L10.269 8l-1.47 1.47a.75.75 0 1 0 1.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 0 0 1.06-1.06L12.39 8l1.47-1.47a.75.75 0 0 0 0-1.06" /><path d="M10.116 1.5A.75.75 0 0 0 8.991.85l-6.925 4a3.64 3.64 0 0 0-1.33 4.967 3.64 3.64 0 0 0 1.33 1.332l6.925 4a.75.75 0 0 0 1.125-.649v-1.906a4.7 4.7 0 0 1-1.5-.694v1.3L2.817 9.852a2.14 2.14 0 0 1-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694z" /></svg>
 
   function toggleMute() {
     if (state.muted) { //muted state
@@ -138,9 +131,9 @@ export function AudioPlayer() {
 
         <div className='audio-player-buttons-wrapper'>
           <div className='buttons-wrapper'>
-            <button onClick={getPrevSong} className='prev-song'>{nextPrevSVG}</button>
-            <button onClick={() => togglePlayerState(!playerData.isPlaying)} className='play-pause'>{playerData.isPlaying ? pauseSVG : playSVG}</button>
-            <button onClick={getNextSong} className='next-song'>{nextPrevSVG}</button>
+            <button onClick={getPrevSong} className='prev-song'><SvgIcon iconName={"nextPrevSVG"} /></button>
+            <button onClick={() => togglePlayerState(!playerData.isPlaying)} className='play-pause'>{playerData.isPlaying ? <SvgIcon iconName={"pauseSVG"} /> : <SvgIcon iconName={"playSVG"} />}</button>
+            <button onClick={getNextSong} className='next-song'><SvgIcon iconName={"nextPrevSVG"} /></button>
           </div>
 
 
@@ -156,13 +149,13 @@ export function AudioPlayer() {
               onChange={handleSeekChange}
               onMouseUp={handleSeekMouseUp}
             ></input>
-            <p>{getDuration('seconds', playerRef.current.duration)}</p>
+            <p>{playerRef.current.duration? getDuration('seconds', playerRef.current.duration) : getDuration('ms', playerData.currentSong.durationMs)}</p>
           </div>
         </div>
 
 
         <div className='audio-player-volume'>
-          <button onClick={toggleMute} className='mute-button'>{state.muted ? unmuteSVG : muteSVG}</button>
+          <button onClick={toggleMute} className='mute-button'>{state.muted ? <SvgIcon iconName={"unmuteSVG"} /> : <SvgIcon iconName={"muteSVG"} />}</button>
           <input type="range" min={0} max={1} step={"any"} value={state.volume} onChange={(e) => handleInputVolume(parseFloat(e.target.value))}></input>
         </div>
       </div>

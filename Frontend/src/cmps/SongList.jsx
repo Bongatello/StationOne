@@ -5,14 +5,15 @@ import { findOnYoutube } from '../services/songs/songs.service.js';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { editStation } from '../store/station.actions.js';
+import SvgIcon from './SvgIcon.jsx';
 
 export function SongList({ song, index }) {
-    const playerData = useSelector(state => state.playerModule.player)
+    const playerData = useSelector(state => state.playerModule)
     const station = useSelector(state => state.stationModule.selectedStation)
     const params = useParams()
 
-    const playButton = <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" />
-    const pauseButton = <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" />
+    const playButton = <svg><path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" /></svg>
+    const pauseButton = <svg><path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" /></svg>
     const removeSongSVG = <svg height="16px" width="16px" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z" /></svg>
 
     function timeAddedAgo() {
@@ -43,39 +44,39 @@ export function SongList({ song, index }) {
     }
 
     function playPauseLogic() {
-        if (!(song._id === playerData.currentSong._id)) {
-            setPlayingSong(song)
-            setPlayerStation(params.stationId)
+        if (!(song._id === playerData.player.currentSong._id)) {
             findOnYoutube(song)
+            console.log('DEBUGGING::::: ', song)
+            setPlayerStation(params.stationId)
             togglePlayerState(true)
         }
         else {
-            togglePlayerState(!playerData.isPlaying)
+            togglePlayerState(!playerData.player.isPlaying)
         }
     }
 
     return (
         <div className="song-preview-container">
-            <div className={song._id === playerData.currentSong._id ? "playing-song-preview song-preview" : "song-preview"}>
+            <div className={song._id === playerData.player.currentSong._id ? "playing-song-preview song-preview" : "song-preview"}>
                 <div className="song-index" onClick={() => { playPauseLogic() }}>
-                    <svg width='16px' height='16px' viewBox="0 0 24 24">
-                        {(!playerData.isPlaying || !(song._id === playerData.currentSong._id)) && playButton} {/* song is not playing OR song is not selected, show play button */}
-                        {playerData.isPlaying && song._id === playerData.currentSong._id && pauseButton} {/* song is playing AND song is selected, show pause button */}
-                    </svg>
+
+                        {(!playerData.player.isPlaying || !(song._id === playerData.player.currentSong._id)) && <SvgIcon iconName={"songListPlayButton"} />} {/* song is not playing OR song is not selected, show play button */}
+                        {playerData.player.isPlaying && song._id === playerData.player.currentSong._id && <SvgIcon iconName={"songListPauseButton"} />} {/* song is playing AND song is selected, show pause button */}
+
                     <p>{index + 1}</p>
                 </div>
                 <div className="song-thumbnail"><img src={song.cover} /></div>
                 <div className='song-title'>
                     <p>{song.name}</p>
-                    <div className="explicit-and-artists">
-                        {song.isExplicit && <h6>E</h6>}
+                    <section className="explicit-and-artists">
+                        {/* song.isExplicit && <h6>E</h6> */}
                         <p>{song.artists}</p>
-                    </div>
+                    </section>
                 </div>
                 <p className="song-album">{song.album}</p>
                 <p className="song-added">{timeAddedAgo()}</p>
                 <p className="song-length">
-                    <div onClick={() => removeSongFromStation()}>{removeSongSVG}</div>
+                    <div onClick={() => removeSongFromStation()}>{<SvgIcon iconName={"songListRemoveSong"} />}</div>
                     {getDuration('ms', song.durationMs)}
                 </p>
             </div>

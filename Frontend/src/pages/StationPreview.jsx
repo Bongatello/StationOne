@@ -20,18 +20,13 @@ export function StationPreview() {
 	const [stationDuration, setStationDuration] = useState('')
 	const params = useParams()
 
-	//icons
-	const pauseButton = <path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7z" />
-	const playButton = <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" />
-	const addToLibrary = <svg height="32px" width="32px" viewBox="0 0 24 24" className='add-to-library'><path d="M11.999 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18m-11 9c0-6.075 4.925-11 11-11s11 4.925 11 11-4.925 11-11 11-11-4.925-11-11" /><path d="M17.999 12a1 1 0 0 1-1 1h-4v4a1 1 0 1 1-2 0v-4h-4a1 1 0 1 1 0-2h4V7a1 1 0 1 1 2 0v4h4a1 1 0 0 1 1 1" /></svg>
-	const removeFromLibrary = <svg height="29.35px" width="29.35px" viewBox="0 0 24 24" className='remove-from-library'><path d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12m16.398-2.38a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308z" /></svg>
-	const durationSvg = <svg height="16px" width="16px" viewBox="0 0 16 16"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8"></path><path d="M8 3.25a.75.75 0 0 1 .75.75v3.25H11a.75.75 0 0 1 0 1.5H7.25V4A.75.75 0 0 1 8 3.25" /></svg>
-
 	useEffect(() => {
-		loadUser('68bb2208d5ea1ed6ddb82b4a')
+		loadUser('68bd55e48bcc464f50c11920')
 		setStationDuration(getStationDuration())
 		setSelectedStation(params.stationId)
+		console.log('Set selected station to: ', params.stationId)
 	}, [params, station.songs.length])
+
 
 
 
@@ -60,7 +55,7 @@ export function StationPreview() {
 	function isLikedByUser(targetID) { //probably needs to be edited due to mongoDB and userRedux changes
 		const likedByUser = userData
 		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return addToLibrary
-		return removeFromLibrary
+		return <SvgIcon iconName={"removeFromLibrary"} />
 	}
 
 	function playPauseLogic() {
@@ -107,9 +102,7 @@ export function StationPreview() {
 				<div className="station-actions-songs-wrapper">
 					<div className="station-actions">
 						<div className="play-pause-button-wrapper action-wrapper" onClick={playPauseLogic}>
-							<svg height="24px" width="24px" viewBox="0 0 24 24" className='play-pause-button'>
-								{playerData.player.isPlaying && (playerData.station._id === station._id) ? pauseButton : playButton}
-							</svg>
+							{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
 						</div>
 
 						<div className="add-remove-library-wrapper action-wrapper" onClick={addRemoveFromList}>
@@ -117,9 +110,7 @@ export function StationPreview() {
 						</div>
 
 						<div className="extra-options-wrapper action-wrapper">
-							<svg height="32px" width="32px" viewBox="0 0 24 24" className='extra-options'>
-								<path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
-							</svg>
+							<SvgIcon iconName={"extraOptions"} />
 						</div>
 					</div>
 
@@ -130,7 +121,7 @@ export function StationPreview() {
 							<p className="song-title">Title</p>
 							<p className='song-album'>Album</p>
 							<p className="song-added">Date Added</p>
-							<p className="song-length"><SvgIcon iconName={"durationSvg"}/></p>
+							<p className="song-length"><SvgIcon iconName={"durationSvg"} /></p>
 						</div>
 						<div className="station-songs">
 							{station.songs.map((song, index) =>
@@ -148,12 +139,10 @@ export function StationPreview() {
 				<div className="station-actions-songs-wrapper">
 					<div className="station-actions">
 						<div className='invite-collaborators-wrapper action-wrapper'>
-							<SvgIcon iconName={"inviteCollaborators"}/>
+							<SvgIcon iconName={"inviteCollaborators"} />
 						</div>
 						<div className="extra-options-wrapper action-wrapper">
-							<svg height="32px" width="32px" viewBox="0 0 24 24" className='extra-options'>
-								<path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
-							</svg>
+							<SvgIcon iconName={"extraOptions"} />
 						</div>
 					</div>
 				</div>
