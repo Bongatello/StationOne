@@ -5,10 +5,10 @@ import { getSpotifySongs } from "./spotifyYoutube.controller.js"
 const router = express.Router()
 
 //spotify get songs
-router.get('/api/get-spotify-songs', getSpotifySongs)
+router.get('/songs', getSpotifySongs)
 
 //youtube get video
-router.get('/api/youtube-search', async (req, res) => {
+router.get('/youtube-search', async (req, res) => {
   const inputData = req.query.q
   const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY
 

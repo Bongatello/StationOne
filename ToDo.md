@@ -13,3 +13,7 @@ Features:
 Fixes:
 -volume bar css
 -seek css
+-Use .env with node
+-Youtube spotify api changes
+-Add try-catch to all async functions in backend!
+-Add missing items in body logic to controller instead of services (backend)

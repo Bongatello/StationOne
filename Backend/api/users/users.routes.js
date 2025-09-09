@@ -6,16 +6,16 @@ const router = express.Router()
 
 
 //query users (list users)
-router.get('/api/user', getUsers)
+router.get('/', getUsers)
 
 //user get by id (read user)
-router.get('/api/user/:userId', getUserById)
+router.get('/:userId', getUserById)
 
 //create user
-router.post('/api/user', createUser)
+router.post('/', createUser)
 
 //update user
-router.put('/api/user', editUser)
+router.put('/', editUser)
 
 //delete user
 //router.delete('/api/user/:userId', removeUser)

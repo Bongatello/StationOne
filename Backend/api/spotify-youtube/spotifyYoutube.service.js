@@ -1,6 +1,9 @@
 
-
 var SpotifyTemporaryToken = undefined
+/* var SpotifyTemporaryToken = {
+  token: undefined,
+  expiration: null //(Data.now - expiration === 1 hour (ms))= expired
+} */
 export const spotifyYoutubeService = {
   getTempSpotifyToken,
   processSpotifyQueryData,
@@ -58,6 +61,7 @@ async function processSpotifyQueryData(queryData, q, limit) {
   } catch (err) {
     console.log('Error in backend spotify.service, processSpotifyQueryData function')
     SpotifyTemporaryToken = await getTempSpotifyToken()
+
     throw err
   }
 }

@@ -4,9 +4,9 @@ import { getSongFromDB, addSongToDB } from "./songs.controller.js"
 const router = express.Router()
 
 
-router.get('/api/songs/:songId', getSongFromDB)
+router.get('/:songId', getSongFromDB)
 
-router.post('/api/songs', addSongToDB)
+router.post('/', addSongToDB)
 
 
 export const songsRoutes = router

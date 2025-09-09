@@ -6,19 +6,19 @@ const router = express.Router()
 
 
 //query stations (list stations)
-router.get('/api/station', getAllStations)
+router.get('/', getAllStations)
 
 //station get by id (read station)
-router.get('/api/station/:stationId', getStationById)
+router.get('/:stationId', getStationById)
 
 //create station
-router.post('/api/station', createStation)
+router.post('/', createStation)
 
 //update station
-router.put('/api/station', editStation)
+router.put('/', editStation)
 
 //delete station
-router.delete('/api/station/:stationId', removeStation)
+router.delete('/:stationId', removeStation)
 
 
 

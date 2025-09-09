@@ -38,16 +38,11 @@ async function getById(stationId) {
 async function addStation(station) {
     try {
         const { index, addedBy } = station
-        if (!index || !addedBy) throw 'Name or user(addedBy) missing'
+        if (!index || !addedBy) throw 'Index or user(addedBy) missing'
 
         const collection = await dbService.getCollection(collectionName)
         const name = 'My Station #' + index
-        const stationToAdd = { name, addedBy }
-
-        stationToAdd.thumbnail = "https://www.vicentenews.com/wp-content/uploads/2024/08/DJ-Maphorisa-Kabza-De-Small-OSKIDO-Afro-Wave-feat.-Olodum-Tman-Xpress-Phila-Dlozi.png"
-        stationToAdd.songs = []
-        stationToAdd.tags = []
-        stationToAdd.isPrivate = true
+        const stationToAdd = { ..._getEmptyStation(), name, addedBy }
         await collection.insertOne(stationToAdd)
         return stationToAdd
 
@@ -88,5 +83,16 @@ async function updateStation(station) {
     } catch (err) {
         console.log('StationService Error: Cannot update specified station')
         throw err
+    }
+}
+
+
+
+function _getEmptyStation() {
+    return {
+        thumbnail: "https://www.vicentenews.com/wp-content/uploads/2024/08/DJ-Maphorisa-Kabza-De-Small-OSKIDO-Afro-Wave-feat.-Olodum-Tman-Xpress-Phila-Dlozi.png",
+        songs: [],
+        tags: [],
+        isPrivate: true
     }
 }
