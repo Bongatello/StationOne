@@ -2,7 +2,7 @@ import { userService } from '../services/user/user.service.js'
 
 import { store } from '../store/store'
 
-import { LOAD_USER, REMOVE_LIKED_STATION, ADD_LIKED_STATION } from './user.reducer'
+import { LOAD_USER, REMOVE_LIKED_STATION, ADD_LIKED_STATION, EDIT_LIKED_STATION } from './user.reducer'
 
 //export const userService = {
 //    addStation,
@@ -24,9 +24,9 @@ export async function loadUser(userId) {
 }
 
 
-export async function addLikedStation(userId, station) {
+export async function addLikedStation(user, station) {
     try {
-        await userService.addToLikedStations(userId, station)
+        await userService.addToLikedStations(user, station)
         store.dispatch(getCmdAddLikedStation(station))
     }
     catch (err) {
@@ -42,6 +42,16 @@ export async function removeLikedStation(station) {
     }
     catch (err) {
         console.log('UserActions: unable to remove station from user', err)
+        throw err
+    }
+}
+
+export async function editLikedStation(userId, station) {
+    try{
+        const editedStation = await userService.editLikedStation(userId, station)
+        store.dispatch(getCmdEditLikedStation(editedStation))
+    } catch(err) {
+        console.log('UserActions: unable to edit requested liked station.', err)
         throw err
     }
 }
@@ -67,5 +77,12 @@ function getCmdRemoveLikedStation(station) {
     return {
         type: REMOVE_LIKED_STATION,
         station
+    }
+}
+
+function getCmdEditLikedStation(editedStation){
+    return {
+        type: EDIT_LIKED_STATION,
+        editedStation
     }
 }

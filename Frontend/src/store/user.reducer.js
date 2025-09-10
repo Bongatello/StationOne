@@ -3,6 +3,7 @@ export const ADD_LIKED_STATION = 'ADD_LIKED_STATION'
 export const REMOVE_LIKED_STATION = 'REMOVE_LIKED_STATION'
 //export const REMOVE_USER = 'REMOVE_USER'
 //export const SET_USERS = 'SET_USERS'
+export const EDIT_LIKED_STATION = 'EDIT_LIKED_STATION'
 
 
 const initialState = {
@@ -41,6 +42,16 @@ export function userReducer(state = initialState, action) {
                 likedStations: afterAddLikedStations
             }
             newState = {...state, user: addedStationUser}
+            break
+        
+        case EDIT_LIKED_STATION:
+            const editedStation = action.editedStation
+            const afterEditStations = state.user.likedStations.map(station => station._id === editedStation._id ? {...station, ...editedStation} : station)
+            const stateAfterChanges = {
+                ...state.user,
+                likedStations: afterEditStations
+            }
+            newState = {...state, user: stateAfterChanges}
             break
         default:
     }

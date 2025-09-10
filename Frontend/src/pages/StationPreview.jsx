@@ -54,7 +54,7 @@ export function StationPreview() {
 
 	function isLikedByUser(targetID) { //probably needs to be edited due to mongoDB and userRedux changes
 		const likedByUser = userData
-		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return addToLibrary
+		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} />
 		return <SvgIcon iconName={"removeFromLibrary"} />
 	}
 
@@ -88,9 +88,9 @@ export function StationPreview() {
 					<h1>{station.name}</h1>
 
 					<div className="station-details">
-						<img src="../../img/StationOneLogo.png" className="createdby-img" />
+						<img src={(station.addedBy === "StationOne") ? "/StationOne/img/sologo.png" : userData.image} className="createdby-img" />
 						<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy}</p>
-						<p>• {station.songs.length} songs, </p>
+						<p>• {station.songs.length} {station.songs.length>1 ? 'songs' : 'song'}, </p>
 						<p>{stationDuration}</p>
 					</div>
 

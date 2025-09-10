@@ -4,6 +4,7 @@ import { userService } from '../services/user/user.service.js'
 import { StationsLibraryList } from './StationsLibraryList.jsx'
 import { loadUser } from '../store/user.actions.js'
 import SvgIcon from './SvgIcon.jsx'
+import { stationService } from '../services/station/station.service.js'
 
 
 export function LibraryBar() {
@@ -14,7 +15,7 @@ export function LibraryBar() {
 	}, [userData.likedStations.length])
 
 	async function addNewUserStation(){
-		await userService.addStation()
+		await stationService.addStation(userData)
 	}
 
     

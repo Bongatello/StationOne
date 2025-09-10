@@ -14,13 +14,20 @@
         position: relative;
         width: 48px;
         height: 48px;
-        svg {
+
+        div {
             position: absolute;
-            fill: $clrwhite;
-            display: none;
-            z-index: 1;
-            transform: translate(50%, 50%);
+            width: 48px;
+            height: 48px;
+
+            svg {
+                fill: $clrwhite;
+                display: none;
+                z-index: 1;
+                transform: translate(50%, 50%);
+            }
         }
+
 
         img {
             position: absolute;

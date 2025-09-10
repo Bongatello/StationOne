@@ -7,6 +7,7 @@ export const userService = {
     loadUserData,
     addToLikedStations,
     removeFromLikedStations,
+    editLikedStation,
 }
 
 var axios = Axios.create({
@@ -26,15 +27,7 @@ async function getEmptyStation(index){
 
 
 async function addStation() {
-	let storedUser = await loadFromStorage(STORAGE_KEY)
-
-	
-	if (!storedUser) {
-		storedUser = { ...user }
-		saveToStorage(STORAGE_KEY, storedUser)
-	}
-
-	const newIndex = storedUser.createdStationsCount + 1
+	const newIndex = user.createdStationsCount + 1
 	const myNewStation = await getEmptyStation(newIndex)
 
   const newStation = await axios.post(BASE_URL, myNewStation)
@@ -53,12 +46,14 @@ async function loadUserData(userId) {
 }
 
 
-async function addToLikedStations(userId, station) {
+async function addToLikedStations(user, station) {
     const {_id, name, addedBy, thumbnail} = station
     const miniStation = {_id, name, addedBy, thumbnail}
 
-    const userToEdit = {}
-    userToEdit._id = userId
+    const userToEdit = {
+      _id: user._id,
+      likedStations: user.likedStations
+    }
     userToEdit.likedStations.unshift(miniStation)
 
     await axios.put(BASE_URL, userToEdit)
@@ -78,4 +73,15 @@ function removeFromLikedStations(station) {
   saveToStorage(STORAGE_KEY, storedUser)
   return storedUser
 
+}
+
+async function editLikedStation(userId, station) {
+  try{
+    const reqBody = {userId, station}
+    const editedStation = await axios.put(BASE_URL, reqBody)
+    return editedStation.data
+  } catch(err) {
+    console.log('UserService: Requested liked station could not be edited, ', err)
+    throw err
+  }
 }

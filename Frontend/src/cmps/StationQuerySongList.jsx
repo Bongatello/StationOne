@@ -3,6 +3,7 @@ import { useParams } from "react-router"
 import { getStations, editStation } from "../store/station.actions.js"
 import { useSelector } from "react-redux"
 import { setPlayerStation } from '../store/player.actions';
+import { makeNewPlaylistCover } from "../services/station/station.service.js";
 
 export function StationQuerySongList({song}){
     const params = useParams()
@@ -11,7 +12,7 @@ export function StationQuerySongList({song}){
     async function addSongToStation(){
         const songs = station.songs
         const songToAdd = {
-            cover: song.images[2].url,
+            cover: song.images[0].url,
             name: song.songName,
             artists: song.artists.join(', '),
             durationMs: song.durationMs,
@@ -24,6 +25,7 @@ export function StationQuerySongList({song}){
             _id: params.stationId,
             songs: songs
         }
+        if (songs.length === 4 || songs.length === 1 || songs.length === 0) editedStation.thumbnail = makeNewPlaylistCover(songs)
         await editStation(editedStation)
         await setPlayerStation(params.stationId)
         return

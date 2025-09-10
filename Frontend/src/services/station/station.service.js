@@ -2,7 +2,7 @@ import { storageService } from '../async-storage.service.js'
 import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.service'
 import { userService } from '../user/user.service.js'
 import axios from 'axios';
-
+import { addLikedStation } from '../../store/user.actions.js';
 const BASE_URL = '//localhost:3000/api/station'
 
 export const stationService = {
@@ -11,6 +11,7 @@ export const stationService = {
   loadStations,
   combineUserDefaultStations,
   editStation,
+  addStation,
 }
 
 
@@ -64,10 +65,44 @@ async function combineUserDefaultStations() {
 
 async function editStation(station) {
   try {
+    //station.
     const editedStation = await axios.put(BASE_URL, station)
     return editedStation.data
   } catch (err) {
     console.log('StationService: There was an error trying to edit station ', err)
     throw err
+  }
+}
+
+async function addStation(user) {
+  try {
+    const station = {
+      index: 5,
+      addedBy: user.name
+    }
+    const addedStation = await axios.post(BASE_URL, station)
+    await addLikedStation(user, addedStation.data)
+    return 'Added station successfully!'
+  } catch (err) {
+    console.log('StationService: There was an error trying to add station ', err)
+    throw err
+  }
+}
+
+export function makeNewPlaylistCover(songs) {
+  try{
+    if (!songs.length) return "https://www.vicentenews.com/wp-content/uploads/2024/08/DJ-Maphorisa-Kabza-De-Small-OSKIDO-Afro-Wave-feat.-Olodum-Tman-Xpress-Phila-Dlozi.png"
+    if (songs.length>0 && songs.length<=3) return songs[0].cover
+/*     if (songs.length>3) {
+      return {
+        imageTL: songs[0].cover,
+        imageTR: songs[1].cover,
+        imageBL: songs[2].cover,
+        imageBR: songs[3].cover
+      }
+    } */
+   return
+  } catch(err) {
+
   }
 }

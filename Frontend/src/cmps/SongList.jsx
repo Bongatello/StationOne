@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { editStation } from '../store/station.actions.js';
 import SvgIcon from './SvgIcon.jsx';
-
+import { makeNewPlaylistCover } from '../services/station/station.service.js';
 export function SongList({ song, index }) {
     const playerData = useSelector(state => state.playerModule)
     const station = useSelector(state => state.stationModule.selectedStation)
@@ -34,6 +34,7 @@ export function SongList({ song, index }) {
             _id: station._id,
             songs: songs
         }
+        if (songs.length === 4 || songs.length === 1 || songs.length === 0) editedStation.thumbnail = makeNewPlaylistCover(songs)
         await editStation(editedStation)
         await setPlayerStation(station._id)
         return console.log('Removed song from station')

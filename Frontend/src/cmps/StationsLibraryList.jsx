@@ -35,8 +35,8 @@ export function StationsLibraryList({ station }) {
                             e.stopPropagation()
                             playPauseLogic()
                         }}>
-                            {(!playerData.player.isPlaying || !(station._id === playerData.station._id)) && <SvgIcon iconName={"libraryPlayButton"} />} {/* song is not playing OR song is not selected, show play button */}
-                            {playerData.player.isPlaying && station._id === playerData.station._id && <SvgIcon iconName={"libraryPauseButton"} />} {/* song is playing AND song is selected, show pause button */}
+                            {(!playerData.player.isPlaying || !(station._id === playerData.station._id)) && <SvgIcon iconName={"libraryPauseButton"} />} {/* song is not playing OR song is not selected, show play button */}
+                            {playerData.player.isPlaying && station._id === playerData.station._id && <SvgIcon iconName={"libraryPlayButton"} />} {/* song is playing AND song is selected, show pause button */}
                         </div>
                     }
                     <img src={station.thumbnail} />

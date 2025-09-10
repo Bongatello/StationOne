@@ -41,6 +41,7 @@ export async function updateDefaultAndLikedList() {
 export async function editStation(station) {
     try {
         const editedStation = await stationService.editStation(station)
+        if (station.thumbnail || station.name) console.log('Lets imagine the userModule (redux) was also updated, so libraryBar wouldve been updated too ')
         store.dispatch(getCmdEditStation(editedStation))
         console.log('StationActions: successfully edited station')
     } catch (err) {
@@ -48,6 +49,17 @@ export async function editStation(station) {
         throw err
     }
 }
+
+/* export async function addStation(user) {
+    try {
+        const addedStation = await stationService.addStation(user)
+        store.dispatch(getCmdAddStation(addedStation))
+        console.log('StationActions: Successfully added station')
+    } catch (err) {
+        console.log('StationActions: There was an error adding station, ', err)
+        throw err
+    }
+} */
 
 
 
@@ -81,8 +93,15 @@ function getCmdEditStation(editedStation) {
 }
 
 function getCmdSetSelectedStation(selectedStation) {
-    return{
+    return {
         type: SET_SELECTED_STATION,
         selectedStation
     }
 }
+
+/* function getCmdAddStation(addedStation) {
+    return {
+        type: ADD_LIKED_STATION,
+        addedStation
+    }
+} */
