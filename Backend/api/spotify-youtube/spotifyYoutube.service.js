@@ -7,7 +7,7 @@ var SpotifyTemporaryToken = undefined
 export const spotifyYoutubeService = {
   getTempSpotifyToken,
   processSpotifyQueryData,
-  getSpotifyQueryData,
+  getSpotifySongs,
   getYoutubeVideo,
 }
 
@@ -39,7 +39,7 @@ async function processSpotifyQueryData(queryData, q, limit) {
     const queryResults = await queryData.json()
     const myQueryResults = []
 
-    if (!queryResults) getSpotifyQueryData(q, limit)
+    if (!queryResults) getSpotifySongs(q, limit)
     queryResults.tracks.items.forEach(item => {
       const artistNames = item.artists.map(artist => artist.name)
       const newItem = {
@@ -66,7 +66,7 @@ async function processSpotifyQueryData(queryData, q, limit) {
   }
 }
 
-async function getSpotifyQueryData(q, limit) {
+async function getSpotifySongs(q, limit) {
   //if we dont have a spotify api token (the temporary one you get using id+secret), we use the function getTempSpotifyToken which sends the credentials again to get a new token, else just go straight into querying spotify api
   if (!SpotifyTemporaryToken) SpotifyTemporaryToken = await getTempSpotifyToken()
 
@@ -82,6 +82,17 @@ async function getSpotifyQueryData(q, limit) {
   const cleanQueryResults = await processSpotifyQueryData(unprocessedResults, q, limit)
   console.log('got cleanQueryResults: ', cleanQueryResults)
   return cleanQueryResults
+}
+
+async function getSpotifyStations(genre, limit) {
+  if (!SpotifyTemporaryToken) SpotifyTemporaryToken = await getTempSpotifyToken()
+
+  const unprocessedStations = await fetch(`https://api.spotify.com/v1/search?q=genre:${genre}&type=playlist&limit=${limit}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${SpotifyTemporaryToken}`
+    }
+  })
 }
 
 async function getYoutubeVideo(inputData) {

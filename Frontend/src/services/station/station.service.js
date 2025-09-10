@@ -107,3 +107,13 @@ export function makeNewPlaylistCover(songs) {
     throw err
   }
 }
+
+export async function getSpotifyStations(genre){
+  try{
+    const stations = await axios.get(`http://localhost:3000/api/sy/stations`, {params: {genre: genre}})
+    return stations.data
+  } catch (err) {
+    console.log('StationService: There was an error retrieveing spotify default stations, ', err)
+    throw err
+  }
+}

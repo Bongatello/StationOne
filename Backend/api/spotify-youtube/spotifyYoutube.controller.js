@@ -5,11 +5,11 @@ export async function getSpotifySongs(req, res) {
     try {
         const q = req.query.q
         const limit = 10
-        if (!q) return res.status(400).json({ error: 'Missing search query (Spotify)' })
-        const queryResults = await spotifyYoutubeService.getSpotifyQueryData(q, limit)
+        if (!q) return res.status(400).json({ error: 'Missing search query (Spotify Songs)' })
+        const queryResults = await spotifyYoutubeService.getSpotifySongs(q, limit)
         res.send(queryResults)
     } catch (err) {
-        console.log('spotifyYoutube Controller: There was an error getting songs from spotify: ', err)
+        console.log('SpotifyYoutube Controller: There was an error getting songs from spotify: ', err)
         throw err
     }
 }
@@ -21,7 +21,20 @@ export async function getYoutubeMusic(req, res) {
         const data = await spotifyYoutubeService.getYoutubeVideo(inputData)
         res.json(data)
     } catch (error) {
-        console.error('YouTube API error:', error)
+        console.log('YouTube API error:', error)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+}
+
+export async function getSpotifyStations(req, res) {
+    try {
+        const inputData = req.query.genre
+        const limit = 10
+        if (!inputData) return res.status(400).json({ error: 'Missing search query (Spotify Stations)' })
+        const queryResults = await spotifyYoutubeService.getSpotifyStations(q, limit)
+        res.send(queryResults)
+    } catch (err) {
+        console.log('SpotifyYoutube Controller: There was an error getting stations from spotify: ', err)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 }

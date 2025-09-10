@@ -3,9 +3,9 @@ import { useEffect, useState } from "react"
 import { StationsHomeList } from "../cmps/StationsHomeList.jsx"
 import { useSelector } from 'react-redux'
 import { getStations } from "../store/station.actions.js"
-
+import { getSpotifyStations } from "../services/station/station.service.js"
 export function HomePage() {
-    
+
     const stations = useSelector(state => state.stationModule.stations)
 
     useEffect(() => {
@@ -14,17 +14,19 @@ export function HomePage() {
 
     }, [])
 
-    function postByGenre(genre){
-        return stations.map(station => {
-            if(station.tags.includes(genre)){
+    async function postByGenre(genre) {
+        try {
+            const stations = await getSpotifyStations(genre)
+            return stations.map(station => {
                 return (
                     <div className="home-station-wrapper">
-                        <StationsHomeList station={station} genre={genre}/>
+                        <StationsHomeList station={station} genre={genre} />
                     </div>
-                    )
-            }
-        
-        })
+                )
+            })
+        } catch (err) {
+
+        }
     }
 
 
@@ -39,7 +41,7 @@ export function HomePage() {
             <section className="homepage-genre-section">
                 <h2>Funk Stations</h2>
                 <div className="home-stations-by-genre-container">
-                    {postByGenre('Funk')}
+                    {postByGenre('Pop')}
                 </div>
             </section>
 
@@ -60,14 +62,14 @@ export function HomePage() {
             <section className="homepage-genre-section">
                 <h2>Rock Stations</h2>
                 <div className="home-stations-by-genre-container">
-                    {postByGenre('Rock')}
+                    {postByGenre('Techno')}
                 </div>
             </section>
 
             <section className="homepage-genre-section">
-                <h2>R&B and Soul Stations</h2>
+                <h2>Hebrew Stations</h2>
                 <div className="home-stations-by-genre-container">
-                    {postByGenre('R&B')}
+                    {postByGenre('ים-תיכוני')}
                 </div>
             </section>
         </div >
