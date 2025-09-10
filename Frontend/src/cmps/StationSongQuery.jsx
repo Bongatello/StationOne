@@ -2,19 +2,19 @@ import React, { useRef, useState, useEffect } from 'react'
 import { StationQuerySongList } from './StationQuerySongList.jsx'
 import { songsService } from '../services/songs/songs.service.js'
 import SvgIcon from './SvgIcon.jsx'
-export function StationSongQuery() {
+
+export function StationSongQuery(props) {
     const spotifyInputQuery = useRef('')
-    const [querySongs, setQuerySongs] = useState([])
-    const [isQuerySongs, setIsQuerySongs] = useState(false)
 
     async function spotifyQuery() {
         const text = spotifyInputQuery.current.value
         const queriedSongs = await songsService.queryByText(text)
-        setQuerySongs(queriedSongs)
+        props.updateQuerySongs(queriedSongs)
     }
 
     function toggleQuerySongs() {
-        setIsQuerySongs(prev => !prev)
+        props.updateQuerySongs([]) //a simple line that was missing, which clears out the queried songs (upon closing the song query, the queried songs still stayed up)
+        props.updateIsQuerySongs()
     }
 
     return (
@@ -22,7 +22,7 @@ export function StationSongQuery() {
             <div className="playlist-song-query-wrapper">
                 <div className="main-actions">
                     <div>
-                        {isQuerySongs &&
+                        {props.isQuerySongs &&
                             <div className="text-input-wrapper">
                                 <h1>Let's find something for your playlist</h1>
                                 <div className="query">
@@ -36,18 +36,19 @@ export function StationSongQuery() {
                     </div>
 
                     <div onClick={toggleQuerySongs} className='toggler-wrapper'>
-                        {!isQuerySongs &&
+                        {!props.isQuerySongs &&
                             <h2 className='find-more'>Find more</h2>
                         }
-                        {isQuerySongs &&
-                            <SvgIcon iconName={"stationSpotifyQueryClose"}/>
+                        {props.isQuerySongs &&
+                            <SvgIcon iconName={"stationSpotifyQueryClose"} />
                         }
                     </div>
                 </div>
             </div>
 
+
             <div className='spotify-query-list'>
-                {querySongs.length > 0 && querySongs.map(song => {
+                {props.querySongs.length > 0 && props.querySongs.map(song => {
                     return (
                         <ul key={song._id}>
                             <StationQuerySongList song={song} />
@@ -55,6 +56,7 @@ export function StationSongQuery() {
                     )
                 })}
             </div>
+
         </div>
     )
 }

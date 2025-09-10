@@ -18,20 +18,28 @@ export function StationPreview() {
 	const userData = useSelector(state => state.userModule.user)
 	const station = useSelector(state => state.stationModule.selectedStation)
 	const [stationDuration, setStationDuration] = useState('')
+	const [isQuerySongs, setIsQuerySongs] = useState(false)
+	const [querySongs, setQuerySongs] = useState([])
 	const params = useParams()
 
 	useEffect(() => {
 		loadUser('68bb2208d5ea1ed6ddb82b4a')
 		setStationDuration(getStationDuration())
 		setSelectedStation(params.stationId)
-		console.log('Set selected station to: ', params.stationId)
+		setIsQuerySongs(false)
+		setQuerySongs([])
 	}, [params, station.songs.length])
 
+	function updateIsQuerySongs() {
+		setIsQuerySongs(prev => !prev)
+	}
 
-
+	function updateQuerySongs(queriedSongs) {
+		setQuerySongs(queriedSongs)
+	}
 
 	function addRemoveFromList() {
-		const likedStations = userData //probably needs to be edited due to mongoDB and userRedux changes
+		const likedStations = userData.likedStations //probably needs to be edited due to mongoDB and userRedux changes
 		const index = likedStations.likedStations.findIndex(likedStation => likedStation._id === station._id)
 		if (index === -1) {
 			//addLikedStation(station) //probably needs to be edited due to mongoDB and userRedux changes
@@ -102,7 +110,7 @@ export function StationPreview() {
 				<div className="station-actions-songs-wrapper">
 					<div className="station-actions">
 						<div className="play-pause-button-wrapper action-wrapper" onClick={playPauseLogic}>
-							{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
+							{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"}/> : <SvgIcon iconName={"playButton"}/>}
 						</div>
 
 						<div className="add-remove-library-wrapper action-wrapper" onClick={addRemoveFromList}>
@@ -145,7 +153,7 @@ export function StationPreview() {
 				<div className="station-actions-songs-wrapper">
 					<div className="station-actions">
 						<div className='invite-collaborators-wrapper action-wrapper'>
-							<SvgIcon iconName={"inviteCollaborators"} />
+							<SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
 						</div>
 						<div className="extra-options-wrapper action-wrapper">
 							<SvgIcon iconName={"extraOptions"} />
@@ -153,7 +161,7 @@ export function StationPreview() {
 					</div>
 				</div>
 			}
-			<StationSongQuery />
+			<StationSongQuery isQuerySongs={isQuerySongs} updateIsQuerySongs={updateIsQuerySongs} querySongs={querySongs} updateQuerySongs={updateQuerySongs} />
 		</div>
 	)
 }

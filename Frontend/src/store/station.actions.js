@@ -3,6 +3,8 @@ import { stationService } from '../services/station/station.service.js'
 import { store } from './store.js'
 
 import { EDIT_STATION, GET_STATIONS, UPDATE_STATION_LIST, SET_SELECTED_STATION } from './station.reducer.js'
+import { editUser } from './user.actions.js'
+import { useSelector } from 'react-redux'
 
 export async function getStations() {
     try {
@@ -38,10 +40,17 @@ export async function updateDefaultAndLikedList() {
     }
 }
 
-export async function editStation(station) {
+export async function editStation(station, user) {
     try {
         const editedStation = await stationService.editStation(station)
-        if (station.thumbnail || station.name) console.log('Lets imagine the userModule (redux) was also updated, so libraryBar wouldve been updated too ')
+        if (station.thumbnail || station.name) {
+            const editedLikedStations = user.likedStations.map(likedStation => likedStation._id === station._id ? {...likedStation, ...station} : likedStation)
+            const userToEdit = {
+                _id: user._id,
+                likedStations: editedLikedStations              
+            }
+            await editUser(userToEdit)
+        }
         store.dispatch(getCmdEditStation(editedStation))
         console.log('StationActions: successfully edited station')
     } catch (err) {

@@ -90,19 +90,20 @@ async function addStation(user) {
 }
 
 export function makeNewPlaylistCover(songs) {
-  try{
+  try {
     if (!songs.length) return "https://www.vicentenews.com/wp-content/uploads/2024/08/DJ-Maphorisa-Kabza-De-Small-OSKIDO-Afro-Wave-feat.-Olodum-Tman-Xpress-Phila-Dlozi.png"
-    if (songs.length>0 && songs.length<=3) return songs[0].cover
-/*     if (songs.length>3) {
-      return {
-        imageTL: songs[0].cover,
-        imageTR: songs[1].cover,
-        imageBL: songs[2].cover,
-        imageBR: songs[3].cover
-      }
-    } */
-   return
-  } catch(err) {
-
+    if (songs.length > 0 && songs.length <= 3) return songs[0].cover
+    /*     if (songs.length>3) {
+          return {
+            imageTL: songs[0].cover,
+            imageTR: songs[1].cover,
+            imageBL: songs[2].cover,
+            imageBR: songs[3].cover
+          }
+        } */
+    return
+  } catch (err) {
+    console.log('StationService: Could not make a new playlist cover. ', err)
+    throw err
   }
 }

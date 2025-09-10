@@ -7,7 +7,7 @@ export const userService = {
     loadUserData,
     addToLikedStations,
     removeFromLikedStations,
-    editLikedStation,
+    editUser,
 }
 
 var axios = Axios.create({
@@ -69,17 +69,14 @@ function removeFromLikedStations(station) {
   if (index !== -1) {
     storedUser.likedStations.splice(index, 1)
   }
-
   saveToStorage(STORAGE_KEY, storedUser)
   return storedUser
-
 }
 
-async function editLikedStation(userId, station) {
+async function editUser(userToEdit) {
   try{
-    const reqBody = {userId, station}
-    const editedStation = await axios.put(BASE_URL, reqBody)
-    return editedStation.data
+    const editedUser = await axios.put(BASE_URL, userToEdit)
+    return editedUser.data
   } catch(err) {
     console.log('UserService: Requested liked station could not be edited, ', err)
     throw err

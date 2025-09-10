@@ -2,8 +2,8 @@
     background-color: $clrdarkgray;
     height: 100%;
     width: 97%;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 1.5%;
+    padding-right: 1.5%;
 
     
     color: $clrwhite;
@@ -169,6 +169,7 @@
 
                 display: grid;
                 grid-template-columns: 2% 53% 25% 15% 5%;
+                grid-template-columns: minmax(20px, 2%) minmax(490px, 53%) minmax(252px, 25%) 15% 5%;
                 grid-template-areas: '_index _title _album _added _length';
                 align-items: center;
                 

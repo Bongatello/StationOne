@@ -1,6 +1,6 @@
 .song-preview {
     display: grid;
-    grid-template-columns: 2% 4% 49% 25% 15% 5%;
+    grid-template-columns: minmax(20px, 2%) minmax(40px,4%) minmax(450px, 49%) minmax(252px, 25%) 15% 5%;
     grid-template-areas: '_index _thumb _title _album _added _length';
     padding-left: 16px;
     padding-right: 16px;
@@ -29,6 +29,7 @@
         img {
             border-radius: 6px;
             height: 40px;
+            width: 40px;
         }
     }
 

@@ -8,6 +8,7 @@ import { makeNewPlaylistCover } from "../services/station/station.service.js";
 export function StationQuerySongList({song}){
     const params = useParams()
     const station = useSelector(state => state.stationModule.selectedStation)
+    const user = useSelector(state => state.userModule.user)
 
     async function addSongToStation(){
         const songs = station.songs
@@ -26,7 +27,7 @@ export function StationQuerySongList({song}){
             songs: songs
         }
         if (songs.length === 4 || songs.length === 1 || songs.length === 0) editedStation.thumbnail = makeNewPlaylistCover(songs)
-        await editStation(editedStation)
+        await editStation(editedStation, user)
         await setPlayerStation(params.stationId)
         return
     }
