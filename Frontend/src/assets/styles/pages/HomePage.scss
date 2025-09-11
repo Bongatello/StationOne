@@ -11,6 +11,10 @@
     grid-row-gap: 32px;
 
     .homepage-genre-section{
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 8px;
+        height: calc(303.5px + 8px); 
         h2{
             font-size: 1.5rem;
             padding-left: 12px;
@@ -19,7 +23,7 @@
 
     .home-stations-by-genre-container{
         display: grid;
-    
+
         grid-template-rows: 247.5px;
         grid-template-columns: 195.5px;
     

@@ -31,7 +31,7 @@ export async function getSpotifyStations(req, res) {
         const inputData = req.query.genre
         const limit = 10
         if (!inputData) return res.status(400).json({ error: 'Missing search query (Spotify Stations)' })
-        const queryResults = await spotifyYoutubeService.getSpotifyStations(q, limit)
+        const queryResults = await spotifyYoutubeService.getSpotifyStations(inputData, limit)
         res.send(queryResults)
     } catch (err) {
         console.log('SpotifyYoutube Controller: There was an error getting stations from spotify: ', err)

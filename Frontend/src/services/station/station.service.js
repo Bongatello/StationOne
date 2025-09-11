@@ -12,6 +12,7 @@ export const stationService = {
   combineUserDefaultStations,
   editStation,
   addStation,
+  setSpotifyStations,
 }
 
 
@@ -108,10 +109,10 @@ export function makeNewPlaylistCover(songs) {
   }
 }
 
-export async function getSpotifyStations(genre){
+async function setSpotifyStations(genre){
   try{
-    const stations = await axios.get(`http://localhost:3000/api/sy/stations`, {params: {genre: genre}})
-    return stations.data
+    const spotifyStations = await axios.get(`http://localhost:3000/api/sy/stations`, {params: {genre: genre}})
+    return spotifyStations.data
   } catch (err) {
     console.log('StationService: There was an error retrieveing spotify default stations, ', err)
     throw err

@@ -1,12 +1,29 @@
-.home-station-object{
+.home-station-object {
     height: 100%;
     width: 100%;
-    img{
-        border-radius: 6px;
+
+    .home-station-image {
+        height: 171.5px;
+        width: 171.5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        img{
+            max-height: 171.5px;
+            max-width: auto;
+            border-radius: 6px
+        }
     }
 
-    p{
+    p {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* Limit to 2 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
         font-size: 0.875rem;
-        color: $clrwhite;
+        color: $clrsubtxt;
     }
+
 }

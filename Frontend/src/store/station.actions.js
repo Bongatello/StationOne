@@ -2,7 +2,7 @@ import { stationService } from '../services/station/station.service.js'
 
 import { store } from './store.js'
 
-import { EDIT_STATION, GET_STATIONS, UPDATE_STATION_LIST, SET_SELECTED_STATION } from './station.reducer.js'
+import { EDIT_STATION, GET_STATIONS, UPDATE_STATION_LIST, SET_SELECTED_STATION, GET_SPOTIFY_STATIONS } from './station.reducer.js'
 import { editUser } from './user.actions.js'
 import { useSelector } from 'react-redux'
 
@@ -70,6 +70,17 @@ export async function editStation(station, user) {
     }
 } */
 
+export async function getSpotifyStations(genres) {
+    try{
+        const stationsToAdd = await stationService.setSpotifyStations(genres)
+        //const newStations = {[genre]: stationsToAdd}
+        store.dispatch(getCmdGetSpotifyStations(stationsToAdd))
+    } catch(err) {
+        console.log('StationActions: There was an error getting spotify stations, ', err)
+        throw err
+    }
+}
+
 
 
 // Command Creators:
@@ -105,6 +116,13 @@ function getCmdSetSelectedStation(selectedStation) {
     return {
         type: SET_SELECTED_STATION,
         selectedStation
+    }
+}
+
+function getCmdGetSpotifyStations(stationsToAdd) {
+    return {
+        type: GET_SPOTIFY_STATIONS,
+        stationsToAdd
     }
 }
 
