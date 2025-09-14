@@ -1,11 +1,9 @@
 .station-page-container {
     background-color: $clrdarkgray;
     height: 100%;
-    width: 97%;
-    padding-left: 1.5%;
-    padding-right: 1.5%;
+    width: 100%;
 
-    
+
     color: $clrwhite;
 
     .songs-grid {
@@ -14,53 +12,58 @@
         grid-template-columns: x;
     }
 
-    .station-cover-details-wrapper{
+    .station-cover-details-wrapper {
+        padding-left: 1.5%;
+        padding-right: 1.5%;
         margin-bottom: 24px;
         display: grid;
         grid-template-columns: minmax(128px, 232px) 77.5%;
         grid-column-gap: 5px;
-        grid-template-areas: 
+        grid-template-areas:
             '_cover _details';
-        
-        p{
+
+        p {
             margin-left: 6px;
             line-height: 3;
         }
-        
-        .station-cover{
+
+        .station-cover {
             grid-area: _cover;
             display: flex;
-            align-items:start;
+            align-items: start;
             justify-content: center;
-            margin-top: 49.6px;      
-            img{
+            margin-top: 49.6px;
+
+            img {
                 border-radius: 6px;
                 width: 100%;
                 aspect-ratio: 1;
             }
 
         }
-        
 
-        .station-details-container{
+
+        .station-details-container {
             grid-area: _details;
-            display:flex;
+            display: flex;
             flex-direction: column;
             justify-content: flex-end;
             margin-left: 24px;
             font-size: 0.875rem;
             margin-top: 104px;
-            p{
+
+            p {
                 margin: 0;
             }
-            h1{
+
+            h1 {
                 font-size: clamp(2rem, 8.2vw, 6rem);
-                
+
                 margin-top: -30px;
                 margin-bottom: -20px;
             }
 
-            .station-details{
+            .station-details {
 
                 display: flex;
                 align-items: center;
@@ -69,7 +72,7 @@
                 height: 24px;
                 margin-top: 8px;
 
-                .createdby-img{
+                .createdby-img {
                     object-fit: cover;
                     display: block;
                     width: 24px;
@@ -80,85 +83,94 @@
         }
     }
 
-    .station-actions-songs-wrapper{
-        .action {
+    .station-actions-songs-wrapper {
+        background-color: #12121266;
+        padding-left: 1.5%;
+        padding-right: 1.5%;
 
-        }
-        .action:hover {
-            
-        }
+        .action {}
+
+        .action:hover {}
+
         .action-wrapper {
             display: flex;
             position: relative;
             margin-right: 24px;
         }
-        .station-actions{
+
+        .station-actions {
             display: flex;
             flex-direction: row;
             height: 104px;
             align-items: center;
 
-            .play-pause-button-wrapper{
+            .play-pause-button-wrapper {
                 height: 56px;
                 aspect-ratio: 1;
                 border-radius: 50%;
                 background-color: $clrgreen;
-    
-                svg{
+
+                svg {
                     position: absolute;
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
                 }
             }
-    
-            .play-pause-button-wrapper:hover{
+
+            .play-pause-button-wrapper:hover {
                 background-color: #3be477;
             }
-    
-            .extra-options-wrapper{
+
+            .extra-options-wrapper {
                 height: 56px;
                 width: 32px;
                 fill: $clrsubtxt;
-                svg{
+
+                svg {
                     position: absolute;
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
                 }
             }
-            .extra-options-wrapper:hover{
+
+            .extra-options-wrapper:hover {
                 fill: $clrwhite;
             }
 
-            .add-remove-library-wrapper{
-                
-                .add-to-library{
+            .add-remove-library-wrapper {
+
+                .add-to-library {
                     justify-self: center;
                     fill: $clrsubtxt;
                 }
-                .add-to-library:hover{
+
+                .add-to-library:hover {
                     fill: $clrwhite;
                 }
-    
-                svg{
+
+                svg {
                     fill: $clrgreen;
                 }
-                svg:hover{
+
+                svg:hover {
                     fill: #3be477;
                 }
             }
-            .invite-collaborators{
+
+            .invite-collaborators {
                 fill: $clrsubtxt;
-                
+
             }
-            .invite-collaborators:hover{
+
+            .invite-collaborators:hover {
                 fill: $clrwhite;
             }
         }
 
-        .station-songs-container{
-            .song-preview-headlines{
+        .station-songs-container {
+            .song-preview-headlines {
                 margin-bottom: 16px;
                 padding-left: 16px;
                 padding-right: 16px;
@@ -172,32 +184,34 @@
                 grid-template-columns: minmax(20px, 2%) minmax(490px, 53%) minmax(252px, 25%) 15% 5%;
                 grid-template-areas: '_index _title _album _added _length';
                 align-items: center;
-                
-                .song-index{
+
+                .song-index {
                     grid-area: _index;
                     font-size: 0.875rem;
                 }
-            
-                .song-title{
+
+                .song-title {
                     grid-area: _title;
                     font-size: 0.875rem;
                 }
 
-                .song-album{
+                .song-album {
                     grid-area: _album;
                     font-size: 0.875rem;
                 }
-            
-                .song-added{
+
+                .song-added {
                     grid-area: _added;
                     font-size: 0.875rem;
                 }
-            
-                .song-length{
+
+                .song-length {
                     grid-area: _length;
-                    i{
+
+                    i {
                         justify-content: end;
                     }
+
                     fill: $clrsubtxt;
                     text-align: end;
                 }

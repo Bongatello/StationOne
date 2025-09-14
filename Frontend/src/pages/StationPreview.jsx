@@ -1,15 +1,16 @@
-//react
-import React, { useState, useEffect } from 'react'
+//react and libraries
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import ColorThief from 'colorthief'
 //cmps
 import { SongList } from '../cmps/SongList.jsx'
 import { StationSongQuery } from '../cmps/StationSongQuery.jsx'
 import SvgIcon from '../cmps/SvgIcon.jsx'
 //service-functions/actions
-import { loadUser, addLikedStation, removeLikedStation } from '../store/user.actions.js'
-import { setSelectedStation, getStations } from '../store/station.actions.js'
-import { togglePlayerState, getPlayingSong, setPlayingSong, setPlayerStation } from '../store/player.actions'
+import { loadUser } from '../store/user.actions.js'
+import { setSelectedStation } from '../store/station.actions.js'
+import { togglePlayerState, setPlayingSong, setPlayerStation } from '../store/player.actions'
 import { formatStationDuration } from '../services/util.service.js'
 import { songsService } from '../services/songs/songs.service.js'
 
@@ -18,23 +19,24 @@ export function StationPreview() {
 	const playerData = useSelector(state => state.playerModule)
 	const userData = useSelector(state => state.userModule.user)
 	const station = useSelector(state => state.stationModule.selectedStation)
-	const spotifyStations = useSelector(state => state.stationModule.spotifyStations) 
 	const [stationDuration, setStationDuration] = useState('')
 	const [isQuerySongs, setIsQuerySongs] = useState(false)
 	const [querySongs, setQuerySongs] = useState([])
+	const [color, setColor] = useState(null)
 	const params = useParams()
 	const location = useLocation()
 	const route = location.pathname.split("/")[2]
+	const imgRef = useRef(null)
 
 	useEffect(() => {
 		loadUser('68bb2208d5ea1ed6ddb82b4a')
 		setStationDuration(getStationDuration())
-		console.log(route)
 		if (route === 'station') setSelectedStation(params.stationId)
 		if (route === 'playlist') setSelectedStation(params.playlistId)
 		setIsQuerySongs(false)
 		setQuerySongs([])
-	}, [params, station.songs.length])
+		colorThiefCover()
+	}, [params, station.songs?.length])
 
 	function updateIsQuerySongs() {
 		setIsQuerySongs(prev => !prev)
@@ -59,7 +61,7 @@ export function StationPreview() {
 
 	function getStationDuration() {
 		var totalDuration = 0
-		station.songs.forEach(song => {
+		station.songs?.forEach(song => {
 			totalDuration += song.durationMs
 		})
 		const formattedDuration = formatStationDuration(totalDuration)
@@ -70,6 +72,13 @@ export function StationPreview() {
 		const likedByUser = userData
 		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} />
 		return <SvgIcon iconName={"removeFromLibrary"} />
+	}
+
+	function colorThiefCover() {
+		if (imgRef.current && imgRef.current.complete) {
+			const colorThief = new ColorThief();
+			setColor(colorThief.getColor(imgRef.current));
+		}
 	}
 
 	function playPauseLogic() {
@@ -84,34 +93,36 @@ export function StationPreview() {
 		}
 	}
 
-/* 	if (route === 'playlist') {
-		if (!station) {
-			const idx = spotifyStations.
-		}
-	} */
-
-	if (route === 'station') {
-		if (!station.name) {
+	if (!station.name) {
 		return <p>Loading station...</p>
 	}
-	}
+
 	return (
-		<div className="station-page-container">
+		<div className="station-page-container"
+			style={{
+				background: `linear-gradient(
+			to bottom,
+			rgb(${color?.join(",")}) 0%,
+			#121212 41%
+		)`}}>
 			<div className="station-cover-details-wrapper">
 
 				<div className="station-cover">
-					<img src={station.thumbnail} />
+					<img ref={imgRef} src={station.thumbnail} crossOrigin="anonymous" onLoad={() => {
+						const colorThief = new ColorThief()
+						setColor(colorThief.getColor(imgRef.current))
+					}} />
 				</div>
 
 
-				<div className="station-details-container">
+				<div className="station-details-container" >
 					<p>Public Station</p>
 					<h1>{station.name}</h1>
 
 					<div className="station-details">
 						<img src={(station.addedBy === "StationOne") ? "/StationOne/img/sologo.png" : userData.image} className="createdby-img" />
 						<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy}</p>
-						<p>• {station.songs.length} {station.songs.length>1 ? 'songs' : 'song'}, </p>
+						<p>• {station.songs.length} {station.songs.length > 1 ? 'songs' : 'song'}, </p>
 						<p>{stationDuration}</p>
 					</div>
 
@@ -123,7 +134,7 @@ export function StationPreview() {
 				<div className="station-actions-songs-wrapper">
 					<div className="station-actions">
 						<div className="play-pause-button-wrapper action-wrapper" onClick={playPauseLogic}>
-							{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"}/> : <SvgIcon iconName={"playButton"}/>}
+							{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
 						</div>
 
 						<div className="add-remove-library-wrapper action-wrapper" onClick={addRemoveFromList}>
