@@ -3,7 +3,7 @@ import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.servi
 import { userService } from '../user/user.service.js'
 import axios from 'axios';
 import { addLikedStation } from '../../store/user.actions.js';
-const BASE_URL = '//localhost:3000/api/station'
+import { setSelectedStation } from '../../store/station.actions.js';
 
 export const stationService = {
   query,
@@ -13,10 +13,10 @@ export const stationService = {
   editStation,
   addStation,
   setSpotifyStations,
-  getSpotifyStationSongsById,
+  addExistingStation,
 }
 
-
+const BASE_URL = '//localhost:3000/api/station'
 const STORAGE_KEY = 'stationsDB';
 
 function query(filterBy = {}) {
@@ -110,9 +110,9 @@ export function makeNewPlaylistCover(songs) {
   }
 }
 
-async function setSpotifyStations(genre){
-  try{
-    const spotifyStations = await axios.get(`http://localhost:3000/api/sy/stations`, {params: {genre: genre}})
+async function setSpotifyStations(genre) {
+  try {
+    const spotifyStations = await axios.get(`http://localhost:3000/api/sy/stations`, { params: { genre: genre } })
     return spotifyStations.data
   } catch (err) {
     console.log('StationService: There was an error retrieveing spotify default stations, ', err)
@@ -120,14 +120,25 @@ async function setSpotifyStations(genre){
   }
 }
 
-async function getSpotifyStationSongsById(playlist) {
-  try{
-    const playlistSongs = await axios.get(`//localhost:3000/api/sy/playlist`, {params: {playlistId: playlist.spotifyApiId}})
+/* async function getSpotifyStationSongsById(playlist) {
+  try {
+    const playlistSongs = await axios.get(`//localhost:3000/api/sy/playlist`, { params: { playlistId: playlist.spotifyApiId } })
     playlist.songs = playlistSongs.data
     await axios.post(BASE_URL, playlist)
     return playlist
-  } catch(err) {
-    console.log('StationService: Could not get or append playlist songs to the playlist, ',err)
+  } catch (err) {
+    console.log('StationService: Could not get or append playlist songs to the playlist, ', err)
+    throw err
+  }
+} */
+
+async function addExistingStation(stationId) {
+  try {
+    const stationToAdd = await axios.get(`http://localhost:3000/api/sy/playlist`, { params: { playlistId: stationId } })
+    await axios.post(BASE_URL, stationToAdd.data)
+    setSelectedStation(stationId)
+  } catch (err) {
+    console.log('StationService: Could not add existing station to DB, ', err)
     throw err
   }
 }

@@ -39,11 +39,11 @@ export async function getSpotifyStations(req, res) {
     }
 }
 
-export async function getSpotifyStationSongsById(req, res) {
+export async function getSpotifyPlaylist(req, res) {
     try {
         const id = req.query.playlistId
         if (!id) return res.status(400).json({ error: 'Missing spotify playlist id (Spotify Stations)' })
-        const station = await spotifyYoutubeService.getSpotifyStationSongsById(id)
+        const station = await spotifyYoutubeService.getSpotifyPlaylist(id)
         res.send(station)
     } catch (err) {
         console.log('SpotifyYoutube Controller: There was an error getting station by id from spotify: ', err)

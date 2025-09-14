@@ -4,7 +4,6 @@ import { store } from './store.js'
 
 import { EDIT_STATION, GET_STATIONS, UPDATE_STATION_LIST, SET_SELECTED_STATION, GET_SPOTIFY_STATIONS, CREATE_STATION_FROM_SPOTIFY } from './station.reducer.js'
 import { editUser } from './user.actions.js'
-import { useSelector } from 'react-redux'
 
 export async function getStations() {
     try {
@@ -20,6 +19,7 @@ export async function getStations() {
 export async function setSelectedStation(stationId) {
     try {
         const selectedStation = await stationService.get(stationId)
+        if (!selectedStation) await stationService.addExistingStation(stationId)
         store.dispatch(getCmdSetSelectedStation(selectedStation))
         console.log('StationActions: successfully loaded station ', selectedStation)
     } catch (err) {

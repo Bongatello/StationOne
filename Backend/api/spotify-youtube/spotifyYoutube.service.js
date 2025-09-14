@@ -1,7 +1,7 @@
 
 var SpotifyTemporaryToken = undefined
 
-const spotifyByPlaylistFields = "fields=next%2Citems%28added_at%2Ctrack%28name%2Cduration_ms%2Cexternal_urls%28spotify%29%2Cid%2Cexplicit%2Cartists%28name%29%2Calbum%28images%2Crelease_date%2Cname%29%29%29&limit=50"
+const spotifyByPlaylistFields = "fields=id%2C+name%2C+images%28url%29%2C+description%2C+owner%28display_name%29%2C+tracks%28limit%2C+next%2C+items%28added_at%2Ctrack%28name%2Cduration_ms%2Cexternal_urls%28spotify%29%2Cid%2Cexplicit%2Cartists%28name%29%2Calbum%28images%2Crelease_date%2Cname%29%29%29%29"
 /* var SpotifyTemporaryToken = {
   token: undefined,
   expiration: null //(Data.now - expiration === 1 hour (ms))= expired
@@ -10,7 +10,7 @@ export const spotifyYoutubeService = {
   getSpotifySongs,
   getYoutubeVideo,
   getSpotifyStations,
-  getSpotifyStationSongsById,
+  getSpotifyPlaylist,
 }
 
 
@@ -53,17 +53,18 @@ async function getSpotifyStations(genres, limit) {
 }
 
 
-async function getSpotifyStationSongsById(id) {
+async function getSpotifyPlaylist(id) {
   if (!SpotifyTemporaryToken) SpotifyTemporaryToken = await _getTempSpotifyToken()
   var unprocessedNextResults = null
-  const unprocessedResults = await fetch(`https://api.spotify.com/v1/playlists/${id}/tracks?${spotifyByPlaylistFields}`, {
+  const unprocessedResults = await fetch(`https://api.spotify.com/v1/playlists/${id}?${spotifyByPlaylistFields}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${SpotifyTemporaryToken}`
     }
   })
-  var unprocessedResultsParsed = await unprocessedResults.json()
-  var togetherItems = unprocessedResultsParsed
+  const cleanSpotifyPlaylist = await _processSpotifyQueryData(unprocessedResults)
+  /* var unprocessedResultsParsed = await unprocessedResults.json() */
+  /* var togetherItems = unprocessedResultsParsed
   while (unprocessedResultsParsed.next) {
     unprocessedNextResults = await fetch(unprocessedResultsParsed.next, {
       method: 'GET',
@@ -73,11 +74,11 @@ async function getSpotifyStationSongsById(id) {
     })
     unprocessedResultsParsed = await unprocessedNextResults.json()
     togetherItems.items.push(...unprocessedResultsParsed.items)
-  }
-  await togetherItems.items.forEach(item => {
-    item.track.artists = item.track.artists.map(artist => artist.name)
+  } */
+  await cleanSpotifyPlaylist.songs.forEach(song => {
+    song.artists = song.artists.map(artist => artist.name)
   })
-  return togetherItems.items
+  return cleanSpotifyPlaylist
 }
 
 
@@ -109,10 +110,53 @@ async function getYoutubeVideo(inputData) {
 async function _processSpotifyQueryData(queryData) {
   try {
     const queryResults = await queryData.json()
-    const myQueryResults = []
+    const myTrackList = []
+    const myPlaylists = []
+    const myPlaylist = {}
     console.log('processing data ', queryResults)
 
-    if (queryResults.tracks) {
+    if (queryResults.playlists) {
+      queryResults.playlists.items.forEach(item => {
+        if (item) {
+          const newItem = {
+            thumbnail: item.images[0].url,
+            desc: item.description,
+            spotifyApiId: item.id,
+            name: item.name,
+            addedBy: item.owner.display_name,
+          }
+          myPlaylists.push(newItem)
+        }
+      })
+      return myPlaylists
+    }
+
+    else if (queryResults.owner) {
+
+      queryResults.tracks.items.forEach(item => {
+        const newItem = {
+          artists: item.track.artists,
+          name: item.track.name,
+          cover: item.track.album.images[0].url,
+          durationMs: item.track.duration_ms,
+          spotifyLink: item.track.external_urls.spotify,
+          album: item.track.album.name,
+          _id: item.track.id,
+          isExplicit: item.track.explicit,
+          //dateAdded: item.added_at, //not a timestamp!!
+        }
+
+        myTrackList.push(newItem)
+      })
+      myPlaylist.songs = myTrackList
+      myPlaylist.thumbnail = queryResults.images[0].url
+      myPlaylist.addedBy = queryResults.owner.display_name
+      myPlaylist.desc = queryResults.description
+      myPlaylist.name = queryResults.name
+      myPlaylist.spotifyApiId = queryResults.id
+      return myPlaylist
+    }
+    else if (queryResults.tracks) {
       console.log('getting tracks...')
       queryResults.tracks.items.forEach(item => {
         const artistNames = item.artists.map(artist => artist.name)
@@ -128,26 +172,11 @@ async function _processSpotifyQueryData(queryData) {
           isExplicit: item.explicit,
         }
 
-        myQueryResults.push(newItem)
+        myTrackList.push(newItem)
       })
     }
 
-    if (queryResults.playlists) {
-      queryResults.playlists.items.forEach(item => {
-        if (item) {
-          const newItem = {
-            thumbnail: item.images[0].url,
-            desc: item.description,
-            spotifyApiId: item.id,
-            name: item.name,
-            addedBy: item.owner.display_name,
-          }
-          myQueryResults.push(newItem)
-        }
-      })
-    }
-
-    return myQueryResults
+    return myTrackList
   } catch (err) {
     console.log('Error in backend spotify.service, processSpotifyQueryData function')
     SpotifyTemporaryToken = await _getTempSpotifyToken()

@@ -30,11 +30,9 @@ async function getById(stationId) {
         console.log('station: ',stationId)
         var station
         const collection = await dbService.getCollection(collectionName)
-        if (stationId.length === 24) {
-            console.log('Im here!')
-            station = await collection.findOne({ _id: ObjectId.createFromHexString(stationId) })
-        }
+        if (stationId.length === 24) station = await collection.findOne({ _id: ObjectId.createFromHexString(stationId) })
         if (stationId.length === 22) station = await collection.findOne({ spotifyApiId: stationId })
+        console.log(station)
         return station
     } catch (err) {
         console.log('StationsService Error: Cannot get station by specified id')
@@ -52,7 +50,7 @@ async function addStation(station) {
             stationToAdd = { ..._getEmptyStation(), name, addedBy }
         }
         else if (station.name) {
-            stationToAdd = {station}
+            stationToAdd = {...station}
         }
         await collection.insertOne(stationToAdd)
         return stationToAdd

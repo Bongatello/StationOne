@@ -75,7 +75,7 @@ export function StationPreview() {
 	function playPauseLogic() {
 		if (!(station._id === playerData.station._id)) {
 			setPlayingSong(station.songs[0])
-			setPlayerStation(params.stationId)
+			setPlayerStation(params.stationId || params.playlistId)
 			songsService.findOnYoutube(station.songs[0])
 			togglePlayerState(true)
 		}

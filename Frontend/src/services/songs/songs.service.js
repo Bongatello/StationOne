@@ -43,7 +43,9 @@ async function findOnYoutube(song) { //upon removing notes, add spotifySongId to
     var firstVideoId = await getYoutubeId(spotifySongId)
     if (firstVideoId) console.log('no -100 credits this time :)')
     if (!firstVideoId) {
-        const inputData = song.artists + '-' + song.name + ' song'
+        var inputData
+        if (song.name) inputData = song.artists + '-' + song.name + ' song'
+        if (song.songName) inputData = song.artists + '-' + song.songName + ' song'
         console.log('Looking Youtube For: ', inputData)
         const ytApiSearchData = await getYoutubeSong(inputData)
         console.log('Google Api Used, -100 credits :(')

@@ -23,12 +23,12 @@ export function StationQuerySongList({song}){
         }
         songs.push(songToAdd)
         const editedStation = {
-            _id: params.stationId,
+            _id: params.stationId || params.playlistId,
             songs: songs
         }
         if (songs.length === 4 || songs.length === 1 || songs.length === 0) editedStation.thumbnail = makeNewPlaylistCover(songs)
         await editStation(editedStation, user)
-        await setPlayerStation(params.stationId)
+        await setPlayerStation(params.stationId || params.playlistId)
         return
     }
 

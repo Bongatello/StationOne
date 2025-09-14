@@ -1,5 +1,5 @@
 import express from "express"
-import { getSpotifySongs, getSpotifyStations, getSpotifyStationSongsById } from "./spotifyYoutube.controller.js"
+import { getSpotifySongs, getSpotifyStations, getSpotifyPlaylist } from "./spotifyYoutube.controller.js"
 
 
 const router = express.Router()
@@ -9,7 +9,7 @@ router.get('/songs', getSpotifySongs)
 
 router.get('/stations', getSpotifyStations)
 
-router.get('/playlist', getSpotifyStationSongsById)
+router.get('/playlist', getSpotifyPlaylist)
 
 //youtube get video
 router.get('/youtube', async (req, res) => {

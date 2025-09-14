@@ -23,6 +23,7 @@ export function RootCmp() {
                     <Route path="/StationOne/" element={<HomePage />} />
                     <Route path="/StationOne/search" element={<Browse />} />
                     <Route path="/StationOne/station/:stationId" element={<StationPreview/>} />
+                    <Route path="/StationOne/playlist/:playlistId" element={<StationPreview/>} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>

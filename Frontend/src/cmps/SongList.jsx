@@ -14,7 +14,6 @@ export function SongList({ song, index }) {
     const station = useSelector(state => state.stationModule.selectedStation)
     const user = useSelector(state => state.userModule.user)
     const params = useParams()
-
     function timeAddedAgo() {
         const currentTime = Date.now()
         const timeSinceAdded = currentTime - song.dateAdded
@@ -47,7 +46,7 @@ export function SongList({ song, index }) {
         if (!(song._id === playerData.player.currentSong._id)) {
             songsService.findOnYoutube(song)
             console.log('DEBUGGING::::: ', song)
-            setPlayerStation(params.stationId)
+            setPlayerStation(params.stationId || params.playlistId)
             togglePlayerState(true)
         }
         else {
@@ -65,15 +64,15 @@ export function SongList({ song, index }) {
 
                     <p>{index + 1}</p>
                 </div>
-                <div className="song-thumbnail"><img src={song.cover} /></div>
+                <div className="song-thumbnail"><img src={song.cover || song.images[0].url} /></div>
                 <div className='song-title'>
-                    <p>{song.name}</p>
+                    <p>{song.name || song.songName}</p>
                     <section className="explicit-and-artists">
                         {/* song.isExplicit && <h6>E</h6> */}
                         <p>{song.artists}</p>
                     </section>
                 </div>
-                <p className="song-album">{song.album}</p>
+                <p className="song-album">{song.album || song.albumName}</p>
                 <p className="song-added">{timeAddedAgo()}</p>
                 <p className="song-length">
                     <div onClick={() => removeSongFromStation()}>{<SvgIcon iconName={"songListRemoveSong"} />}</div>
