@@ -13,6 +13,7 @@ export const stationService = {
   editStation,
   addStation,
   setSpotifyStations,
+  getSpotifyStationSongsById,
 }
 
 
@@ -115,6 +116,18 @@ async function setSpotifyStations(genre){
     return spotifyStations.data
   } catch (err) {
     console.log('StationService: There was an error retrieveing spotify default stations, ', err)
+    throw err
+  }
+}
+
+async function getSpotifyStationSongsById(playlist) {
+  try{
+    const playlistSongs = await axios.get(`//localhost:3000/api/sy/playlist`, {params: {playlistId: playlist.spotifyApiId}})
+    playlist.songs = playlistSongs.data
+    await axios.post(BASE_URL, playlist)
+    return playlist
+  } catch(err) {
+    console.log('StationService: Could not get or append playlist songs to the playlist, ',err)
     throw err
   }
 }

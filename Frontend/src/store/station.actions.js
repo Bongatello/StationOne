@@ -2,7 +2,7 @@ import { stationService } from '../services/station/station.service.js'
 
 import { store } from './store.js'
 
-import { EDIT_STATION, GET_STATIONS, UPDATE_STATION_LIST, SET_SELECTED_STATION, GET_SPOTIFY_STATIONS } from './station.reducer.js'
+import { EDIT_STATION, GET_STATIONS, UPDATE_STATION_LIST, SET_SELECTED_STATION, GET_SPOTIFY_STATIONS, CREATE_STATION_FROM_SPOTIFY } from './station.reducer.js'
 import { editUser } from './user.actions.js'
 import { useSelector } from 'react-redux'
 
@@ -59,24 +59,22 @@ export async function editStation(station, user) {
     }
 }
 
-/* export async function addStation(user) {
-    try {
-        const addedStation = await stationService.addStation(user)
-        store.dispatch(getCmdAddStation(addedStation))
-        console.log('StationActions: Successfully added station')
-    } catch (err) {
-        console.log('StationActions: There was an error adding station, ', err)
-        throw err
-    }
-} */
-
 export async function getSpotifyStations(genres) {
     try{
         const stationsToAdd = await stationService.setSpotifyStations(genres)
-        //const newStations = {[genre]: stationsToAdd}
         store.dispatch(getCmdGetSpotifyStations(stationsToAdd))
     } catch(err) {
         console.log('StationActions: There was an error getting spotify stations, ', err)
+        throw err
+    }
+}
+
+export async function createStationFromSpotify(playlist) {
+    try{
+        const stationWithSongs = await stationService.getSpotifyStationSongsById(playlist)
+        store.dispatch(getCmdCreateStationFromSpotify(stationWithSongs))
+    } catch(err) {
+        console.log('StationActions: Threre was an error getting or appending station songs to the station, ', err)
         throw err
     }
 }
@@ -126,9 +124,9 @@ function getCmdGetSpotifyStations(stationsToAdd) {
     }
 }
 
-/* function getCmdAddStation(addedStation) {
+function getCmdCreateStationFromSpotify(stationWithSongs) {
     return {
-        type: ADD_LIKED_STATION,
-        addedStation
+        type: CREATE_STATION_FROM_SPOTIFY,
+        stationWithSongs
     }
-} */
+}

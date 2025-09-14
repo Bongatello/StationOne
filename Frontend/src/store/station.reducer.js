@@ -3,6 +3,7 @@ export const EDIT_STATION = 'EDIT_STATION'
 export const UPDATE_STATION_LIST = 'UPDATE_STATION_LIST'
 export const SET_SELECTED_STATION = 'SET_SELECTED_STATION'
 export const GET_SPOTIFY_STATIONS = 'GET_SPOTIFY_STATIONS'
+export const CREATE_STATION_FROM_SPOTIFY = 'CREATE_STATION_FROM_SPOTIFY'
 
 
 const initialState = {
@@ -31,6 +32,11 @@ export function stationReducer(state = initialState, action = {}) {
                 ...newSpotifyStations
             }
             return {...state, spotifyStations: newSpotifyStationsState}
+        case CREATE_STATION_FROM_SPOTIFY:
+            const stationWithSongs = action.stationWithSongs
+            const newStationsState = {
+                ...state.stations,
+            }
         default:
         return state
     }

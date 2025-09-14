@@ -1,6 +1,6 @@
 //react
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 //cmps
 import { SongList } from '../cmps/SongList.jsx'
@@ -13,19 +13,25 @@ import { togglePlayerState, getPlayingSong, setPlayingSong, setPlayerStation } f
 import { formatStationDuration } from '../services/util.service.js'
 import { songsService } from '../services/songs/songs.service.js'
 
+
 export function StationPreview() {
 	const playerData = useSelector(state => state.playerModule)
 	const userData = useSelector(state => state.userModule.user)
 	const station = useSelector(state => state.stationModule.selectedStation)
+	const spotifyStations = useSelector(state => state.stationModule.spotifyStations) 
 	const [stationDuration, setStationDuration] = useState('')
 	const [isQuerySongs, setIsQuerySongs] = useState(false)
 	const [querySongs, setQuerySongs] = useState([])
 	const params = useParams()
+	const location = useLocation()
+	const route = location.pathname.split("/")[2]
 
 	useEffect(() => {
 		loadUser('68bb2208d5ea1ed6ddb82b4a')
 		setStationDuration(getStationDuration())
-		setSelectedStation(params.stationId)
+		console.log(route)
+		if (route === 'station') setSelectedStation(params.stationId)
+		if (route === 'playlist') setSelectedStation(params.playlistId)
 		setIsQuerySongs(false)
 		setQuerySongs([])
 	}, [params, station.songs.length])
@@ -78,9 +84,16 @@ export function StationPreview() {
 		}
 	}
 
+/* 	if (route === 'playlist') {
+		if (!station) {
+			const idx = spotifyStations.
+		}
+	} */
 
-	if (!station.name) {
+	if (route === 'station') {
+		if (!station.name) {
 		return <p>Loading station...</p>
+	}
 	}
 	return (
 		<div className="station-page-container">

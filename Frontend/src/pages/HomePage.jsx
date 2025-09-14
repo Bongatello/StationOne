@@ -11,7 +11,7 @@ export function HomePage() {
     useEffect(() => {
 
         getStations()
-        getSpotifyStations(genres.join(','))
+        if (!spotifyStations) getSpotifyStations(genres.join(','))
 
     }, [])
 

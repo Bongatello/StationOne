@@ -1,5 +1,7 @@
 
 var SpotifyTemporaryToken = undefined
+
+const spotifyByPlaylistFields = "fields=next%2Citems%28added_at%2Ctrack%28name%2Cduration_ms%2Cexternal_urls%28spotify%29%2Cid%2Cexplicit%2Cartists%28name%29%2Calbum%28images%2Crelease_date%2Cname%29%29%29&limit=50"
 /* var SpotifyTemporaryToken = {
   token: undefined,
   expiration: null //(Data.now - expiration === 1 hour (ms))= expired
@@ -8,6 +10,7 @@ export const spotifyYoutubeService = {
   getSpotifySongs,
   getYoutubeVideo,
   getSpotifyStations,
+  getSpotifyStationSongsById,
 }
 
 
@@ -23,7 +26,6 @@ async function getSpotifySongs(q, limit) {
       Authorization: `Bearer ${SpotifyTemporaryToken}`
     }
   })
-  
   //the response needs to be parsed and cleaned up from properties we dont need, so the next function does just that!
   const cleanQueryResults = await _processSpotifyQueryData(unprocessedResults)
   console.log('got cleanQueryResults: ', cleanQueryResults)
@@ -43,15 +45,39 @@ async function getSpotifyStations(genres, limit) {
         Authorization: `Bearer ${SpotifyTemporaryToken}`
       }
     })
-
     const cleanQueryResults = await _processSpotifyQueryData(unprocessedStations)
     genresStations[genre] = cleanQueryResults
-    //console.log(`Processed ${genre}:`, cleanQueryResults)
+    console.log(`Processed ${genre}:`, cleanQueryResults)
   }
-
-  console.log('DEBUGGING ~~~~~~~~~~~~', genresStations)
-
   return genresStations
+}
+
+
+async function getSpotifyStationSongsById(id) {
+  if (!SpotifyTemporaryToken) SpotifyTemporaryToken = await _getTempSpotifyToken()
+  var unprocessedNextResults = null
+  const unprocessedResults = await fetch(`https://api.spotify.com/v1/playlists/${id}/tracks?${spotifyByPlaylistFields}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${SpotifyTemporaryToken}`
+    }
+  })
+  var unprocessedResultsParsed = await unprocessedResults.json()
+  var togetherItems = unprocessedResultsParsed
+  while (unprocessedResultsParsed.next) {
+    unprocessedNextResults = await fetch(unprocessedResultsParsed.next, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${SpotifyTemporaryToken}`
+      }
+    })
+    unprocessedResultsParsed = await unprocessedNextResults.json()
+    togetherItems.items.push(...unprocessedResultsParsed.items)
+  }
+  await togetherItems.items.forEach(item => {
+    item.track.artists = item.track.artists.map(artist => artist.name)
+  })
+  return togetherItems.items
 }
 
 
@@ -84,33 +110,37 @@ async function _processSpotifyQueryData(queryData) {
   try {
     const queryResults = await queryData.json()
     const myQueryResults = []
+    console.log('processing data ', queryResults)
 
     if (queryResults.tracks) {
+      console.log('getting tracks...')
       queryResults.tracks.items.forEach(item => {
-      const artistNames = item.artists.map(artist => artist.name)
-      const newItem = {
-        artists: artistNames,
-        songName: item.name,
-        images: item.album.images,
-        releaseDate: item.album.release_date,
-        durationMs: item.duration_ms,
-        spotifyLink: item.external_urls.spotify,
-        albumName: item.album.name,
-        _id: item.id,
-        isExplicit: item.explicit,
-      }
+        const artistNames = item.artists.map(artist => artist.name)
+        const newItem = {
+          artists: artistNames,
+          songName: item.name,
+          images: item.album.images,
+          releaseDate: item.album.release_date,
+          durationMs: item.duration_ms,
+          spotifyLink: item.external_urls.spotify,
+          albumName: item.album.name,
+          _id: item.id,
+          isExplicit: item.explicit,
+        }
 
-      myQueryResults.push(newItem)
-    })
+        myQueryResults.push(newItem)
+      })
     }
-    
+
     if (queryResults.playlists) {
       queryResults.playlists.items.forEach(item => {
         if (item) {
           const newItem = {
-            image: item.images[0].url,
+            thumbnail: item.images[0].url,
             desc: item.description,
-            spotifyApiUrl: item.href,
+            spotifyApiId: item.id,
+            name: item.name,
+            addedBy: item.owner.display_name,
           }
           myQueryResults.push(newItem)
         }

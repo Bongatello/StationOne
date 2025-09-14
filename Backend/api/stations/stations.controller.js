@@ -13,6 +13,7 @@ export async function getAllStations(req, res) {
 export async function getStationById(req, res) {
   try {
     const stationId = req.params.stationId
+    console.log('id: ', stationId)
     if (!stationId) throw 'Cannot get stationId or stationId was not provided (getStationById)'
     var station = await stationsService.getById(stationId)
     res.send(station)
@@ -25,7 +26,7 @@ export async function getStationById(req, res) {
 export async function createStation(req, res) {
   try {
     const station = req.body
-    if (!station.index || !station.addedBy) throw 'Cannot get index/addedBy or they are not provided (createStation)'
+    if (!(station.index || station.name) || !station.addedBy) throw 'Cannot get index/addedBy or they are not provided (createStation)'
     const newStation = await stationsService.addStation(station)
     res.send(newStation)
   } catch (err) {
