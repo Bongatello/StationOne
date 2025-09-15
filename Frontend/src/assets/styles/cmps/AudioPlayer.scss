@@ -70,7 +70,11 @@
             .next-song {
                 rotate: 180deg;
             }
-    
+            
+            .next-song:hover, .prev-song:hover {
+                fill: $clrwhite;
+            }
+
             .play-pause{
                 background-color: $clrwhite;
                 border: 0;

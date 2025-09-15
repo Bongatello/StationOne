@@ -1,21 +1,22 @@
 So this is where I will plan future updates..
 
 Features:
--add shuffle (advanced)
--socket io? (advanced)
+Most significant features:
 -station editing (thumbnail, name, tags etc.) --Can be easily done after station redux update
--removing station from likedStations (sync it with mongodb)
--Liked Stations
--Modals (smart modal component)
+-recently played stations (just copy mini stations to user.recentStations database collection object)
+-Liked Songs Station
 -Explore (or browse, whatever its called) page
 -Search for songs using the actual header search bar
--Add counter(index) to stations created for station default naming
--recently played stations (just copy mini stations to user.recentStations database collection object)
--User auth?
--Anything else boss?
--Pray for no schedule changes.........
+-Modals (smart modal component)
+
+-add shuffle (advanced)
+-socket io? (advanced)
+-removing station from likedStations (sync it with mongodb)
+
+Less significant feautres:
 -Get more songs from the spotify playlists (limited to 100 currently)
 -Add explicit icon to explicit songs on stations
+-User auth?
 
 
 Fixes:

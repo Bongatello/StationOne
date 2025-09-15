@@ -98,7 +98,6 @@ async function updateStation(station) {
 
 function _getEmptyStation() {
     return {
-        thumbnail: "https://www.vicentenews.com/wp-content/uploads/2024/08/DJ-Maphorisa-Kabza-De-Small-OSKIDO-Afro-Wave-feat.-Olodum-Tman-Xpress-Phila-Dlozi.png",
         songs: [],
         tags: [],
         isPrivate: true

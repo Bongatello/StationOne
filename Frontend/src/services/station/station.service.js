@@ -78,8 +78,12 @@ async function editStation(station) {
 
 async function addStation(user) {
   try {
+    var userStationsCount = 1
+    user.likedStations.forEach(station => {
+      if (station.addedBy === user.name) userStationsCount++
+    })
     const station = {
-      index: 5,
+      index: userStationsCount,
       addedBy: user.name
     }
     const addedStation = await axios.post(BASE_URL, station)
@@ -93,7 +97,7 @@ async function addStation(user) {
 
 export function makeNewPlaylistCover(songs) {
   try {
-    if (!songs.length) return "https://www.vicentenews.com/wp-content/uploads/2024/08/DJ-Maphorisa-Kabza-De-Small-OSKIDO-Afro-Wave-feat.-Olodum-Tman-Xpress-Phila-Dlozi.png"
+    if (songs.length<1) return null
     if (songs.length > 0 && songs.length <= 3) return songs[0].cover
     /*     if (songs.length>3) {
           return {

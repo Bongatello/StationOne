@@ -33,10 +33,15 @@ export function StationPreview() {
 		setStationDuration(getStationDuration())
 		if (route === 'station') setSelectedStation(params.stationId)
 		if (route === 'playlist') setSelectedStation(params.playlistId)
-		setIsQuerySongs(false)
-		setQuerySongs([])
 		colorThiefCover()
 	}, [params, station.songs?.length])
+
+	useEffect(() => {
+		setIsQuerySongs(false)
+		setQuerySongs([])
+		if (route === 'station') setSelectedStation(params.stationId)
+		if (route === 'playlist') setSelectedStation(params.playlistId)
+	}, [params])
 
 	function updateIsQuerySongs() {
 		setIsQuerySongs(prev => !prev)
@@ -70,15 +75,19 @@ export function StationPreview() {
 
 	function isLikedByUser(targetID) { //probably needs to be edited due to mongoDB and userRedux changes
 		const likedByUser = userData
-		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} className={"add-to-library"}/>
-		return <SvgIcon iconName={"removeFromLibrary"} className={"remove-from-library"}/>
+		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} className={"add-to-library"} />
+		return <SvgIcon iconName={"removeFromLibrary"} className={"remove-from-library"} />
 	}
 
 	function colorThiefCover() {
-		if (imgRef.current && imgRef.current.complete) {
-			const colorThief = new ColorThief();
-			setColor(colorThief.getColor(imgRef.current));
+		if (station.thumbnail) {
+			if (imgRef.current && imgRef.current.complete) {
+				const colorThief = new ColorThief();
+				setColor(colorThief.getColor(imgRef.current));
+				console.log('DEBUGGING COLOR COLOR DEBUGGING ', colorThief.getColor(imgRef.current))
+			}
 		}
+		else setColor([85, 85, 85])
 	}
 
 	function playPauseLogic() {
@@ -96,8 +105,8 @@ export function StationPreview() {
 	// if(route === station) params.stationId === station._id ? '' : return <p>Loading station...</p>
 	// if(route === station) params.stationId === station._id ? '' : return <p>Loading station...</p>
 	if (!station.name) {
-		if(route === "station") return params.stationId === station._id ? '' : <p>Loading station...</p>
-		if(route === "playlist") return params.playlistId === station._id ? '' : <p>Loading station...</p>
+		if (route === "station") return params.stationId === station._id ? '' : <p>Loading station...</p>
+		if (route === "playlist") return params.playlistId === station._id ? '' : <p>Loading station...</p>
 	}
 
 	return (
@@ -111,10 +120,17 @@ export function StationPreview() {
 			<div className="station-cover-details-wrapper">
 
 				<div className="station-cover">
-					<img ref={imgRef} src={station.thumbnail} crossOrigin="anonymous" onLoad={() => {
-						const colorThief = new ColorThief()
-						setColor(colorThief.getColor(imgRef.current))
-					}} />
+					{station.thumbnail &&
+						<img ref={imgRef} src={station.thumbnail} crossOrigin="anonymous" onLoad={() => {
+							const colorThief = new ColorThief()
+							setColor(colorThief.getColor(imgRef.current))
+						}} />
+					}
+					{!station.thumbnail &&
+						<div className='default-cover'>
+							<SvgIcon iconName={"stationDefaultCover"} className={"default-cover-svg"} />
+						</div>
+					}
 				</div>
 
 

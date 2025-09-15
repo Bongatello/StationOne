@@ -69,7 +69,7 @@ export function SongList({ song, index }) {
                     <p>{song.name || song.songName}</p>
                     <section className="explicit-and-artists">
                         {/* song.isExplicit && <h6>E</h6> */}
-                        <p>{song.artists}</p>
+                        <p>{typeof(song.artists) === 'Array' ? song.artists.join(', ') : song.artists}</p>
                     </section>
                 </div>
                 <p className="song-album">{song.album || song.albumName}</p>
