@@ -70,8 +70,8 @@ export function StationPreview() {
 
 	function isLikedByUser(targetID) { //probably needs to be edited due to mongoDB and userRedux changes
 		const likedByUser = userData
-		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} />
-		return <SvgIcon iconName={"removeFromLibrary"} />
+		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} className={"add-to-library"}/>
+		return <SvgIcon iconName={"removeFromLibrary"} className={"remove-from-library"}/>
 	}
 
 	function colorThiefCover() {
@@ -92,9 +92,12 @@ export function StationPreview() {
 			togglePlayerState(!playerData.player.isPlaying)
 		}
 	}
-
+	//dont load station if route === station and params.stationId =/= station._id or if route === playlist and params.playlistId =/= station._id
+	// if(route === station) params.stationId === station._id ? '' : return <p>Loading station...</p>
+	// if(route === station) params.stationId === station._id ? '' : return <p>Loading station...</p>
 	if (!station.name) {
-		return <p>Loading station...</p>
+		if(route === "station") return params.stationId === station._id ? '' : <p>Loading station...</p>
+		if(route === "playlist") return params.playlistId === station._id ? '' : <p>Loading station...</p>
 	}
 
 	return (

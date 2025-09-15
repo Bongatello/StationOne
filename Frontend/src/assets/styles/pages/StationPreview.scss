@@ -84,7 +84,7 @@
     }
 
     .station-actions-songs-wrapper {
-        background-color: #12121266;
+        background-color: #1212124D;
         padding-left: 1.5%;
         padding-right: 1.5%;
 
@@ -149,12 +149,11 @@
                 .add-to-library:hover {
                     fill: $clrwhite;
                 }
-
-                svg {
+                .remove-from-library {
                     fill: $clrgreen;
                 }
 
-                svg:hover {
+                .remove-from-library:hover {
                     fill: #3be477;
                 }
             }
