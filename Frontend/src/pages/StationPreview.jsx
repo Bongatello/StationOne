@@ -141,8 +141,12 @@ export function StationPreview() {
 					<div className="station-details">
 						<img src={(station.addedBy === "StationOne") ? "/StationOne/img/sologo.png" : userData.image} className="createdby-img" />
 						<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy}</p>
-						<p>• {station.songs.length} {station.songs.length > 1 ? 'songs' : 'song'}, </p>
-						<p>{stationDuration}</p>
+						{station.songs.length > 0 &&
+							<div className='songs-length-wrapper'>
+								<p>• {station.songs.length} {station.songs.length > 1 ? 'songs' : 'song'}, </p>
+								<p>{stationDuration}</p>
+							</div>
+						}
 					</div>
 
 				</div>

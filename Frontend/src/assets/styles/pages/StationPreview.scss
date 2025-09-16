@@ -89,6 +89,14 @@
                 height: 24px;
                 margin-top: 8px;
 
+                .songs-length-wrapper{
+                    display: flex;
+                    flex-direction: row;
+                    p{
+                        margin-right: 3px;
+                    }
+                }
+
                 .createdby-img {
                     object-fit: cover;
                     display: block;
@@ -104,10 +112,7 @@
         background-color: #1212124D;
         padding-left: 1.5%;
         padding-right: 1.5%;
-
-        .action {}
-
-        .action:hover {}
+        margin-bottom: 24px;
 
         .action-wrapper {
             display: flex;
@@ -198,13 +203,15 @@
 
                 display: grid;
                 grid-template-columns: 2% 53% 25% 15% 5%;
-                grid-template-columns: minmax(20px, 2%) minmax(490px, 53%) minmax(252px, 25%) 15% 5%;
+                grid-template-columns: minmax(20px, 2%) minmax(506px, 53%) minmax(252px, 25%) 15% 5%;
                 grid-template-areas: '_index _title _album _added _length';
+                grid-gap: 16px;
                 align-items: center;
 
                 .song-index {
                     grid-area: _index;
                     font-size: 0.875rem;
+                    justify-self: center;
                 }
 
                 .song-title {

@@ -67,7 +67,6 @@ async function combineUserDefaultStations() {
 
 async function editStation(station) {
   try {
-    //station.
     const editedStation = await axios.put(BASE_URL, station)
     return editedStation.data
   } catch (err) {

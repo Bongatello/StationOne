@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: minmax(20px, 2%) minmax(40px,4%) minmax(450px, 49%) minmax(252px, 25%) 15% 5%;
     grid-template-areas: '_index _thumb _title _album _added _length';
+    grid-gap: 16px;
     padding-left: 16px;
     padding-right: 16px;
     font-size: 0.85em;
@@ -14,6 +15,7 @@
 
     .song-index {
         grid-area: _index;
+        justify-self: center;
         p {
             display: block;
         }

@@ -18,31 +18,29 @@ export function StationSongQuery(props) {
     }
 
     return (
-        <div>
-            <div className="playlist-song-query-wrapper">
-                <div className="main-actions">
-                    <div>
-                        {props.isQuerySongs &&
-                            <div className="text-input-wrapper">
-                                <h1>Let's find something for your playlist</h1>
-                                <div className="query">
-                                    <div onClick={spotifyQuery}>
-                                        <SvgIcon iconName={"stationSpotifyQuery"} />
-                                    </div>
-                                    <input type="text" placeholder="Search for songs" ref={spotifyInputQuery}></input>
+        <div className='playlist-song-query-wrapper'>
+            <div className="main-actions">
+                <div>
+                    {props.isQuerySongs &&
+                        <div className="text-input-wrapper">
+                            <h1>Let's find something for your playlist</h1>
+                            <div className="query">
+                                <div onClick={spotifyQuery}>
+                                    <SvgIcon iconName={"stationSpotifyQuery"} />
                                 </div>
+                                <input type="text" placeholder="Search for songs" ref={spotifyInputQuery}></input>
                             </div>
-                        }
-                    </div>
+                        </div>
+                    }
+                </div>
 
-                    <div onClick={toggleQuerySongs} className='toggler-wrapper'>
-                        {!props.isQuerySongs &&
-                            <h2 className='find-more'>Find more</h2>
-                        }
-                        {props.isQuerySongs &&
-                            <SvgIcon iconName={"stationSpotifyQueryClose"} />
-                        }
-                    </div>
+                <div onClick={toggleQuerySongs} className='toggler-wrapper'>
+                    {!props.isQuerySongs &&
+                        <h2 className='find-more'>Find more</h2>
+                    }
+                    {props.isQuerySongs &&
+                        <SvgIcon iconName={"stationSpotifyQueryClose"} />
+                    }
                 </div>
             </div>
 

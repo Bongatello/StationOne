@@ -1,13 +1,13 @@
 .playlist-song-query-wrapper {
-    padding-top: 48px;
     padding-bottom: 24px;
     padding-left: 1.5%;
     padding-right: 1.5%;
     height: 85px;
-    border-top: 1px solid #313131;
     background-color: #1212124D;
 
     .main-actions {
+        padding-top: 24px;
+        border-top: 1px solid #313131;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
