@@ -1,3 +1,5 @@
+@import url('https://db.onlinewebfonts.com/c/91bf51a8358ebe7c72e49ea84fd8db7f?family=Spotify+Mix+Extrabold');
+
 .station-page-container {
     background-color: $clrdarkgray;
     height: 100%;
@@ -17,7 +19,7 @@
         padding-right: 1.5%;
         margin-bottom: 24px;
         display: grid;
-        grid-template-columns: minmax(128px, 232px) 77.5%;
+        grid-template-columns: minmax(128px, 232px) 80%;
         grid-column-gap: 5px;
         grid-template-areas:
             '_cover _details';
@@ -51,6 +53,7 @@
 
                 .default-cover-svg {
                     fill: #7f7f7f;
+
                     svg {
                         width: clamp(48px, 5vw, 64px);
                         height: auto;
@@ -67,17 +70,23 @@
             justify-content: flex-end;
             margin-left: 24px;
             font-size: 0.875rem;
-            margin-top: 104px;
 
             p {
                 margin: 0;
             }
 
             h1 {
-                font-size: clamp(2rem, 8.2vw, 6rem);
-
+                font-size: clamp(1rem, 5vw, 6rem);
+                /* scales as screen resizes */
+                white-space: nowrap;
+                /* keep single line */
+                overflow: hidden;
+                /* prevent scrollbars */
+                text-overflow: clip;
+                /* no ellipsis */
                 margin-top: -30px;
                 margin-bottom: -20px;
+                font-family: 'Spotify Mix Extrabold', sans-serif;
             }
 
             .station-details {
@@ -89,10 +98,11 @@
                 height: 24px;
                 margin-top: 8px;
 
-                .songs-length-wrapper{
+                .songs-length-wrapper {
                     display: flex;
                     flex-direction: row;
-                    p{
+
+                    p {
                         margin-right: 3px;
                     }
                 }
@@ -202,8 +212,7 @@
                 height: 35px;
 
                 display: grid;
-                grid-template-columns: 2% 53% 25% 15% 5%;
-                grid-template-columns: minmax(20px, 2%) minmax(506px, 53%) minmax(252px, 25%) 15% 5%;
+                grid-template-columns: 20px minmax(490px, 53%) minmax(252px, 25%) 15% 5%;
                 grid-template-areas: '_index _title _album _added _length';
                 grid-gap: 16px;
                 align-items: center;

@@ -73,15 +73,17 @@ async function deleteStation(stationId) {
 
 async function updateStation(station) {
     try {
-        const { _id, name, thumbnail, songs, tags, isPrivate } = station
+        const { _id, name, thumbnail, songs, tags, isPrivate, desc } = station
         const stationUpdates = {}
         if (name) stationUpdates.name = name
+        if (desc) stationUpdates.desc = desc
         if (thumbnail) stationUpdates.thumbnail = thumbnail
         if (songs) stationUpdates.songs = songs
         if (tags) stationUpdates.tags = tags
         if (typeof isPrivate === "boolean") stationUpdates.isPrivate = isPrivate //this one is tricky, tried changing to false and since bool false makes us skip this part, we need to set it as isPrivate === true || isPrivate === false so undefined doesnt count, or simply checking if its boolean
 
         const collection = await dbService.getCollection(collectionName)
+        console.log('Debugging Stuff ------ ', _id)
         await collection.updateOne({ _id: ObjectId.createFromHexString(_id) },
             {
                 $set: { ...stationUpdates }

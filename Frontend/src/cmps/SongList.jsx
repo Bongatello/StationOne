@@ -30,7 +30,7 @@ export function SongList({ song, index }) {
 
     async function removeSongFromStation() {
         const songs = station.songs
-        const idx = songs.findIndex(funcSong => funcSong._id === song._id)
+        const idx = songs.findIndex(funcSong => funcSong.spotifyId === song.spotifyId)
         songs.splice(idx, 1)
         const editedStation = {
             _id: station._id,
@@ -43,7 +43,7 @@ export function SongList({ song, index }) {
     }
 
     function playPauseLogic() {
-        if (!(song._id === playerData.player.currentSong._id)) {
+        if (!(song.spotifyId === playerData.player.currentSong.spotifyId)) {
             songsService.findOnYoutube(song)
             console.log('DEBUGGING::::: ', song)
             setPlayerStation(params.stationId || params.playlistId)
@@ -56,21 +56,23 @@ export function SongList({ song, index }) {
 
     return (
         <div className="song-preview-container">
-            <div className={song._id === playerData.player.currentSong._id ? "playing-song-preview song-preview" : "song-preview"}>
+            <div className={song.spotifyId === playerData.player.currentSong.spotifyId ? "playing-song-preview song-preview" : "song-preview"}>
                 <div className="song-index" onClick={() => { playPauseLogic() }}>
 
-                        {(!playerData.player.isPlaying || !(song._id === playerData.player.currentSong._id)) && <SvgIcon iconName={"songListPlayButton"} />} {/* song is not playing OR song is not selected, show play button */}
-                        {playerData.player.isPlaying && song._id === playerData.player.currentSong._id && <SvgIcon iconName={"songListPauseButton"} />} {/* song is playing AND song is selected, show pause button */}
+                    {(!playerData.player.isPlaying || !(song.spotifyId === playerData.player.currentSong.spotifyId)) && <SvgIcon iconName={"songListPlayButton"} />} {/* song is not playing OR song is not selected, show play button */}
+                    {playerData.player.isPlaying && song.spotifyId === playerData.player.currentSong.spotifyId && <SvgIcon iconName={"songListPauseButton"} />} {/* song is playing AND song is selected, show pause button */}
 
                     <p>{index + 1}</p>
                 </div>
-                <div className="song-thumbnail"><img src={song.cover || song.images[0].url} /></div>
                 <div className='song-title'>
-                    <p>{song.name || song.songName}</p>
-                    <section className="explicit-and-artists">
-                        {/* song.isExplicit && <h6>E</h6> */}
-                        <p>{typeof(song.artists) === 'Array' ? song.artists.join(', ') : song.artists}</p>
-                    </section>
+                    <img src={song.cover || song.images[0].url} />
+                    <div className='song-name-artists'>
+                        <p>{song.name || song.songName}</p>
+                        <section className="explicit-and-artists">
+                            {/* song.isExplicit && <h6>E</h6> */}
+                            <p>{typeof (song.artists) === 'Array' ? song.artists.join(', ') : song.artists}</p>
+                        </section>
+                    </div>
                 </div>
                 <p className="song-album">{song.album || song.albumName}</p>
                 <p className="song-added">{timeAddedAgo()}</p>

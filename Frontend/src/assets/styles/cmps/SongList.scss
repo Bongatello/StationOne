@@ -1,7 +1,7 @@
 .song-preview {
     display: grid;
-    grid-template-columns: minmax(20px, 2%) minmax(40px,4%) minmax(450px, 49%) minmax(252px, 25%) 15% 5%;
-    grid-template-areas: '_index _thumb _title _album _added _length';
+    grid-template-columns: 20px minmax(490px, 53%) minmax(252px, 25%) 15% 5%;
+    grid-template-areas: '_index _title _album _added _length';
     grid-gap: 16px;
     padding-left: 16px;
     padding-right: 16px;
@@ -11,58 +11,71 @@
     border-radius: 7px;
     height: 54px;
 
-
-
     .song-index {
         grid-area: _index;
         justify-self: center;
+
         p {
             display: block;
         }
+
         svg {
             fill: $clrwhite;
             display: none;
         }
     }
 
-    .song-thumbnail {
-        grid-area: _thumb;
+    .song-title {
+        grid-area: _title;
+        display: flex;
+        flex-direction: row;
 
         img {
             border-radius: 6px;
             height: 40px;
             width: 40px;
         }
-    }
 
-    .song-title {
-        grid-area: _title;
-        display: flex;
-        flex-direction: column;
-
-        p {
-            font-size: 1rem;
-            color: $clrwhite;
-        }
-
-        .explicit-and-artists {
-            display: flex;
-            flex-direction: row;
+        .song-name-artists {
+            padding-left: 10px;
 
             p {
-                font-size: 0.875rem;
-                color: $clrsubtxt;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                font-size: 1rem;
+                color: $clrwhite;
             }
 
-            h6 {
-                font-size: 0.875rem;
-                margin-right: 3px;
+            .explicit-and-artists {
+                display: flex;
+                flex-direction: row;
+
+                p {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    font-size: 0.875rem;
+                    color: $clrsubtxt;
+                }
+
+                h6 {
+                    font-size: 0.875rem;
+                    margin-right: 3px;
+                }
             }
         }
     }
 
     .song-album {
         grid-area: _album;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+
     }
 
     .song-added {

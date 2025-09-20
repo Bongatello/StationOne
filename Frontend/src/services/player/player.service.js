@@ -43,7 +43,7 @@ async function getPrevNextSong(prevNext, station, currSongId) {
   try {
     var prevNextIdx
     console.log('DEBUGGING STATION - - - - - - - - - - -',station)
-    const currentIdx = station.songs.findIndex(song => song._id === currSongId)
+    const currentIdx = station.songs.findIndex(song => song.spotifyId === currSongId)
     if (currentIdx === -1) throw 'playerService.getPrevNextSong: Couldnt find current song by ID'
     if (prevNext === 'next') prevNextIdx = currentIdx + 1
     if (prevNext === 'prev') prevNextIdx = currentIdx - 1

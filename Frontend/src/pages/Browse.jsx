@@ -28,7 +28,7 @@ export function Browse() {
 
 
     async function findOnYoutube(song) { //upon removing notes, add spotifySongId to function dependencies
-        const spotifySongId = song._id
+        const spotifySongId = song.spotifyId
         var firstVideoId = await songsService.getYoutubeId(spotifySongId)
         if (firstVideoId) console.log('no -100 credits this time :)')
         if (!firstVideoId) {
@@ -68,7 +68,7 @@ export function Browse() {
             <div className='spotify-query-list'>
                 {songs.length > 0 && songs.map(song => {
                     return (
-                        <li key={song._id}>{song.artists.join(' ')} - {song.songName} <button onClick={() => songsService.findOnYoutube(song)}>Play Song</button></li>
+                        <li key={song.spotifyId}>{song.artists.join(' ')} - {song.songName} <button onClick={() => songsService.findOnYoutube(song)}>Play Song</button></li>
                     )
                 })}
             </div>

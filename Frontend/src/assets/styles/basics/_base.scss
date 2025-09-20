@@ -1,15 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://db.onlinewebfonts.com/c/9a2bc11be56851dde98c1b49302cc21a?family=Gotham+Medium');
+@import url('https://db.onlinewebfonts.com/c/056353a27c68233bab7e618c8b191d65?family=GothamPro');
 
+@import url('https://db.onlinewebfonts.com/c/424dca828dee407629efe273d0a28630?family=Spotify+Mix');
+@import url('https://db.onlinewebfonts.com/c/91bf51a8358ebe7c72e49ea84fd8db7f?family=Spotify+Mix+Extrabold');
 
 html {
-    line-height: 1.6;
+    line-height: normal;
     color: $clrgreen;
 }
     
 body {
     margin: 0 auto;
     background-color: $clrblack;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+    font-family: 'Spotify Mix', sans-serif;
     font-size: rem(18px);
+    letter-spacing: -0.03rem;
+    font-weight: 500;
 }
 
 img {

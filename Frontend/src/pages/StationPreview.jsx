@@ -13,6 +13,7 @@ import { setSelectedStation } from '../store/station.actions.js'
 import { togglePlayerState, setPlayingSong, setPlayerStation } from '../store/player.actions'
 import { formatStationDuration } from '../services/util.service.js'
 import { songsService } from '../services/songs/songs.service.js'
+import { eventBus } from '../services/event-bus.service.js'
 
 
 export function StationPreview() {
@@ -34,6 +35,7 @@ export function StationPreview() {
 		if (route === 'station') setSelectedStation(params.stationId)
 		if (route === 'playlist') setSelectedStation(params.playlistId)
 		colorThiefCover()
+		console.log('New selected station: ', station)
 	}, [params, station.songs?.length])
 
 	useEffect(() => {
@@ -41,6 +43,7 @@ export function StationPreview() {
 		setQuerySongs([])
 		if (route === 'station') setSelectedStation(params.stationId)
 		if (route === 'playlist') setSelectedStation(params.playlistId)
+		console.log('New selected station: ', station)
 	}, [params])
 
 	function updateIsQuerySongs() {
@@ -109,6 +112,11 @@ export function StationPreview() {
 		if (route === "playlist") return params.playlistId === station._id ? '' : <p>Loading station...</p>
 	}
 
+	function openModal() {
+		eventBus.emit('show-modal', { type: 'station-edit', content: 'station-edit' })
+		console.log('Emitted show-modal with type station-edit')
+	}
+
 	return (
 		<div className="station-page-container"
 			style={{
@@ -136,7 +144,7 @@ export function StationPreview() {
 
 				<div className="station-details-container" >
 					<p>Public Station</p>
-					<h1>{station.name}</h1>
+					<h1 onClick={() => openModal()} >{station.name}</h1>
 
 					<div className="station-details">
 						<img src={(station.addedBy === "StationOne") ? "/StationOne/img/sologo.png" : userData.image} className="createdby-img" />

@@ -1,6 +1,5 @@
-import React from 'react'
 import { Routes, Route, Navigate } from 'react-router'
-
+import { useState } from "react"
 
 import { HomePage } from './pages/HomePage'
 import { Browse } from './pages/Browse.jsx'
@@ -10,9 +9,12 @@ import { StationPreview } from './pages/StationPreview.jsx'
 import { AppHeader } from './cmps/AppHeader'
 import { AppFooter } from './cmps/AppFooter'
 import { LibraryBar } from './cmps/LibraryBar.jsx'
+import { GlobalModal } from './cmps/GlobalModal.jsx'
 
 
 export function RootCmp() {
+    const [isPromptOpen, setIsPromptOpen] = useState(false)
+
     return (
 
         <div className="main-container">
@@ -22,13 +24,24 @@ export function RootCmp() {
                 <Routes>
                     <Route path="/StationOne/" element={<HomePage />} />
                     <Route path="/StationOne/search" element={<Browse />} />
-                    <Route path="/StationOne/station/:stationId" element={<StationPreview/>} />
-                    <Route path="/StationOne/playlist/:playlistId" element={<StationPreview/>} />
+                    <Route path="/StationOne/station/:stationId" element={<StationPreview />} />
+                    <Route path="/StationOne/playlist/:playlistId" element={<StationPreview />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
+                <div
+                    onClick={() => setIsPromptOpen(true)}
+                >
+                    Open Station Edit Prompt
+                </div>
             </div>
 
             <div className="main-footer"><AppFooter /></div>
+
+            {isPromptOpen && (
+                <SmartModal onClose={() => setIsPromptOpen(false)} />
+            )}
+
+            <GlobalModal/>
         </div>
 
     )

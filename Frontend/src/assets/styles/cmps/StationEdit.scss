@@ -1,0 +1,131 @@
+@import url('https://db.onlinewebfonts.com/c/424dca828dee407629efe273d0a28630?family=Spotify+Mix');
+@import url('https://db.onlinewebfonts.com/c/91bf51a8358ebe7c72e49ea84fd8db7f?family=Spotify+Mix+Extrabold');
+.modal-screen {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #121212CC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+
+
+    .edit-station-box {
+        background: #282828;
+        color: white;
+        height: 384px;
+        width: 524px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+
+        .header-close-btn {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 24px;
+
+            h2 {
+                margin: 0;
+                font-weight: 700;
+                font-size: 1.5rem;
+            }
+
+            button {
+                background: 0;
+                color: $clrsubtxt;
+                border: 0;
+                height: 32px;
+                width: 32px;
+            }
+        }
+
+        .edit-station-fields {
+            display: grid;
+            grid-template-areas: '_img _title'
+                '_img _desc'
+                '. _save'
+                '_disclaimer _disclaimer';
+            grid-template-rows: 32px 132px 32px auto;
+            grid-template-columns: 180px 1fr;
+            grid-gap: 16px;
+            padding: 24px;
+            padding-top: 0;
+
+            img {
+                grid-area: _img;
+                border-radius: 4px;
+            }
+
+            .station-title-input {
+                grid-area: _title;
+                margin-bottom: -8px;
+                font-family: 'Spotify Mix', sans-serif;
+            }
+
+            .station-desc-input {
+                font-family: 'Spotify Mix', sans-serif;
+                font-weight: 500;
+                grid-area: _desc;
+                margin-top: 8px;
+                margin-bottom: 0;
+                padding: 10px;
+                /* handles top, left, right, bottom equally */
+                border: 0;
+                resize: none;
+                border-radius: 4px;
+                background-color: #3d3d3d;
+                color: white;
+                font-size: 0.875rem;
+                line-height: 1.4;
+                /* improves readability */
+            }
+
+            .save-btn {
+                grid-area: _save;
+                font-weight: 700;
+                font-size: 1rem;
+                border: none;
+                height: 48px;
+                width: 100px;
+                justify-self: end;
+                transform: translateY(-20%);
+                border-radius: 100px;
+                font-family: 'Spotify Mix', sans-serif;
+                background-color: white;
+            }
+
+            .disclaimer {
+                grid-area: _disclaimer;
+                font-weight: 700;
+                font-size: 0.75rem;
+                letter-spacing: -0.04rem;
+            }
+
+            input {
+                border: 0;
+                border-radius: 4px;
+                background-color: #3d3d3d;
+                padding: 8px;
+                color: white;
+                font-size: 0.875rem;
+            }
+
+            input::placeholder,
+            textarea::placeholder {
+                color: $clrsubtxt;
+            }
+
+            input:focus,
+            textarea:focus {
+                outline: 0;
+                background-color: #333;
+                border: 1px solid #535353;
+            }
+        }
+    }
+
+}

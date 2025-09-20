@@ -48,7 +48,7 @@ export function StationSongQuery(props) {
             <div className='spotify-query-list'>
                 {props.querySongs.length > 0 && props.querySongs.map(song => {
                     return (
-                        <ul key={song._id}>
+                        <ul key={song.spotifyId}>
                             <StationQuerySongList song={song} />
                         </ul>
                     )

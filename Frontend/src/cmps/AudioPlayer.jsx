@@ -26,7 +26,7 @@ export function AudioPlayer() {
   useEffect(() => {
     getPlayingSong()
     console.log('loaded song: ', playerData.currentSong.url)
-  }, [playerData.currentSong._id])
+  }, [playerData.currentSong.spotifyId])
 
   function toggleMute() {
     if (state.muted) { //muted state
@@ -82,11 +82,11 @@ export function AudioPlayer() {
   }
 
   async function getNextSong() {
-    await onNextSong(station, playerData.currentSong._id)
+    await onNextSong(station, playerData.currentSong.spotifyId)
   }
 
   async function getPrevSong() {
-    await onPrevSong(station, playerData.currentSong._id)
+    await onPrevSong(station, playerData.currentSong.spotifyId)
   }
 
   async function handleEnded() {

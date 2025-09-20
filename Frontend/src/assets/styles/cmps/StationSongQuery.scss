@@ -1,3 +1,5 @@
+@import url('https://db.onlinewebfonts.com/c/91bf51a8358ebe7c72e49ea84fd8db7f?family=Spotify+Mix+Extrabold');
+
 .playlist-song-query-wrapper {
     padding-bottom: 24px;
     padding-left: 1.5%;
@@ -24,6 +26,9 @@
                 font-size: 1.5rem;
                 height: 29px;
                 margin-bottom: 16px;
+                font-family: 'Spotify Mix Extrabold', sans-serif;
+                font-weight: 100;
+                letter-spacing: -0.04rem;
             }
 
             .query {

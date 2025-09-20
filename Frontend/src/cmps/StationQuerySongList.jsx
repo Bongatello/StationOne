@@ -19,7 +19,7 @@ export function StationQuerySongList({song}){
             durationMs: song.durationMs,
             album: song.albumName,
             dateAdded: Date.now(),
-            _id: song._id
+            _id: song.spotifyId
         }
         songs.push(songToAdd)
         const editedStation = {

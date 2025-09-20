@@ -1,3 +1,6 @@
+@import url('https://db.onlinewebfonts.com/c/424dca828dee407629efe273d0a28630?family=Spotify+Mix');
+@import url('https://db.onlinewebfonts.com/c/91bf51a8358ebe7c72e49ea84fd8db7f?family=Spotify+Mix+Extrabold');
+
 .app-header {
     background-color: $clrblack;
     position: sticky;
@@ -113,7 +116,7 @@
         }
 
         input {
-            padding-left: 40px;
+            padding-left: 50px;
             width: 100%;
             height: 46px;
             border-radius: 50px;
@@ -123,10 +126,12 @@
             font-size: 1rem;
             text-align: left;
             border: 0;
+            color: white;
         }
 
         input::placeholder {
             color: $clrsubtxt;
+            font-family: 'Spotify Mix', sans-serif;
         }
 
         input:hover {

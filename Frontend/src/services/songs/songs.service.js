@@ -39,7 +39,7 @@ async function addSong(song) {
 }
 
 async function findOnYoutube(song) { //upon removing notes, add spotifySongId to function dependencies
-    const spotifySongId = song._id
+    const spotifySongId = song.spotifyId
     var firstVideoId = await getYoutubeId(spotifySongId)
     if (firstVideoId) console.log('no -100 credits this time :)')
     if (!firstVideoId) {

@@ -1,4 +1,3 @@
-
 var SpotifyTemporaryToken = undefined
 
 const spotifyByPlaylistFields = "fields=id%2C+name%2C+images%28url%29%2C+description%2C+owner%28display_name%29%2C+tracks%28limit%2C+next%2C+items%28added_at%2Ctrack%28name%2Cduration_ms%2Cexternal_urls%28spotify%29%2Cid%2Cexplicit%2Cartists%28name%29%2Calbum%28images%2Crelease_date%2Cname%29%29%29%29"
@@ -104,9 +103,6 @@ async function getYoutubeVideo(inputData) {
 
 
 
-
-
-
 async function _processSpotifyQueryData(queryData) {
   try {
     const queryResults = await queryData.json()
@@ -141,7 +137,7 @@ async function _processSpotifyQueryData(queryData) {
           durationMs: item.track.duration_ms,
           spotifyLink: item.track.external_urls.spotify,
           album: item.track.album.name,
-          _id: item.track.id,
+          spotifyId: item.track.id,
           isExplicit: item.track.explicit,
           //dateAdded: item.added_at, //not a timestamp!!
         }
@@ -168,7 +164,7 @@ async function _processSpotifyQueryData(queryData) {
           durationMs: item.duration_ms,
           spotifyLink: item.external_urls.spotify,
           albumName: item.album.name,
-          _id: item.id,
+          spotifyId: item.id,
           isExplicit: item.explicit,
         }
 
