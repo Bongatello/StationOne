@@ -78,7 +78,7 @@ export function StationPreview() {
 
 	function isLikedByUser(targetID) { //probably needs to be edited due to mongoDB and userRedux changes
 		const likedByUser = userData
-		if (!likedByUser.likedStations.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} className={"add-to-library"} />
+		if (!likedByUser.likedStations?.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} className={"add-to-library"} />
 		return <SvgIcon iconName={"removeFromLibrary"} className={"remove-from-library"} />
 	}
 
@@ -96,7 +96,7 @@ export function StationPreview() {
 	function playPauseLogic() {
 		if (!(station._id === playerData.station._id)) {
 			setPlayingSong(station.songs[0])
-			setPlayerStation(params.stationId || params.playlistId)
+			setPlayerStation(params.stationId || params.playlistId, userData)
 			songsService.findOnYoutube(station.songs[0])
 			togglePlayerState(true)
 		}
@@ -144,7 +144,7 @@ export function StationPreview() {
 
 				<div className="station-details-container" >
 					<p>Public Station</p>
-					<h1 onClick={() => openModal()} >{station.name}</h1>
+					<h1 onClick={() => eventBus.emit('show-modal',{type:'station-edit',content:'station-edit'})} >{station.name}</h1>
 
 					<div className="station-details">
 						<img src={(station.addedBy === "StationOne") ? "/StationOne/img/sologo.png" : userData.image} className="createdby-img" />
@@ -210,7 +210,7 @@ export function StationPreview() {
 						<div className='invite-collaborators-wrapper action-wrapper'>
 							<SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
 						</div>
-						<div className="extra-options-wrapper action-wrapper">
+						<div className="extra-options-wrapper action-wrapper" onClick={() => eventBus.emit('show-modal',{type:'more-options',content:'more-options'})}>
 							<SvgIcon iconName={"extraOptions"} />
 						</div>
 					</div>

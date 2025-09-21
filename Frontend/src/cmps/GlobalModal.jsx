@@ -28,12 +28,14 @@ export function GlobalModal() {
 
 
     function onCloseModal(ev) {
-        if(ev.target.classList.contains("modal")) dialogRef.current.close()
-        else if(ev.target.classList.contains("close-btn")) dialogRef.current.close()
+        if (ev.target.classList.contains("modal-screen")) dialogRef.current.close()
+        if (ev.target.closest(".close-btn")) {
+            dialogRef.current.close()
+        }
     }
 
 
-    
+
     return (
         <><dialog ref={dialogRef} className={'modal ' + modal?.type} onClick={(ev) => onCloseModal(ev)}>
             <DynamicModal type={modal?.type} />
@@ -49,7 +51,7 @@ function DynamicModal(props) {
             return <StationEdit {...props} />
         case 'number':
             return <ShowSettings {...props} />
-        case 'stars':
-            return <StarRating {...props} />
+        case 'more-options':
+            return <MoreOptions {...props} />
     }
 }

@@ -2,6 +2,8 @@ import { store } from './store.js'
 import { playerService } from '../services/player/player.service.js'
 import { SET_CURRENT_SONG, GET_CURRENT_SONG, TOGGLE_PLAY_PLAYER, SET_PLAYER_TIME, ON_NEXT_SONG, ON_PREV_SONG, SET_CURRENT_STATION } from './player.reducer.js'
 import { stationService } from '../services/station/station.service.js'
+import { userService } from '../services/user/user.service.js'
+import { editUser } from './user.actions.js'
 
 
 export async function getPlayingSong() {
@@ -66,10 +68,11 @@ export async function onPrevSong(station, currSongId) {
     }
 }
 
-export async function setPlayerStation(stationId) {
+export async function setPlayerStation(stationId, user) {
     try{
         const station = await stationService.get(stationId)
-        console.log('TRIGGERED SET PLAYER STATION!!! -------------------------------------')
+        await editUser(user, station) // this func should add recently played station to user recently played stations
+        console.log('add new station to recently played')
         store.dispatch(getCmdSetPlayerStation(station))
     } catch(err) {
         console.log('PlayerActions: Unable to set player station, ', err)

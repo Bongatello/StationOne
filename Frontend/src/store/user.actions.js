@@ -1,16 +1,6 @@
 import { userService } from '../services/user/user.service.js'
-
 import { store } from '../store/store'
-
 import { LOAD_USER, REMOVE_LIKED_STATION, ADD_LIKED_STATION, EDIT_USER } from './user.reducer'
-
-//export const userService = {
-//    addStation,
-//    loadUserData,
-//    addToLikedStations,
-//    removeFromUserLiked,
-//}
-
 
 export async function loadUser(userId) {
     try {
@@ -46,10 +36,13 @@ export async function removeLikedStation(station) {
     }
 }
 
-export async function editUser(userToEdit) {
-    try{
-        await userService.editUser(userToEdit)
-    } catch(err) {
+export async function editUser(user, station) {
+    try {
+        console.log('triggered editUser, User: ', user, station)
+        const userToEdit = userService.setRecentlyPlayed(user, station)
+        const editedUser = await userService.editUser(userToEdit)
+        store.dispatch(getCmdEditUser(editedUser))
+    } catch (err) {
         console.log('UserActions: unable to edit requested liked station.', err)
         throw err
     }
@@ -79,7 +72,7 @@ function getCmdRemoveLikedStation(station) {
     }
 }
 
-function getCmdEditUser(editedUser){
+function getCmdEditUser(editedUser) {
     return {
         type: EDIT_USER,
         editedUser

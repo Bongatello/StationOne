@@ -5,21 +5,21 @@ import { songsService } from '../services/songs/songs.service'
 import { stationService } from '../services/station/station.service'
 import SvgIcon from './SvgIcon'
 
-export function StationsLibraryList({ station }) {
+export function StationsLibraryList({ station }, { userData }) {
     const playerData = useSelector(state => state.playerModule)
 
     async function playPauseLogic() {
         try {
             if (!(station._id === playerData.station._id)) {
-            setPlayerStation(station._id)
-            const tempStation = await stationService.get(station._id)
-            songsService.findOnYoutube(tempStation.songs[0])
-            togglePlayerState(true)
-        }
-        else {
-            togglePlayerState(!playerData.isPlaying)
-        }
-        } catch(err) {
+                setPlayerStation(station._id, userData)
+                const tempStation = await stationService.get(station._id)
+                songsService.findOnYoutube(tempStation.songs[0])
+                togglePlayerState(true)
+            }
+            else {
+                togglePlayerState(!playerData.isPlaying)
+            }
+        } catch (err) {
             console.log('StationsLibraryList(cmp): There was an error playing/pausing station, ', err)
             throw err
         }

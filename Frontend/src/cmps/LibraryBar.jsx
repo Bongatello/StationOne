@@ -14,7 +14,7 @@ export function LibraryBar() {
 
 	useEffect(() => {
 		loadUser('68bb2208d5ea1ed6ddb82b4a')
-	}, [userData.likedStations.length])
+	}, [userData.likedStations?.length])
 
 	async function addNewUserStation(){
 		await stationService.addStation(userData)
@@ -52,7 +52,7 @@ export function LibraryBar() {
 				</div>
 			</div>
 
-			{userData.likedStations.map(station => <StationsLibraryList station={station}/>)}
+			{userData.likedStations?.map(station => <StationsLibraryList station={station} userData={userData}/>)}
 
 
         </div>

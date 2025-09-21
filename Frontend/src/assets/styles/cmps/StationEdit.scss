@@ -1,5 +1,6 @@
 @import url('https://db.onlinewebfonts.com/c/424dca828dee407629efe273d0a28630?family=Spotify+Mix');
 @import url('https://db.onlinewebfonts.com/c/91bf51a8358ebe7c72e49ea84fd8db7f?family=Spotify+Mix+Extrabold');
+
 .modal-screen {
     position: fixed;
     top: 0;
@@ -26,11 +27,9 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            padding: 24px;
-
+            padding: 24px 16px 20px 24px;
             h2 {
                 margin: 0;
-                font-weight: 700;
                 font-size: 1.5rem;
             }
 
@@ -40,6 +39,15 @@
                 border: 0;
                 height: 32px;
                 width: 32px;
+                fill: $clrsubtxt;
+                border-radius: 100px;
+                display: flex;
+                justify-content: center;
+            }
+            button:hover {
+                background-color: #3d3d3d;
+                fill: white;
+
             }
         }
 
@@ -72,7 +80,7 @@
                 grid-area: _desc;
                 margin-top: 8px;
                 margin-bottom: 0;
-                padding: 10px;
+                padding: 9px;
                 /* handles top, left, right, bottom equally */
                 border: 0;
                 resize: none;
@@ -124,6 +132,7 @@
                 outline: 0;
                 background-color: #333;
                 border: 1px solid #535353;
+                padding: 8px;
             }
         }
     }

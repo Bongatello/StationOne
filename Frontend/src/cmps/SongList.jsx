@@ -46,7 +46,7 @@ export function SongList({ song, index }) {
         if (!(song.spotifyId === playerData.player.currentSong.spotifyId)) {
             songsService.findOnYoutube(song)
             console.log('DEBUGGING::::: ', song)
-            setPlayerStation(params.stationId || params.playlistId)
+            setPlayerStation(params.stationId || params.playlistId, user)
             togglePlayerState(true)
         }
         else {

@@ -3,40 +3,41 @@ import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.servi
 import Axios from 'axios'
 
 export const userService = {
-    addStation,
-    loadUserData,
-    addToLikedStations,
-    removeFromLikedStations,
-    editUser,
+  addStation,
+  loadUserData,
+  addToLikedStations,
+  removeFromLikedStations,
+  editUser,
+  setRecentlyPlayed,
 }
 
 var axios = Axios.create({
-    withCredentials: true,
+  withCredentials: true,
 })
 
 const BASE_URL = '//localhost:3000/api/user'
 const STORAGE_KEY = "userDB"
 
-async function getEmptyStation(index){
-    const newStation = {
-      index: index,
-      addedBy: 'Default User',
-    }
-    return newStation
+async function getEmptyStation(index) {
+  const newStation = {
+    index: index,
+    addedBy: 'Default User',
+  }
+  return newStation
 }
 
 
 async function addStation() {
-	const newIndex = user.createdStationsCount + 1
-	const myNewStation = await getEmptyStation(newIndex)
+  const newIndex = user.createdStationsCount + 1
+  const myNewStation = await getEmptyStation(newIndex)
 
   const newStation = await axios.post(BASE_URL, myNewStation)
 
-	storedUser.createdStationsCount = newIndex
-	storedUser.likedStations.unshift(newStation.data)
+  storedUser.createdStationsCount = newIndex
+  storedUser.likedStations.unshift(newStation.data)
 
-	saveToStorage(STORAGE_KEY, storedUser)
-	return storedUser
+  saveToStorage(STORAGE_KEY, storedUser)
+  return storedUser
 }
 
 
@@ -47,17 +48,17 @@ async function loadUserData(userId) {
 
 
 async function addToLikedStations(user, station) {
-    const {_id, name, addedBy, thumbnail} = station
-    const miniStation = {_id, name, addedBy, thumbnail}
+  const { _id, name, addedBy, thumbnail } = station
+  const miniStation = { _id, name, addedBy, thumbnail }
 
-    const userToEdit = {
-      _id: user._id,
-      likedStations: user.likedStations
-    }
-    userToEdit.likedStations.unshift(miniStation)
+  const userToEdit = {
+    _id: user._id,
+    likedStations: user.likedStations
+  }
+  userToEdit.likedStations.unshift(miniStation)
 
-    await axios.put(BASE_URL, userToEdit)
-	return 'Station added to user liked stations!'
+  await axios.put(BASE_URL, userToEdit)
+  return 'Station added to user liked stations!'
 }
 
 function removeFromLikedStations(station) {
@@ -74,11 +75,21 @@ function removeFromLikedStations(station) {
 }
 
 async function editUser(userToEdit) {
-  try{
+  try {
     const editedUser = await axios.put(BASE_URL, userToEdit)
     return editedUser.data
-  } catch(err) {
+  } catch (err) {
     console.log('UserService: Requested liked station could not be edited, ', err)
     throw err
   }
+}
+
+function setRecentlyPlayed(user, station) {
+  var userToEdit = {}
+  userToEdit._id = user._id
+  if (user.recentStations) userToEdit.recentStations = user.recentStations.unshift({name: station.name, thumbnail: station.thumbnail})
+  if (!user.recentStations) userToEdit.recentStations = [{name: station.name, thumbnail: station.thumbnail}]
+  if (userToEdit.recentStations.length>8) userToEdit.recentStations.splice(8, 1)
+  
+  return userToEdit
 }

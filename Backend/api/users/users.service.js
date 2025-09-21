@@ -68,9 +68,10 @@ async function deleteUser(userId) {
 
 async function updateUser(userToEdit) {
     try {
-        const { _id, likedStations, likedSongs, image } = userToEdit
+        const { _id, likedStations, likedSongs, image, recentStations } = userToEdit
         const userUpdates = {}
         if (likedStations) userUpdates.likedStations = likedStations
+        if (recentStations) userUpdates.recentStations = recentStations
         if (likedSongs) userUpdates.likedSongs = likedSongs
         if (image) userUpdates.image = image
 

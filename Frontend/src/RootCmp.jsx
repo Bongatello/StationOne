@@ -28,19 +28,8 @@ export function RootCmp() {
                     <Route path="/StationOne/playlist/:playlistId" element={<StationPreview />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
-                <div
-                    onClick={() => setIsPromptOpen(true)}
-                >
-                    Open Station Edit Prompt
-                </div>
             </div>
-
             <div className="main-footer"><AppFooter /></div>
-
-            {isPromptOpen && (
-                <SmartModal onClose={() => setIsPromptOpen(false)} />
-            )}
-
             <GlobalModal/>
         </div>
 

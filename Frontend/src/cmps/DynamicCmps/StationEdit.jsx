@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { editStation } from "../../store/station.actions"
+import SvgIcon from "../SvgIcon"
 
 
 export function StationEdit() {
@@ -32,7 +33,7 @@ export function StationEdit() {
       <div className="edit-station-box">
         <div className="header-close-btn">
           <h2 onClick={() => console.log('hello from modal: ', stations)}>Edit details</h2>
-          <button className="close-btn">X</button>
+          <button className="close-btn"><SvgIcon iconName={'closeModal'}/></button>
         </div>
         <div className="edit-station-fields">
           <img src={stations.selectedStation?.thumbnail} onClick={console.log('Pretend this opens up cloudinary image input and onupload, it overwrites station.thumbnail')} />
