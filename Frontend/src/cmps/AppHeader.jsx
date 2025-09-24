@@ -2,9 +2,12 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import SvgIcon from './SvgIcon'
+import { useState } from 'react'
 
 export function AppHeader() {
     const location = useLocation()
+    const [searchValue, setSearchValue] = useState('')
+
 
     return (
         <header className="app-header">
@@ -21,11 +24,11 @@ export function AppHeader() {
                     </NavLink>
 
                     <div className="search-bar">
-                        <NavLink to="/StationOne/search/searchparams" className="search-link">
+                        <NavLink to={`/StationOne/search/${searchValue}`} className="search-link">
                             <SvgIcon iconName={"headerSearchSVG"} />
                         </NavLink>
 
-                        <input type="text" placeholder="What do you want to play?" />
+                        <input type="text" placeholder="What do you want to play?" value={searchValue} onChange={(e) => setSearchValue(e.target.value)}/>
 
                         <NavLink to="/StationOne/search">
                             {(location.pathname === "/StationOne/search") &&

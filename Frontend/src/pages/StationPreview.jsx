@@ -4,8 +4,8 @@ import { useParams, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ColorThief from 'colorthief'
 //cmps
-import { SongList } from '../cmps/SongList.jsx'
-import { StationSongQuery } from '../cmps/StationSongQuery.jsx'
+import { SongList } from '../cmps/MainContentCmps/SongList.jsx'
+import { StationSongQuery } from '../cmps/MainContentCmps/StationSongQuery.jsx'
 import SvgIcon from '../cmps/SvgIcon.jsx'
 //service-functions/actions
 import { loadUser } from '../store/user.actions.js'
@@ -96,6 +96,7 @@ export function StationPreview() {
 	function playPauseLogic() {
 		if (!(station._id === playerData.station._id)) {
 			setPlayingSong(station.songs[0])
+			console.log('DEBuggINg-------------, good output: ', params.stationId, userData)
 			setPlayerStation(params.stationId || params.playlistId, userData)
 			songsService.findOnYoutube(station.songs[0])
 			togglePlayerState(true)
@@ -104,17 +105,11 @@ export function StationPreview() {
 			togglePlayerState(!playerData.player.isPlaying)
 		}
 	}
-	//dont load station if route === station and params.stationId =/= station._id or if route === playlist and params.playlistId =/= station._id
-	// if(route === station) params.stationId === station._id ? '' : return <p>Loading station...</p>
-	// if(route === station) params.stationId === station._id ? '' : return <p>Loading station...</p>
+
+
 	if (!station.name) {
 		if (route === "station") return params.stationId === station._id ? '' : <p>Loading station...</p>
 		if (route === "playlist") return params.playlistId === station._id ? '' : <p>Loading station...</p>
-	}
-
-	function openModal() {
-		eventBus.emit('show-modal', { type: 'station-edit', content: 'station-edit' })
-		console.log('Emitted show-modal with type station-edit')
 	}
 
 	return (
@@ -144,7 +139,7 @@ export function StationPreview() {
 
 				<div className="station-details-container" >
 					<p>Public Station</p>
-					<h1 onClick={() => eventBus.emit('show-modal',{type:'station-edit',content:'station-edit'})} >{station.name}</h1>
+					<h1 onClick={() => eventBus.emit('show-modal', { type: 'station-edit', content: 'station-edit' })} >{station.name}</h1>
 
 					<div className="station-details">
 						<img src={(station.addedBy === "StationOne") ? "/StationOne/img/sologo.png" : userData.image} className="createdby-img" />
@@ -160,63 +155,64 @@ export function StationPreview() {
 				</div>
 			</div>
 
+			<div className='under-details-wrapper'>
+				{station.songs.length > 0 && // if station includes songs, the user will see the actions and the song list, else will see the next option
+					<div className="station-actions-songs-wrapper">
+						<div className="station-actions">
+							<div className="play-pause-button-wrapper action-wrapper" onClick={playPauseLogic}>
+								{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
+							</div>
 
-			{station.songs.length > 0 && // if station includes songs, the user will see the actions and the song list, else will see the next option
-				<div className="station-actions-songs-wrapper">
-					<div className="station-actions">
-						<div className="play-pause-button-wrapper action-wrapper" onClick={playPauseLogic}>
-							{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
+							<div className="add-remove-library-wrapper action-wrapper" onClick={addRemoveFromList}>
+								{isLikedByUser(station._id)}
+							</div>
+
+							{station.addedBy === userData.name && //very dangerous, will change it to station._id === userData._id later on, since having 2 users with same name could cause collision!!
+								<div className='invite-collaborators-wrapper action-wrapper'>
+									<SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
+								</div>
+							}
+
+							<div className="extra-options-wrapper action-wrapper">
+								<SvgIcon iconName={"extraOptions"} />
+							</div>
 						</div>
 
-						<div className="add-remove-library-wrapper action-wrapper" onClick={addRemoveFromList}>
-							{isLikedByUser(station._id)}
-						</div>
+						<div className="station-songs-container">
 
-						{station.addedBy === userData.name && //very dangerous, will change it to station._id === userData._id later on, since having 2 users with same name could cause collision!!
+							<div className="song-preview-headlines">
+								<p className="song-index">#</p>
+								<p className="song-title">Title</p>
+								<p className='song-album'>Album</p>
+								<p className="song-added">Date Added</p>
+								<p className="song-length"><SvgIcon iconName={"durationSvg"} /></p>
+							</div>
+							<div className="station-songs">
+								{station.songs.map((song, index) =>
+									<ul key={song.id}>
+										<SongList song={song} index={index} />
+									</ul>
+								)}
+							</div>
+
+						</div>
+					</div>
+				}
+
+				{station.songs.length < 1 &&
+					<div className="station-actions-songs-wrapper">
+						<div className="station-actions">
 							<div className='invite-collaborators-wrapper action-wrapper'>
 								<SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
 							</div>
-						}
-
-						<div className="extra-options-wrapper action-wrapper">
-							<SvgIcon iconName={"extraOptions"} />
+							<div className="extra-options-wrapper action-wrapper" onClick={() => eventBus.emit('show-modal', { type: 'more-options', content: 'more-options' })}>
+								<SvgIcon iconName={"extraOptions"} />
+							</div>
 						</div>
 					</div>
-
-					<div className="station-songs-container">
-
-						<div className="song-preview-headlines">
-							<p className="song-index">#</p>
-							<p className="song-title">Title</p>
-							<p className='song-album'>Album</p>
-							<p className="song-added">Date Added</p>
-							<p className="song-length"><SvgIcon iconName={"durationSvg"} /></p>
-						</div>
-						<div className="station-songs">
-							{station.songs.map((song, index) =>
-								<ul key={song.id}>
-									<SongList song={song} index={index} />
-								</ul>
-							)}
-						</div>
-
-					</div>
-				</div>
-			}
-
-			{station.songs.length < 1 &&
-				<div className="station-actions-songs-wrapper">
-					<div className="station-actions">
-						<div className='invite-collaborators-wrapper action-wrapper'>
-							<SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
-						</div>
-						<div className="extra-options-wrapper action-wrapper" onClick={() => eventBus.emit('show-modal',{type:'more-options',content:'more-options'})}>
-							<SvgIcon iconName={"extraOptions"} />
-						</div>
-					</div>
-				</div>
-			}
-			<StationSongQuery isQuerySongs={isQuerySongs} updateIsQuerySongs={updateIsQuerySongs} querySongs={querySongs} updateQuerySongs={updateQuerySongs} />
+				}
+				<StationSongQuery isQuerySongs={isQuerySongs} updateIsQuerySongs={updateIsQuerySongs} querySongs={querySongs} updateQuerySongs={updateQuerySongs} />
+			</div>
 		</div>
 	)
 }

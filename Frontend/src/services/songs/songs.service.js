@@ -13,7 +13,7 @@ export const songsService = {
     addSong,
     findOnYoutube,
     getYoutubeSong,
-    queryByText
+    querySpotifyByText
 }
 
 const BASE_URL = "//localhost:3000/api/songs"
@@ -30,6 +30,7 @@ async function getYoutubeId(spotifyId) {
 
 async function addSong(song) {
     try {
+        console.log('debugging song: ', song)
         await axios.post(BASE_URL, song)
         return console.log('Successfully added a song!')
     } catch (err) {
@@ -40,6 +41,7 @@ async function addSong(song) {
 
 async function findOnYoutube(song) { //upon removing notes, add spotifySongId to function dependencies
     const spotifySongId = song.spotifyId
+    console.log('DebUggINg::FDS:A:FDAS::: ', song)
     var firstVideoId = await getYoutubeId(spotifySongId)
     if (firstVideoId) console.log('no -100 credits this time :)')
     if (!firstVideoId) {
@@ -68,7 +70,7 @@ async function getYoutubeSong(inputData) {
     return data;
 }
 
-async function queryByText(text) {
-    const res = await axios.get(`http://localhost:3000/api/sy/songs`, { params: { q: text } })
+async function querySpotifyByText(text, limit, type) {
+    const res = await axios.get(`http://localhost:3000/api/sy/songs`, { params: { q: text, limit: limit, type: type } })
     return res.data
 }

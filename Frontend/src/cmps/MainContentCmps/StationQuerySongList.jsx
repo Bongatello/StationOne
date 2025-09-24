@@ -1,9 +1,9 @@
-import { stationService } from "../services/station/station.service.js"
+import { stationService } from "../../services/station/station.service.js"
 import { useParams } from "react-router"
-import { getStations, editStation } from "../store/station.actions.js"
+import { getStations, editStation } from "../../store/station.actions.js"
 import { useSelector } from "react-redux"
-import { setPlayerStation } from '../store/player.actions';
-import { makeNewPlaylistCover } from "../services/station/station.service.js";
+import { setPlayerStation } from '../../store/player.actions.js';
+import { makeNewPlaylistCover } from "../../services/station/station.service.js";
 
 export function StationQuerySongList({song}){
     const params = useParams()
@@ -19,7 +19,7 @@ export function StationQuerySongList({song}){
             durationMs: song.durationMs,
             album: song.albumName,
             dateAdded: Date.now(),
-            _id: song.spotifyId
+            spotifyId: song.spotifyId
         }
         songs.push(songToAdd)
         const editedStation = {

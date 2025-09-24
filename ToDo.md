@@ -2,7 +2,6 @@ So this is where I will plan future updates..
 
 Features:
 Most significant features:
--recently played stations (just copy mini stations to user.recentStations database collection object)               easily done...
 -Liked Songs Station                                                                                                 next?
 -Explore (or browse, whatever its called) page
 -Search for songs using the actual header search bar

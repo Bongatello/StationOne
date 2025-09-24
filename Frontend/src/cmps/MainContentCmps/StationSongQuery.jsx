@@ -1,14 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { StationQuerySongList } from './StationQuerySongList.jsx'
-import { songsService } from '../services/songs/songs.service.js'
-import SvgIcon from './SvgIcon.jsx'
+import { songsService } from '../../services/songs/songs.service.js'
+import SvgIcon from '../SvgIcon.jsx'
 
 export function StationSongQuery(props) {
     const spotifyInputQuery = useRef('')
 
     async function spotifyQuery() {
+        const limit = 10
+        const type = 'track'
         const text = spotifyInputQuery.current.value
-        const queriedSongs = await songsService.queryByText(text)
+        const queriedSongs = await songsService.querySpotifyByText(text, limit, type)
         props.updateQuerySongs(queriedSongs)
     }
 

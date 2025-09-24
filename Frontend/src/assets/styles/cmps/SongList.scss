@@ -129,8 +129,10 @@
     .song-title {
         color: $clrgreen;
 
-        p {
-            color: $clrgreen;
+        .song-name-artists {
+            p {
+                color: $clrgreen;
+            }
         }
     }
 }

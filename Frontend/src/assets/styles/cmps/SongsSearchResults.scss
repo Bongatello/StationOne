@@ -1,0 +1,46 @@
+.song-search-result{
+    height: 100%;
+    padding: 0 16px 0 16px;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 40px 1fr 54px;
+    background-color: 0;
+    align-items: center;
+    border-radius: 4px;
+
+    .title-artists-wrapper{
+        p{
+            color: white;
+            font-size: 1rem;
+        }
+        .explicit-and-artists{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            h6{
+                font-size: 0.875rem;
+                margin-right: 3px;
+                color: $clrsubtxt;
+            }
+            p{
+                color: $clrsubtxt;
+                font-size: 0.875rem;
+            }
+        }
+    }
+    p {
+        color: $clrsubtxt;
+        font-size: 0.875rem;
+        letter-spacing: normal;
+    }
+    img{
+        margin: 0 12px 0 -8px;
+        height: 40px;
+        aspect-ratio: 1;
+        border-radius: 4px;
+    }
+}
+
+.song-search-result:hover{
+    background-color: #2a2a2a;
+}

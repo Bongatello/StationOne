@@ -5,15 +5,15 @@ import { HomePage } from './pages/HomePage'
 import { Browse } from './pages/Browse.jsx'
 import { NotFound } from './pages/NotFound.jsx'
 import { StationPreview } from './pages/StationPreview.jsx'
+import { SearchResultsPage } from './pages/SearchResultsPage.jsx'
 
 import { AppHeader } from './cmps/AppHeader'
 import { AppFooter } from './cmps/AppFooter'
-import { LibraryBar } from './cmps/LibraryBar.jsx'
+import { LibraryBar } from './cmps/LibraryBarCmps/LibraryBar.jsx'
 import { GlobalModal } from './cmps/GlobalModal.jsx'
 
 
 export function RootCmp() {
-    const [isPromptOpen, setIsPromptOpen] = useState(false)
 
     return (
 
@@ -24,6 +24,7 @@ export function RootCmp() {
                 <Routes>
                     <Route path="/StationOne/" element={<HomePage />} />
                     <Route path="/StationOne/search" element={<Browse />} />
+                    <Route path="/StationOne/search/:searchParams" element={<SearchResultsPage />} />
                     <Route path="/StationOne/station/:stationId" element={<StationPreview />} />
                     <Route path="/StationOne/playlist/:playlistId" element={<StationPreview />} />
                     <Route path="*" element={<NotFound />} />

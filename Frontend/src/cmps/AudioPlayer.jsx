@@ -25,7 +25,6 @@ export function AudioPlayer() {
 
   useEffect(() => {
     getPlayingSong()
-    console.log('loaded song: ', playerData.currentSong.url)
   }, [playerData.currentSong.spotifyId])
 
   function toggleMute() {
@@ -107,7 +106,6 @@ export function AudioPlayer() {
           playing={playerData.isPlaying}
           volume={state.volume}
           onTimeUpdate={handleTimeUpdate}
-          onReady={() => console.log('onReady')}
           onEnded={handleEnded}
           controls={false}
           muted={state.muted}

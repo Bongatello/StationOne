@@ -1,16 +1,17 @@
 import { useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
-import { setPlayerStation, setPlayingSong, togglePlayerState } from '../store/player.actions'
-import { songsService } from '../services/songs/songs.service'
-import { stationService } from '../services/station/station.service'
-import SvgIcon from './SvgIcon'
+import { setPlayerStation, setPlayingSong, togglePlayerState } from '../../store/player.actions'
+import { songsService } from '../../services/songs/songs.service'
+import { stationService } from '../../services/station/station.service'
+import SvgIcon from '../SvgIcon'
 
-export function StationsLibraryList({ station }, { userData }) {
+export function StationsLibraryList({ station, userData }) {
     const playerData = useSelector(state => state.playerModule)
 
     async function playPauseLogic() {
         try {
             if (!(station._id === playerData.station._id)) {
+                console.log('DEBuggING!!!!!!!, bad output: ', station._id, userData)
                 setPlayerStation(station._id, userData)
                 const tempStation = await stationService.get(station._id)
                 songsService.findOnYoutube(tempStation.songs[0])

@@ -85,11 +85,26 @@ async function editUser(userToEdit) {
 }
 
 function setRecentlyPlayed(user, station) {
+  var stationToAdd = {
+    _id: station._id,
+    name: station.name,
+    thumbnail: station.thumbnail
+  }
   var userToEdit = {}
   userToEdit._id = user._id
-  if (user.recentStations) userToEdit.recentStations = user.recentStations.unshift({name: station.name, thumbnail: station.thumbnail})
-  if (!user.recentStations) userToEdit.recentStations = [{name: station.name, thumbnail: station.thumbnail}]
-  if (userToEdit.recentStations.length>8) userToEdit.recentStations.splice(8, 1)
-  
+
+  if (user.recentStations) {
+    const idx = user.recentStations.findIndex(recent => recent._id === station._id)
+    console.log('index: ', idx)
+    if (idx > 0) return
+    userToEdit.recentStations = user.recentStations
+    userToEdit.recentStations.unshift(stationToAdd)
+  }
+  if (!user.recentStations) {
+    userToEdit.recentStations = []
+    userToEdit.recentStations.push(stationToAdd)
+  }
+  if (userToEdit.recentStations.length > 8) userToEdit.recentStations.splice(8, 1)
+  console.log('userToEdit in user.service.js: ', userToEdit)
   return userToEdit
 }

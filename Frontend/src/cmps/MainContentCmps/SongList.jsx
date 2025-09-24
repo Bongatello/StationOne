@@ -1,12 +1,12 @@
 //to add functionality to each song like/remove from liked button
-import { togglePlayerState, getPlayingSong, setPlayingSong, setPlayerStation } from '../store/player.actions'
-import { getDuration } from "../services/util.service";
-import { songsService } from '../services/songs/songs.service.js';
+import { togglePlayerState, getPlayingSong, setPlayingSong, setPlayerStation } from '../../store/player.actions.js'
+import { getDuration } from "../../services/util.service";
+import { songsService } from '../../services/songs/songs.service.js';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { editStation } from '../store/station.actions.js';
-import SvgIcon from './SvgIcon.jsx';
-import { makeNewPlaylistCover } from '../services/station/station.service.js';
+import { editStation } from '../../store/station.actions.js';
+import SvgIcon from '../SvgIcon.jsx';
+import { makeNewPlaylistCover } from '../../services/station/station.service.js';
 
 
 export function SongList({ song, index }) {

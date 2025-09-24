@@ -14,12 +14,12 @@ export const spotifyYoutubeService = {
 
 
 
-async function getSpotifySongs(q, limit) {
+async function getSpotifySongs(q, limit, type) {
   //if we dont have a spotify api token (the temporary one you get using id+secret), we use the function getTempSpotifyToken which sends the credentials again to get a new token, else just go straight into querying spotify api
   if (!SpotifyTemporaryToken) SpotifyTemporaryToken = await _getTempSpotifyToken()
 
   //now we get search results from spotify according to our frontend query parameter using a fetch request
-  const unprocessedResults = await fetch(`https://api.spotify.com/v1/search?q=${q}&type=track&limit=${limit}`, {
+  const unprocessedResults = await fetch(`https://api.spotify.com/v1/search?q=${q}&type=${type}&limit=${limit}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${SpotifyTemporaryToken}`
@@ -120,6 +120,37 @@ async function _processSpotifyQueryData(queryData) {
             spotifyApiId: item.id,
             name: item.name,
             addedBy: item.owner.display_name,
+          }
+          myPlaylists.push(newItem)
+        }
+      })
+      return myPlaylists
+    }
+    
+    else if (queryResults.albums) {
+      queryResults.albums.items.forEach(item => {
+        if (item) {
+          const artistNames = item.artists.map(artist => artist.name)
+          const newItem = {
+            thumbnail: item.images[0].url,
+            year: item.release_date.split("-")[0],
+            spotifyApiId: item.id,
+            name: item.name,
+            artists: artistNames,
+          }
+          myPlaylists.push(newItem)
+        }
+      })
+      return myPlaylists
+    }
+
+    else if (queryResults.artists) {
+      queryResults.artists.items.forEach(item => {
+        if (item) {
+          const newItem = {
+            thumbnail: item.images[0].url,
+            spotifyApiId: item.id,
+            name: item.name,
           }
           myPlaylists.push(newItem)
         }

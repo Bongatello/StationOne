@@ -38,8 +38,8 @@ export async function removeLikedStation(station) {
 
 export async function editUser(user, station) {
     try {
-        console.log('triggered editUser, User: ', user, station)
-        const userToEdit = userService.setRecentlyPlayed(user, station)
+        if (station) var userToEdit = userService.setRecentlyPlayed(user, station)
+        if (!userToEdit) return
         const editedUser = await userService.editUser(userToEdit)
         store.dispatch(getCmdEditUser(editedUser))
     } catch (err) {

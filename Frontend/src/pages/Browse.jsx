@@ -22,7 +22,7 @@ export function Browse() {
     }
 
     async function initialSpotifyQuery() {
-        const queriedSongs = await songsService.queryByText('omer adam')
+        const queriedSongs = await songsService.querySpotifyByText('omer adam')
         setSongs(queriedSongs)
     }
 
@@ -49,7 +49,7 @@ export function Browse() {
     }
 
     async function spotifyQuery() {
-        const queriedSongs = await songsService.queryByText(query)
+        const queriedSongs = await songsService.querySpotifyByText(query)
         setSongs(queriedSongs)
     }
 

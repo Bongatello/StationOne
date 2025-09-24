@@ -4,9 +4,10 @@ import { spotifyYoutubeService } from "./spotifyYoutube.service.js"
 export async function getSpotifySongs(req, res) {
     try {
         const q = req.query.q
-        const limit = 10
-        if (!q) return res.status(400).json({ error: 'Missing search query (Spotify Songs)' })
-        const queryResults = await spotifyYoutubeService.getSpotifySongs(q, limit)
+        const limit = req.query.limit
+        const type = req.query.type
+        if (!q || !limit || !type) return res.status(400).json({ error: 'Missing search query (Spotify Songs) or result limit or result type' })
+        const queryResults = await spotifyYoutubeService.getSpotifySongs(q, limit, type)
         res.send(queryResults)
     } catch (err) {
         console.log('SpotifyYoutube Controller: There was an error getting songs from spotify: ', err)

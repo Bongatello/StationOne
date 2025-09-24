@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { userService } from '../services/user/user.service.js'
+import { userService } from '../../services/user/user.service.js'
 import { StationsLibraryList } from './StationsLibraryList.jsx'
-import { loadUser } from '../store/user.actions.js'
-import SvgIcon from './SvgIcon.jsx'
-import { stationService } from '../services/station/station.service.js'
+import { loadUser } from '../../store/user.actions.js'
+import SvgIcon from '../SvgIcon.jsx'
+import { stationService } from '../../services/station/station.service.js'
 
 
 export function LibraryBar() {
