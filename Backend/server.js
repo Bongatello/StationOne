@@ -23,6 +23,8 @@ const corsOptions = {
     'http://127.0.0.1:5174',
     'http://localhost:5174',
     'https://stationone-firstdeploytest.onrender.com',
+    'https://stationone-firstdeploytestfront.onrender.com',
+    'https://stationone-firstdeploytestfront.onrender.com/StationOne',
   ],
   credentials: true,
 }
