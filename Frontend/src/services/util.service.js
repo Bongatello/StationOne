@@ -94,11 +94,11 @@ export function getTopResult(searchValue, songs, artists, albums, playlists) {
     const albumRegex = new RegExp("album", 'i')
     const playlistRegex = new RegExp("playlist", 'i')
 
-    if (songRegex.test(searchValue)) return {type: 'Song', title: songs[0].songName, thumbnail: songs[0].images[0].url, artist: songs[0].artists.join(', ')}
+    if (songRegex.test(searchValue)) return {type: 'Song', title: songs[0].songName, thumbnail: songs[0].cover, artist: songs[0].artists.join(', ')}
     if (artistRegex.test(searchValue)) return {type: 'Artist', title: artists[0].name, thumbnail: artists[0].thumbnail}
     if (albumRegex.test(searchValue)) return {type: 'Album', title: albums[0].name, thumbnail: albums[0].thumbnail, artist: albums[0].artists}
     if (playlistRegex.test(searchValue)) return {type: 'Playlist', title: playlists[0].name, thumbnail: playlists[0].thumbnail, artist: playlists[0].addedBy}
     console.log('Not really looking for something specific, so returning a song')
-    return {type: 'Song', title: songs[0].songName, thumbnail: songs[0].images[0].url, artist: songs[0].artists.join(', ')}
+    return {type: 'Song', title: songs[0].songName, thumbnail: songs[0].cover, artist: songs[0].artists.join(', ')}
 
 }

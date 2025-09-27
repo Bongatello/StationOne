@@ -13,7 +13,7 @@ export function StationQuerySongList({song}){
     async function addSongToStation(){
         const songs = station.songs
         const songToAdd = {
-            cover: song.images[0].url,
+            cover: song.cover,
             name: song.songName,
             artists: song.artists.join(', '),
             durationMs: song.durationMs,
