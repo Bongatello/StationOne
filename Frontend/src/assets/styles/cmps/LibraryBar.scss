@@ -85,6 +85,7 @@
         font-family: 'Spotify Mix', sans-serif;
         font-size: 0.875rem;
         padding: 0;
+
       }
       .text-query{
         display: flex;
@@ -96,6 +97,16 @@
       .text-query:hover{
         background-color: #272727;
         fill: white;
+      }
+      .sortby-method{
+        margin-right: -7px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        svg{
+          height: 16px;
+        }
       }
     }
   }

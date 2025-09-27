@@ -69,6 +69,10 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
+
+            &:hover {
+                transform: scale(1.05);
+            }
         }
 
         .when-not-home {
@@ -134,11 +138,6 @@
             font-family: 'Spotify Mix', sans-serif;
         }
 
-        input:hover {
-            background-color: #282828;
-            border: $clrsubtxt;
-        }
-
         input:focus {
             outline: 2px solid $clrwhite;
             outline-offset: 2px;
@@ -167,6 +166,14 @@
             padding-left: 12px;
             border-left: 0.5px solid #7c7c7c;
             height: 26px;
+
+            svg:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        .explore-link:hover ~ input {
+            background-color: #282828;
         }
 
         .search-link {

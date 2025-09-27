@@ -15,12 +15,12 @@ export const songsService = {
     getYoutubeSong,
     querySpotifyByText
 }
-
-const BASE_URL = "//localhost:3000/api/songs"
+const BASE_URL = import.meta.env.VITE_API_URL || '//localhost:3000'
+const USER_URL = `${BASE_URL}/api/songs`
 
 async function getYoutubeId(spotifyId) {
     try {
-        const youtubeId = await axios.get(`${BASE_URL}/${spotifyId}`)
+        const youtubeId = await axios.get(`${USER_URL}/${spotifyId}`)
         return youtubeId.data
     } catch (err) {
         console.log('SongsService: There was an error finding the requested song, ', err)
@@ -30,8 +30,7 @@ async function getYoutubeId(spotifyId) {
 
 async function addSong(song) {
     try {
-        console.log('debugging song: ', song)
-        await axios.post(BASE_URL, song)
+        await axios.post(USER_URL, song)
         return console.log('Successfully added a song!')
     } catch (err) {
         console.log('SongsService: There was an error adding the requested song, ', err)
@@ -41,7 +40,6 @@ async function addSong(song) {
 
 async function findOnYoutube(song) { //upon removing notes, add spotifySongId to function dependencies
     const spotifySongId = song.spotifyId
-    console.log('DebUggINg::FDS:A:FDAS::: ', song)
     var firstVideoId = await getYoutubeId(spotifySongId)
     if (firstVideoId) console.log('no -100 credits this time :)')
     if (!firstVideoId) {
@@ -65,12 +63,12 @@ async function findOnYoutube(song) { //upon removing notes, add spotifySongId to
 }
 
 async function getYoutubeSong(inputData) {
-    const res = await fetch(`http://localhost:3000/api/sy/youtube?q=${encodeURIComponent(inputData)}`);
-    const data = await res.json();
-    return data;
+    const res = await fetch(`${BASE_URL}/api/sy/youtube?q=${encodeURIComponent(inputData)}`)
+    const data = await res.json()
+    return data
 }
 
 async function querySpotifyByText(text, limit, type) {
-    const res = await axios.get(`http://localhost:3000/api/sy/songs`, { params: { q: text, limit: limit, type: type } })
+    const res = await axios.get(`${BASE_URL}/api/sy/songs`, { params: { q: text, limit: limit, type: type } })
     return res.data
 }

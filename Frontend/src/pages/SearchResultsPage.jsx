@@ -4,9 +4,9 @@ import { useParams } from "react-router"
 import { Link } from "react-router-dom"
 
 import { SongsSearchResults } from "../cmps/MainContentCmps/SongsSearchResults.jsx"
-
 import { songsService } from "../services/songs/songs.service.js"
 import { SearchResultCard } from "../cmps/MainContentCmps/SearchResultCard.jsx"
+import { getTopResult } from "../services/util.service.js"
 
 export function SearchResultsPage() {
     const user = useSelector(state => state.userModule.user)
@@ -18,6 +18,7 @@ export function SearchResultsPage() {
     const [queryPlaylists, setQueryPlaylists] = useState([])
     const containerRef = useRef()
     const [visibleCount, setVisibleCount] = useState(3)
+    const [topResult, setTopResult] = useState({})
 
     useEffect(() => {
         updateVisible()
@@ -27,7 +28,6 @@ export function SearchResultsPage() {
 
 
     useEffect(() => {
-        /* getSearchResults() */
         console.log('Logging params to see what they look like: ', params)
         spotifySongQuery()
     }, [params])
@@ -53,7 +53,8 @@ export function SearchResultsPage() {
         const queriedArtists = await songsService.querySpotifyByText(params, otherLimit, 'artist')
         const queriedAlbums = await songsService.querySpotifyByText(params, otherLimit, 'album')
         const queriedPlaylists = await songsService.querySpotifyByText(params, otherLimit, 'playlist')
-        console.log(queriedPlaylists)
+        setTopResult(getTopResult(params, queriedSongs, queriedArtists, queriedAlbums, queriedPlaylists))
+        console.log(topResult)
         setQuerySongs(queriedSongs)
         setQueryArtists(queriedArtists)
         setQueryAlbums(queriedAlbums)
@@ -68,18 +69,18 @@ export function SearchResultsPage() {
                 <div className="top-result-container">
                     <h2>Top result</h2>
                     <div className="top-result-details-wrapper">
-                        <img src={'algorithmResult.thumbnail'} />
+                        <img src={topResult.thumbnail} style={topResult.type === 'Artist' ? { borderRadius: '50%' } : { borderRadius: '6px' }} />
                         <div className="top-result-text">
-                            <h2>Title</h2>
+                            <h2>{topResult.title}</h2>
                             <div className="top-result-type-artist">
-                                <p className="top-result-type">Type • </p>
-                                <p className="top-result-artist"> Artist</p>
+                                <p className="top-result-type">{topResult.type} • </p>
+                                <p className="top-result-artist">{topResult.artist}</p>
                             </div>
                         </div>
                     </div>
-
-                    {/* <h2>{'algorithmResult.title'}</h2> */}
-                    {/* <p>{'algorithmResult.type'} • {'algorithmResult.artist | algorithmResult.addedBy'}</p> */}
+                    <div className="play-button">
+                        <svg height="24px" width="24px" viewBox="0 0 24 24"><path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606" /></svg>
+                    </div>
                 </div>
                 <div className="songs-container">
                     <h2>Songs</h2>

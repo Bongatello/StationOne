@@ -29,24 +29,21 @@ export function AudioPlayer() {
 
   function toggleMute() {
     if (state.muted) { //muted state
-      setState(prevState => ({...prevState, muted: false}))
+      setState(prevState => ({ ...prevState, muted: false }))
       console.log('unmuted player, volume: ', state.volume)
     }
     else { //unmuted state
-      setState(prevState => ({...prevState, muted: true}))
+      setState(prevState => ({ ...prevState, muted: true }))
       console.log('muted player, volume: ', state.volume)
     }
   }
 
   function handleInputVolume(inputVolume) {
-    setState(prevState => ({...prevState, volume: inputVolume}))
+    setState(prevState => ({ ...prevState, volume: inputVolume }))
   }
 
-
-  function togglePlay() {
-    togglePlayerState(!playerData.isPlaying)
-  }
   //-----------------------------------------------------------------------------------------------------------
+
   function setPlayerRef(player) {
     if (!player) return
     playerRef.current = player
@@ -57,12 +54,12 @@ export function AudioPlayer() {
     // We only want to update time slider if we are not currently seeking
     if (!player || state.seeking) return
     if (!player.duration) return
-    const played = player.currentTime/player.duration
+    const played = player.currentTime / player.duration
     setPlayerTime(played)
   }
 
   function handleSeekMouseDown() {
-    setState(prevState => ({...prevState, seeking: true}))
+    setState(prevState => ({ ...prevState, seeking: true }))
   }
 
   function handleSeekChange(e) {
@@ -72,11 +69,11 @@ export function AudioPlayer() {
 
   function handleSeekMouseUp(e) {
     const inputTarget = e.target
-    setState(prevState => ({...prevState, seeking: false}))
+    setState(prevState => ({ ...prevState, seeking: false }))
 
     if (playerRef.current) {
-    playerRef.current.currentTime =
-      parseFloat(inputTarget.value) * playerRef.current.duration
+      playerRef.current.currentTime =
+        parseFloat(inputTarget.value) * playerRef.current.duration
     }
   }
 
@@ -98,7 +95,6 @@ export function AudioPlayer() {
   }
   return (
     <div>
-      {/* Hidden Player */}
       <div style={{ display: 'none' }}>
         <ReactPlayer
           ref={setPlayerRef}
@@ -113,8 +109,6 @@ export function AudioPlayer() {
           height="0px"
         />
       </div>
-
-      {/* Custom Controls */}
       <div className='audio-player-wrapper'>
 
         <div className='song-details-wrapper'>
@@ -122,7 +116,7 @@ export function AudioPlayer() {
 
           <div className='title-artists'>
             <h1>{playerData.currentSong.name || playerData.currentSong.songName}</h1>
-            <p>{playerData.currentSong.artists}</p>
+            <p>{typeof (playerData.currentSong.artists) === 'string' ? playerData.currentSong.artists : playerData.currentSong.artists.join(', ')}</p>
           </div>
         </div>
 
@@ -139,6 +133,7 @@ export function AudioPlayer() {
             <p>{getDuration('seconds', Math.floor(playerRef.current.currentTime))}</p>
             <input
               type="range"
+              className='timeline-bar'
               min={0}
               max={0.999999}
               step={"any"}
@@ -146,15 +141,28 @@ export function AudioPlayer() {
               onMouseDown={handleSeekMouseDown}
               onChange={handleSeekChange}
               onMouseUp={handleSeekMouseUp}
-            ></input>
-            <p>{playerRef.current.duration? getDuration('seconds', playerRef.current.duration) : getDuration('ms', playerData.currentSong.durationMs)}</p>
+              style={{
+                "--progress": `${playerData.currentTime * 100}%`,
+              }}
+            />
+            <p>{playerRef.current.duration ? getDuration('seconds', playerRef.current.duration) : getDuration('ms', playerData.currentSong.durationMs)}</p>
           </div>
         </div>
 
 
         <div className='audio-player-volume'>
           <button onClick={toggleMute} className='mute-button'>{state.muted ? <SvgIcon iconName={"unmuteSVG"} /> : <SvgIcon iconName={"muteSVG"} />}</button>
-          <input type="range" min={0} max={1} step={"any"} value={state.volume} onChange={(e) => handleInputVolume(parseFloat(e.target.value))}></input>
+          <input type="range"
+            className='volume-bar'
+            min={0}
+            max={1}
+            step={"any"}
+            value={state.volume}
+            onChange={(e) => handleInputVolume(parseFloat(e.target.value))}
+            style={{
+              "--progress": `${state.volume * 100}%`,
+            }}
+          />
         </div>
       </div>
     </div>

@@ -21,8 +21,9 @@
         .top-result-container {
             grid-area: _top-result;
             height: 100%;
-
+            position: relative;
             .top-result-details-wrapper {
+                width: 90%;
                 border-radius: 8px;
                 background-color: #181818;
                 display: flex;
@@ -30,7 +31,7 @@
                 gap: 20px;
                 padding: 20px;
                 height: 186px;
-
+                position: absolute;
                 img {
                     height: 92px;
                     width: 92px;
@@ -41,6 +42,13 @@
                     h2 {
                         font-size: 2rem;
                         margin-bottom: -5px;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        /* font-family: 'Spotify Mix Extrabold', sans-serif; */
+                        font-weight: 900;
+                        letter-spacing: -0.1rem;
                     }
 
                     .top-result-type-artist {
@@ -64,6 +72,28 @@
             .top-result-details-wrapper:hover {
                 background-color: #282828;
             }
+            .play-button {
+            position: absolute;
+            bottom: 16px; // adjust positioning
+            right: 24px;
+            opacity: 0;
+            transform: scale(1) translateY(0);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+
+            svg {
+                width: 24px;
+                height: 24px;
+                fill: black;
+                background: $clrgreen; // Spotify green
+                border-radius: 50%;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
         }
 
         .songs-container {
@@ -106,6 +136,7 @@
                 grid-auto-flow: row;
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
                 margin: 0 -12px;
+
             }
         }
 
@@ -121,15 +152,16 @@
                 margin: 0 -12px;
             }
         }
-        
+
     }
 
     h2 {
+        letter-spacing: -0.04rem;
         margin: 0;
         height: 48px;
         font-size: 1.5rem;
         color: white;
-        font-weight: 700;
+        font-weight: 900;
         margin-bottom: -10px;
     }
 
@@ -175,5 +207,49 @@
     .search-result-card-wrapper:hover {
         background-color: #181818;
     }
+
+    .card-image {
+        position: relative;
+
+        img {
+            width: 100%;
+        }
+
+        .play-button {
+            position: absolute;
+            bottom: 12px; // adjust positioning
+            right: 12px;
+            opacity: 0;
+            transform: scale(1) translateY(0);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+
+            svg {
+                width: 24px;
+                height: 24px;
+                fill: black;
+                background: $clrgreen; // Spotify green
+                border-radius: 50%;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
+
+
+
+    }
+
+    .search-result-card-wrapper:hover .play-button {
+        opacity: 1;
+        transform: scale(1) translateY(-5px);
+    }
+    .top-result-container:hover .play-button {
+        opacity: 1;
+        transform: scale(1) translateY(-15px);
+    }
 }
+
 //size 733 or lower = 3 items shown, size 734 or higher = 4 items shown, size 921 or higher = 5 items shown, 1200 or higher = 6 items, 1380 or higher = 7 items, 1560 = 8 items, 1740 = 9 items and 1920 or higher = 10 items

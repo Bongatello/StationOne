@@ -60,6 +60,12 @@
             }
         }
 
+        a,
+        a:visited,
+        a:active {
+            color: $clrwhite;
+            text-decoration: none;
+        }
     }
 
     .homepage-genre-container {

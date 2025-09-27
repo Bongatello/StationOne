@@ -25,9 +25,9 @@ export async function addLikedStation(user, station) {
     }
 }
 
-export async function removeLikedStation(station) {
+export async function removeLikedStation(user, station) {
     try {
-        await userService.removeFromLikedStations(station)
+        await userService.removeFromLikedStations(user, station._id)
         store.dispatch(getCmdRemoveLikedStation(station))
     }
     catch (err) {
@@ -38,9 +38,13 @@ export async function removeLikedStation(station) {
 
 export async function editUser(user, station) {
     try {
-        if (station) var userToEdit = userService.setRecentlyPlayed(user, station)
-        if (!userToEdit) return
-        const editedUser = await userService.editUser(userToEdit)
+        if (station) {
+            var userToEdit = userService.setRecentlyPlayed(user, station)
+            if (!userToEdit) return
+            const editedUser = await userService.editUser(userToEdit)
+            store.dispatch(getCmdEditUser(editedUser))
+        }
+        const editedUser = await userService.editUser(user)
         store.dispatch(getCmdEditUser(editedUser))
     } catch (err) {
         console.log('UserActions: unable to edit requested liked station.', err)

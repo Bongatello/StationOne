@@ -29,7 +29,7 @@ export function GlobalModal() {
 
     function onCloseModal(ev) {
         if (ev.target.classList.contains("modal-screen")) dialogRef.current.close()
-        if (ev.target.closest(".close-btn")) {
+        if (ev.target.closest(".close-btn") || ev.target.closest(".save-btn")) {
             dialogRef.current.close()
         }
     }

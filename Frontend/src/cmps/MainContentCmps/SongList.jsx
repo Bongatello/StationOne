@@ -28,6 +28,15 @@ export function SongList({ song, index }) {
         return timeSinceAdded + ' ms ago'
     }
 
+    function formatDate(isoString) {
+        const date = new Date(isoString)
+        return date.toLocaleDateString('en-US', {
+            month: 'short',   // "Jan", "Feb", "Mar", etc.
+            day: 'numeric',   // "1", "20", etc.
+            year: 'numeric',  // "2023"
+        })
+    }
+
     async function removeSongFromStation() {
         const songs = station.songs
         const idx = songs.findIndex(funcSong => funcSong.spotifyId === song.spotifyId)
@@ -45,8 +54,7 @@ export function SongList({ song, index }) {
     function playPauseLogic() {
         if (!(song.spotifyId === playerData.player.currentSong.spotifyId)) {
             songsService.findOnYoutube(song)
-            console.log('DEBUGGING::::: ', song)
-            setPlayerStation(params.stationId || params.playlistId, user)
+            setPlayerStation(params.stationId ?? params.playlistId, user)
             togglePlayerState(true)
         }
         else {
@@ -65,19 +73,19 @@ export function SongList({ song, index }) {
                     <p>{index + 1}</p>
                 </div>
                 <div className='song-title'>
-                    <img src={song.cover || song.images[0].url} />
+                    <img src={song.cover || song.images[0]?.url} />
                     <div className='song-name-artists'>
                         <p>{song.name || song.songName}</p>
                         <section className="explicit-and-artists">
                             {/* song.isExplicit && <h6>E</h6> */}
-                            <p>{typeof (song.artists) === 'Array' ? song.artists.join(', ') : song.artists}</p>
+                            <p>{typeof (song.artists) === 'string' ? song.artists : song.artists.join(', ')}</p>
                         </section>
                     </div>
                 </div>
                 <p className="song-album">{song.album || song.albumName}</p>
-                <p className="song-added">{timeAddedAgo()}</p>
+                <p className="song-added">{typeof (song.dateAdded) === 'number' ? timeAddedAgo() : formatDate(song.dateAdded)}</p>
                 <p className="song-length">
-                    <div onClick={() => removeSongFromStation()}>{<SvgIcon iconName={"songListRemoveSong"} />}</div>
+                    {user.name === station.addedBy && <div onClick={() => removeSongFromStation()}>{<SvgIcon iconName={"songListRemoveSong"} />}</div>}
                     {getDuration('ms', song.durationMs)}
                 </p>
             </div>

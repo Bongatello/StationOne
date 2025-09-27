@@ -3,18 +3,26 @@ import ReactPlayer from 'react-player'
 import { setPlayingSong, getPlayingSong } from '../store/player.actions.js'
 import { useSelector } from 'react-redux'
 import { songsService } from '../services/songs/songs.service.js'
-
+import { ImgUploader } from '../cmps/ImgUploader.jsx'
 
 export function Browse() {
     const playerData = useSelector(state => state.playerModule.player)
-    
+    const [imageUrl, setImageUrl] = useState('')
     const [query, setQuery] = useState('')
     const [songs, setSongs] = useState([])
 
+    
 
     useEffect(() => {
         initialSpotifyQuery()
     }, [])
+
+    function onUploaded(imgUrl) {
+        setImageUrl(imgUrl)
+    }
+
+
+
 
     async function getDataFromSpotifyInput(data) {
         console.log('new input data: ' + data)
@@ -72,7 +80,10 @@ export function Browse() {
                     )
                 })}
             </div>
-
+            
+            <h1>under this im doing stuff.</h1>
+            <ImgUploader onUploaded={onUploaded} stationImage={'https://misc.scdn.co/liked-songs/liked-songs-64.png'} />
+            <img src={imageUrl} alt="i think there should be an image" />
         </div>
     )
 }

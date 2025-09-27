@@ -71,6 +71,7 @@ export async function onPrevSong(station, currSongId) {
 export async function setPlayerStation(stationId, user) {
     try{
         const station = await stationService.get(stationId)
+        console.log('DEBUGGING::: ', station, user)
         await editUser(user, station) // this func should add recently played station to user recently played stations
         console.log('add new station to recently played')
         store.dispatch(getCmdSetPlayerStation(station))

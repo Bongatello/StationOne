@@ -77,7 +77,7 @@ export function getDuration(type, value) {
 
 export function formatStationDuration(value) {
     var hours = 0
-    if (value>3600000) {
+    if (value > 3600000) {
         hours = Math.floor(value / 60000 / 60)
         value = value - (hours * 60000 * 60)
     }
@@ -85,4 +85,20 @@ export function formatStationDuration(value) {
     const seconds = Math.floor((value % (60000)) / 1000)
     if (hours) return `${hours} hr ${minutes} min`
     return `${minutes} min ${seconds} sec`
+}
+
+export function getTopResult(searchValue, songs, artists, albums, playlists) {
+
+    const songRegex = new RegExp("song", 'i')
+    const artistRegex = new RegExp("artist", 'i')
+    const albumRegex = new RegExp("album", 'i')
+    const playlistRegex = new RegExp("playlist", 'i')
+
+    if (songRegex.test(searchValue)) return {type: 'Song', title: songs[0].songName, thumbnail: songs[0].images[0].url, artist: songs[0].artists.join(', ')}
+    if (artistRegex.test(searchValue)) return {type: 'Artist', title: artists[0].name, thumbnail: artists[0].thumbnail}
+    if (albumRegex.test(searchValue)) return {type: 'Album', title: albums[0].name, thumbnail: albums[0].thumbnail, artist: albums[0].artists}
+    if (playlistRegex.test(searchValue)) return {type: 'Playlist', title: playlists[0].name, thumbnail: playlists[0].thumbnail, artist: playlists[0].addedBy}
+    console.log('Not really looking for something specific, so returning a song')
+    return {type: 'Song', title: songs[0].songName, thumbnail: songs[0].images[0].url, artist: songs[0].artists.join(', ')}
+
 }

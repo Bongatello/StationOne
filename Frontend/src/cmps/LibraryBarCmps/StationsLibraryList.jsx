@@ -4,14 +4,18 @@ import { setPlayerStation, setPlayingSong, togglePlayerState } from '../../store
 import { songsService } from '../../services/songs/songs.service'
 import { stationService } from '../../services/station/station.service'
 import SvgIcon from '../SvgIcon'
+import { useEffect } from 'react'
 
-export function StationsLibraryList({ station, userData }) {
-    const playerData = useSelector(state => state.playerModule)
+export function StationsLibraryList({ station, userData, playerData }) {
+    /* const playerData = useSelector(state => state.playerModule) */
+
+    useEffect(() => {
+
+    }, [playerData.station._id])
 
     async function playPauseLogic() {
         try {
             if (!(station._id === playerData.station._id)) {
-                console.log('DEBuggING!!!!!!!, bad output: ', station._id, userData)
                 setPlayerStation(station._id, userData)
                 const tempStation = await stationService.get(station._id)
                 songsService.findOnYoutube(tempStation.songs[0])
@@ -28,6 +32,7 @@ export function StationsLibraryList({ station, userData }) {
 
     return (
         <Link to={`/StationOne/station/${station._id}`}>
+
             <div className='library-station-object'>
                 <div className='svg-thumbnail'>
                     {
@@ -43,10 +48,11 @@ export function StationsLibraryList({ station, userData }) {
                     <img src={station.thumbnail} />
                 </div>
                 <div className='library-station-details'>
-                    <h1>{station.name}</h1>
+                    <h1 style={station._id === playerData.station._id ? { color: '#1ed761' } : { color: '#FFF' }}>{station.name}</h1>
                     <p>Station • {station.addedBy}</p>
                 </div>
             </div>
+
         </Link>
     )
 }

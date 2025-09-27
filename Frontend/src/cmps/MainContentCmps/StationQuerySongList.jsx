@@ -35,7 +35,7 @@ export function StationQuerySongList({song}){
     return(
         <div className="station-query-song-list-wrapper">
             <div className="content">
-                <div className="song-cover"><img src={song.images[0].url}/></div>
+                <div className="song-cover"><img src={song.cover}/></div>
                 <div className="song-details">
                     <p>{song.songName}</p>
                     <div className="explicit-and-artists">

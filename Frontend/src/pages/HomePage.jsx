@@ -46,7 +46,6 @@ export function HomePage() {
     }
 
     function postByGenre(genre) {
-        console.log(spotifyStations)
         const spotifyStationsToDisplay = spotifyStations[genre]
         return spotifyStationsToDisplay.map(station => {
             return (

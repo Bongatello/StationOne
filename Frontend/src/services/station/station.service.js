@@ -15,8 +15,8 @@ export const stationService = {
   setSpotifyStations,
   addExistingStation,
 }
-
-const BASE_URL = '//localhost:3000/api/station'
+const BASE_URL = import.meta.env.VITE_API_URL || '//localhost:3000'
+const USER_URL = `${BASE_URL}/api/station`
 const STORAGE_KEY = 'stationsDB';
 
 function query(filterBy = {}) {
@@ -37,13 +37,12 @@ function query(filterBy = {}) {
 }
 
 async function loadStations() {
-  const storedStations = await axios.get(BASE_URL)
+  const storedStations = await axios.get(USER_URL)
   return storedStations.data
 }
 
 async function get(stationId) {
-  const station = await axios.get(`${BASE_URL}/${stationId}`)
-  console.log('got station: ', station.data)
+  const station = await axios.get(`${USER_URL}/${stationId}`)
   return station.data
 }
 
@@ -67,7 +66,7 @@ async function combineUserDefaultStations() {
 
 async function editStation(station) {
   try {
-    const editedStation = await axios.put(BASE_URL, station)
+    const editedStation = await axios.put(USER_URL, station)
     return editedStation.data
   } catch (err) {
     console.log('StationService: There was an error trying to edit station ', err)
@@ -85,7 +84,7 @@ async function addStation(user) {
       index: userStationsCount,
       addedBy: user.name
     }
-    const addedStation = await axios.post(BASE_URL, station)
+    const addedStation = await axios.post(USER_URL, station)
     await addLikedStation(user, addedStation.data)
     return 'Added station successfully!'
   } catch (err) {
@@ -127,7 +126,7 @@ async function setSpotifyStations(genre) {
   try {
     const playlistSongs = await axios.get(`//localhost:3000/api/sy/playlist`, { params: { playlistId: playlist.spotifyApiId } })
     playlist.songs = playlistSongs.data
-    await axios.post(BASE_URL, playlist)
+    await axios.post(USER_URL, playlist)
     return playlist
   } catch (err) {
     console.log('StationService: Could not get or append playlist songs to the playlist, ', err)
@@ -138,7 +137,7 @@ async function setSpotifyStations(genre) {
 async function addExistingStation(stationId) {
   try {
     const stationToAdd = await axios.get(`http://localhost:3000/api/sy/playlist`, { params: { playlistId: stationId } })
-    await axios.post(BASE_URL, stationToAdd.data)
+    await axios.post(USER_URL, stationToAdd.data)
     setSelectedStation(stationId)
   } catch (err) {
     console.log('StationService: Could not add existing station to DB, ', err)

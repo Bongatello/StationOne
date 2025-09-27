@@ -71,6 +71,7 @@ async function updateUser(userToEdit) {
         const { _id, likedStations, likedSongs, image, recentStations } = userToEdit
         const userUpdates = {}
         if (likedStations) userUpdates.likedStations = likedStations
+        if (likedSongs) userUpdates.likedSongs = likedSongs
         if (recentStations) userUpdates.recentStations = recentStations
         if (likedSongs) userUpdates.likedSongs = likedSongs
         if (image) userUpdates.image = image

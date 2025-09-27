@@ -8,7 +8,7 @@ import { SongList } from '../cmps/MainContentCmps/SongList.jsx'
 import { StationSongQuery } from '../cmps/MainContentCmps/StationSongQuery.jsx'
 import SvgIcon from '../cmps/SvgIcon.jsx'
 //service-functions/actions
-import { loadUser } from '../store/user.actions.js'
+import { addLikedStation, loadUser, removeLikedStation } from '../store/user.actions.js'
 import { setSelectedStation } from '../store/station.actions.js'
 import { togglePlayerState, setPlayingSong, setPlayerStation } from '../store/player.actions'
 import { formatStationDuration } from '../services/util.service.js'
@@ -30,19 +30,22 @@ export function StationPreview() {
 	const imgRef = useRef(null)
 
 	useEffect(() => {
-		loadUser('68bb2208d5ea1ed6ddb82b4a')
 		setStationDuration(getStationDuration())
 		if (route === 'station') setSelectedStation(params.stationId)
 		if (route === 'playlist') setSelectedStation(params.playlistId)
 		colorThiefCover()
-		console.log('New selected station: ', station)
-	}, [params, station.songs?.length])
+		console.log('Updated song list')
+	}, [station.songs?.length])
 
 	useEffect(() => {
+		loadUser('68bb2208d5ea1ed6ddb82b4a') //not really supposed to be here
+		delete station.name
 		setIsQuerySongs(false)
 		setQuerySongs([])
+		setStationDuration(getStationDuration())
 		if (route === 'station') setSelectedStation(params.stationId)
 		if (route === 'playlist') setSelectedStation(params.playlistId)
+		colorThiefCover()
 		console.log('New selected station: ', station)
 	}, [params])
 
@@ -55,14 +58,14 @@ export function StationPreview() {
 	}
 
 	function addRemoveFromList() {
-		const likedStations = userData.likedStations //probably needs to be edited due to mongoDB and userRedux changes
-		const index = likedStations.likedStations.findIndex(likedStation => likedStation._id === station._id)
+		const likedStations = userData.likedStations //probably needs to be edited due to mongoDB and userRedux changes addLikedStation
+		const index = likedStations.findIndex(likedStation => likedStation._id === station._id)
 		if (index === -1) {
-			//addLikedStation(station) //probably needs to be edited due to mongoDB and userRedux changes
+			addLikedStation(userData, station)
 			console.log('added station ', station._id, ' to liked list')
 		}
 		else {
-			//removeLikedStation(station) //probably needs to be edited due to mongoDB and userRedux changes
+			removeLikedStation(userData, station) //probably needs to be edited due to mongoDB and userRedux changes
 			console.log('removed station ', station._id, ' from liked list')
 		}
 	}
@@ -85,9 +88,8 @@ export function StationPreview() {
 	function colorThiefCover() {
 		if (station.thumbnail) {
 			if (imgRef.current && imgRef.current.complete) {
-				const colorThief = new ColorThief();
-				setColor(colorThief.getColor(imgRef.current));
-				console.log('DEBUGGING COLOR COLOR DEBUGGING ', colorThief.getColor(imgRef.current))
+				const colorThief = new ColorThief()
+				setColor(colorThief.getColor(imgRef.current))
 			}
 		}
 		else setColor([85, 85, 85])
@@ -96,7 +98,6 @@ export function StationPreview() {
 	function playPauseLogic() {
 		if (!(station._id === playerData.station._id)) {
 			setPlayingSong(station.songs[0])
-			console.log('DEBuggINg-------------, good output: ', params.stationId, userData)
 			setPlayerStation(params.stationId || params.playlistId, userData)
 			songsService.findOnYoutube(station.songs[0])
 			togglePlayerState(true)
@@ -106,11 +107,16 @@ export function StationPreview() {
 		}
 	}
 
+	function handleOpenEditModal() {
+		if (!(userData.name === station.addedBy)) return console.log('insufficient permissions')
+		eventBus.emit('show-modal', { type: 'station-edit', content: 'station-edit' })
+	}
+
 
 	if (!station.name) {
-		if (route === "station") return params.stationId === station._id ? '' : <p>Loading station...</p>
-		if (route === "playlist") return params.playlistId === station._id ? '' : <p>Loading station...</p>
-	}
+		if (route === "station") return params.stationId === station._id ? '' : <p></p>
+		if (route === "playlist") return params.playlistId === station._id ? '' : <p></p>
+	}	
 
 	return (
 		<div className="station-page-container"
@@ -139,10 +145,9 @@ export function StationPreview() {
 
 				<div className="station-details-container" >
 					<p>Public Station</p>
-					<h1 onClick={() => eventBus.emit('show-modal', { type: 'station-edit', content: 'station-edit' })} >{station.name}</h1>
+					<h1 onClick={() => handleOpenEditModal()} >{station.name}</h1>
 
 					<div className="station-details">
-						<img src={(station.addedBy === "StationOne") ? "/StationOne/img/sologo.png" : userData.image} className="createdby-img" />
 						<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy}</p>
 						{station.songs.length > 0 &&
 							<div className='songs-length-wrapper'>
@@ -211,7 +216,9 @@ export function StationPreview() {
 						</div>
 					</div>
 				}
-				<StationSongQuery isQuerySongs={isQuerySongs} updateIsQuerySongs={updateIsQuerySongs} querySongs={querySongs} updateQuerySongs={updateQuerySongs} />
+				{station.addedBy === userData.name &&
+					<StationSongQuery isQuerySongs={isQuerySongs} updateIsQuerySongs={updateIsQuerySongs} querySongs={querySongs} updateQuerySongs={updateQuerySongs} />
+				}
 			</div>
 		</div>
 	)
