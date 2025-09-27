@@ -5,7 +5,7 @@ import cors from 'cors'
 import { spotifyYoutubeRoutes } from './api/spotify-youtube/spotifyYoutube.routes.js'
 import { stationsRoutes } from './api/stations/stations.routes.js'
 import { songsRoutes } from './api/songs/songs.routes.js'
-import { usersRoutes } from './api/Users/users.routes.js'
+import { usersRoutes } from './api/users/users.routes.js'
 //CONFIG
 //env file
 dotenv.config()
