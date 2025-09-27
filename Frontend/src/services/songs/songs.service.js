@@ -15,7 +15,7 @@ export const songsService = {
     getYoutubeSong,
     querySpotifyByText
 }
-const BASE_URL = import.meta.env.VITE_API_URL || '//localhost:3000'
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || '//localhost:3000'
 const USER_URL = `${BASE_URL}/api/songs`
 
 async function getYoutubeId(spotifyId) {
