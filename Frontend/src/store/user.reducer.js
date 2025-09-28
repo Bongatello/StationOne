@@ -36,12 +36,13 @@ export function userReducer(state = initialState, action) {
             break
 
         case ADD_LIKED_STATION:
-            const afterAddLikedStations = [action.station, ...state.user.likedStations]
+            const afterAddLikedStations = [...state.user.likedStations]
             const addedStationUser = {
                 ...state.user,
                 likedStations: afterAddLikedStations
             }
-            newState = {...state, user: addedStationUser}
+            /* newState = {...state, user: addedStationUser} */
+            newState = {...state, user: {...state.user, likedStations: afterAddLikedStations}}
             break
         
         case EDIT_USER:

@@ -4,6 +4,7 @@ import { StationsHomeList } from "../cmps/MainContentCmps/StationsHomeList.jsx"
 import { useSelector } from 'react-redux'
 import { getStations, getSpotifyStations } from "../store/station.actions.js"
 import ColorThief from "colorthief"
+import { loadUser } from "../store/user.actions.js"
 
 export function HomePage() {
     const genres = ['Pop', 'Electronic', 'Hip-Hop', 'Techno', 'Hebrew']
@@ -14,7 +15,6 @@ export function HomePage() {
     const firstImgRef = useRef(null);
 
     useEffect(() => {
-
         getStations()
         if (!spotifyStations) getSpotifyStations(genres.join(','))
 

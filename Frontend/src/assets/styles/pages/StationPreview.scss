@@ -153,6 +153,7 @@
 
                 .play-pause-button-wrapper:hover {
                     background-color: #3be477;
+                    transform: /* translate(-50%, -50%) */ scale(1.05);
                 }
 
                 .extra-options-wrapper {

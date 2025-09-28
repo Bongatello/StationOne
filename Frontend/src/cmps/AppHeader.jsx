@@ -2,12 +2,14 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import SvgIcon from './SvgIcon'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 export function AppHeader() {
     const location = useLocation()
     const [searchValue, setSearchValue] = useState('')
     const navigate = useNavigate()
-    const [hoveringExplore, setHoveringExplore] = useState(false);
+    const [hoveringExplore, setHoveringExplore] = useState(false)
+    const user = useSelector(state => state.userModule.user)
 
 
     return (
@@ -62,7 +64,11 @@ export function AppHeader() {
                         </NavLink>
                     </div>
                 </div>
-                <p>U</p>
+                <div className='user-logo-header-wrapper'>
+                    <div className='user-logo-header'>
+                        <p>{user.name?.charAt(0)}</p>
+                    </div>
+                </div>
             </nav>
         </header >
     )

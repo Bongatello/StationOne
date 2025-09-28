@@ -70,7 +70,9 @@ export function SongList({ song, index }) {
                     {(!playerData.player.isPlaying || !(song.spotifyId === playerData.player.currentSong.spotifyId)) && <SvgIcon iconName={"songListPlayButton"} />} {/* song is not playing OR song is not selected, show play button */}
                     {playerData.player.isPlaying && song.spotifyId === playerData.player.currentSong.spotifyId && <SvgIcon iconName={"songListPauseButton"} />} {/* song is playing AND song is selected, show pause button */}
 
-                    <p>{index + 1}</p>
+                    <p className='song-index-number'>{index + 1}</p>
+                    {playerData.player.isPlaying && song.spotifyId === playerData.player.currentSong.spotifyId && <img className='playing-song-visualizer' src='https://open.spotifycdn.com/cdn/images/equaliser-animated-green.f5eb96f2.gif' height={'14px'} width={'14px'}></img>}
+                    {!(playerData.player.isPlaying && song.spotifyId === playerData.player.currentSong.spotifyId) && <p className='playing-song-stopped'>{index + 1}</p>}
                 </div>
                 <div className='song-title'>
                     <img src={song.cover || song.images[0]?.url} />

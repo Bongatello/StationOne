@@ -15,8 +15,14 @@
         grid-area: _index;
         justify-self: center;
 
-        p {
+        .song-index-number {
             display: block;
+        }
+        .playing-song-visualizer {
+            display: none;
+        }
+        .playing-song-stopped {
+            display: none;
         }
 
         svg {
@@ -101,7 +107,13 @@
     background-color: $clrgray;
 
     .song-index {
-        p {
+        .song-index-number {
+            display: none;
+        }
+        .playing-song-visualizer {
+            display: none;
+        }
+        .playing-song-stopped{
             display: none;
         }
 
@@ -124,6 +136,16 @@
 .playing-song-preview {
     .song-index {
         color: $clrgreen;
+
+        .song-index-number {
+            display: none;
+        }
+        .playing-song-visualizer {
+            display: block;
+        }
+        .playing-song-stopped {
+            display: block;
+        }
     }
 
     .song-title {

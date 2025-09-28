@@ -45,7 +45,7 @@ export function StationQuerySongList({song}){
                 </div>
                 <p className="song-album">{song.albumName}</p>
                 <div className="song-add">
-                    <button onClick={addSongToStation}>Add</button> 
+                    <button onClick={() => addSongToStation()}>Add</button> 
                 </div>
 
             </div>

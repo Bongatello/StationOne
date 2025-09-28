@@ -15,11 +15,13 @@ export function LibraryBar() {
 
 
 	useEffect(() => {
-		//loadUser(getUserIdFromLocalStorage())
 		const storedUser = localStorage.getItem('userDB')
 		const parsedUserId = JSON.parse(storedUser)
-		loadUser(parsedUserId.userId)
-	}, [userData.likedStations?.length])
+
+		if (parsedUserId?.userId) {
+			loadUser(parsedUserId.userId) // Load user data if not already available
+		}
+	}, [])
 
 	async function addNewUserStation() {
 		await stationService.addStation(userData)
@@ -52,7 +54,7 @@ export function LibraryBar() {
 		<div className="library-bar">
 			<div className="header-create-wrapper">
 				<h1>Your Library</h1>
-				<button className="create" onClick={addNewUserStation}>
+				<button className="create" onClick={() => addNewUserStation()}>
 					<SvgIcon iconName={"plusCreateButtonSVG"} />
 
 					<h1>Create</h1>

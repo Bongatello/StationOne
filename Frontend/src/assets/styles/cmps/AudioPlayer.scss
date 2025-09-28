@@ -15,15 +15,6 @@
         flex-direction: row;
         padding-left: 8px;
 
-        .invite-collaborators {
-            fill: $clrsubtxt;
-
-        }
-
-        .invite-collaborators:hover {
-            fill: $clrwhite;
-        }
-
         img {
             height: 56px;
             aspect-ratio: 1;
@@ -130,6 +121,18 @@
         flex-direction: row;
         align-items: center;
         justify-content: end;
+
+        .invite-collaborators-wrapper {
+            .connect-to-device {
+                fill: $clrsubtxt;
+                height: 16px;
+                width: 16px;
+            }
+
+            .connect-to-device:hover {
+                fill: $clrwhite;
+            }
+        }
 
         .mute-button {
             fill: $clrsubtxt;

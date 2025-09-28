@@ -30,6 +30,27 @@
         button {
             margin-inline-end: 0;
         }
+
+        .user-logo-header-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $clrgray;
+            border-radius: 50%;
+            height: 46px;
+            width: 46px;
+            .user-logo-header {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 32px;
+                width: 32px;
+                color: black;
+                background-color: pink;
+                border-radius: 50%;
+                font-weight: 900;
+            }
+        }
     }
 
     .user-info {
@@ -172,7 +193,7 @@
             }
         }
 
-        .explore-link:hover ~ input {
+        .explore-link:hover~input {
             background-color: #282828;
         }
 

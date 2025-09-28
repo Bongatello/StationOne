@@ -161,7 +161,7 @@ async function _processSpotifyQueryData(queryData) {
     else if (queryResults.owner) {
 
       queryResults.tracks.items.forEach(item => {
-        if (item.track.album.images[0]?.url) {
+        if (item.track?.album?.images[0]?.url) {
           const newItem = {
           artists: item.track.artists,
           name: item.track.name,

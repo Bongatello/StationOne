@@ -27,7 +27,7 @@ export function StationSongQuery(props) {
                         <div className="text-input-wrapper">
                             <h1>Let's find something for your playlist</h1>
                             <div className="query">
-                                <div onClick={spotifyQuery}>
+                                <div onClick={() => spotifyQuery()}>
                                     <SvgIcon iconName={"stationSpotifyQuery"} />
                                 </div>
                                 <input type="text" placeholder="Search for songs" ref={spotifyInputQuery}></input>
@@ -36,7 +36,7 @@ export function StationSongQuery(props) {
                     }
                 </div>
 
-                <div onClick={toggleQuerySongs} className='toggler-wrapper'>
+                <div onClick={() => toggleQuerySongs()} className='toggler-wrapper'>
                     {!props.isQuerySongs &&
                         <h2 className='find-more'>Find more</h2>
                     }

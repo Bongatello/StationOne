@@ -40,9 +40,9 @@ export function StationPreview() {
 	}, [station.songs?.length])
 
 	useEffect(() => {
-		const storedUser = localStorage.getItem('userDB')
+		/* const storedUser = localStorage.getItem('userDB')
 		const parsedUserId = JSON.parse(storedUser)
-		loadUser(parsedUserId.userId)
+		loadUser(parsedUserId.userId) */
 		/* loadUser('68bb2208d5ea1ed6ddb82b4a') //not really supposed to be here */
 		delete station.name
 		setIsQuerySongs(false)
@@ -62,15 +62,15 @@ export function StationPreview() {
 		setQuerySongs(queriedSongs)
 	}
 
-	function addRemoveFromList() {
+	async function addRemoveFromList() {
 		const likedStations = userData.likedStations //probably needs to be edited due to mongoDB and userRedux changes addLikedStation
 		const index = likedStations.findIndex(likedStation => likedStation._id === station._id)
 		if (index === -1) {
-			addLikedStation(userData, station)
+			await addLikedStation(userData, station)
 			console.log('added station ', station._id, ' to liked list')
 		}
 		else {
-			removeLikedStation(userData, station) //probably needs to be edited due to mongoDB and userRedux changes
+			await removeLikedStation(userData, station) //probably needs to be edited due to mongoDB and userRedux changes
 			console.log('removed station ', station._id, ' from liked list')
 		}
 	}
@@ -118,11 +118,11 @@ export function StationPreview() {
 	}
 
 	function handleJoinJamModal() {
-		eventBus.emit('show-modal', {type: 'join-jam', content: 'join-jam'})
+		eventBus.emit('show-modal', { type: 'join-jam', content: 'join-jam' })
 	}
 
 	function createJamRoom() {
-		const roomId = makeId(5)		
+		const roomId = makeId(5)
 		socket.emit('join-room', roomId)
 		setJamRoomId(roomId)
 		setIsHost(true)
@@ -181,11 +181,11 @@ export function StationPreview() {
 				{station.songs.length > 0 && // if station includes songs, the user will see the actions and the song list, else will see the next option
 					<div className="station-actions-songs-wrapper">
 						<div className="station-actions">
-							<div className="play-pause-button-wrapper action-wrapper" onClick={playPauseLogic}>
+							<div className="play-pause-button-wrapper action-wrapper" onClick={() => playPauseLogic()}>
 								{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
 							</div>
 
-							<div className="add-remove-library-wrapper action-wrapper" onClick={addRemoveFromList}>
+							<div className="add-remove-library-wrapper action-wrapper" onClick={() => addRemoveFromList()}>
 								{isLikedByUser(station._id)}
 							</div>
 
@@ -214,6 +214,7 @@ export function StationPreview() {
 									<ul key={song.id}>
 										<SongList song={song} index={index} />
 									</ul>
+
 								)}
 							</div>
 

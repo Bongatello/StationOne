@@ -16,6 +16,7 @@ const song = {
 }
 
 const initialState = {
+    /* roomId, */
     station: {},
     player: {
         currentStation: {},

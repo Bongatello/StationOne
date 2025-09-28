@@ -70,7 +70,7 @@ export function Browse() {
 
             <div className='lookup-spotify-songs'>
                 <input type='text' onChange={(e) => getDataFromSpotifyInput(e.target.value)} placeholder='Enter spotify query'></input>
-                <button onClick={spotifyQuery}></button>
+                <button onClick={() => spotifyQuery()}></button>
             </div>
 
             <div className='spotify-query-list'>

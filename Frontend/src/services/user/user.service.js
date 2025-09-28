@@ -58,7 +58,6 @@ async function addToLikedStations(user, station) {
     likedStations: user.likedStations
   }
   userToEdit.likedStations.unshift(miniStation)
-
   await axios.put(USER_URL, userToEdit)
   return 'Station added to user liked stations!'
 }
