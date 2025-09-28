@@ -82,7 +82,8 @@ async function addStation(user) {
     })
     const station = {
       index: userStationsCount,
-      addedBy: user.name
+      addedBy: user.name,
+      thumbnail: 'https://res.cloudinary.com/dszyainah/image/upload/v1758998059/tqfjyzy4lhao3o1kwy6m.png',
     }
     const addedStation = await axios.post(USER_URL, station)
     await addLikedStation(user, addedStation.data)

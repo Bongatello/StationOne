@@ -30,9 +30,9 @@ export function AudioPlayer() {
   const playerRef = useRef(initialRef)
 
   useEffect(() => {
-    if (playerData.isHost) {
-      getPlayingSong()
-    }
+
+    getPlayingSong()
+
   }, [playerData.currentSong.spotifyId])
 
   useEffect(() => {

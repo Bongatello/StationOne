@@ -19,6 +19,7 @@ export function SearchResultsPage() {
     const containerRef = useRef()
     const [visibleCount, setVisibleCount] = useState(3)
     const [topResult, setTopResult] = useState({})
+    const [loadedStatus, setLoadedStatus] = useState(false)
 
     useEffect(() => {
         updateVisible()
@@ -59,21 +60,22 @@ export function SearchResultsPage() {
         setQueryArtists(queriedArtists)
         setQueryAlbums(queriedAlbums)
         setQueryPlaylists(queriedPlaylists)
+        setLoadedStatus(true)
     }
 
-    if (!queryPlaylists) return <div></div>
+    /* if (!loadedStatus) return <div></div> */
     return (
         <section className="search-results-page">
-            <div className="results-sorting-methods">Maybe All, Songs, Artists, Albums, Playlists search results sortings later on</div>
+            <div className="results-sorting-methods" style={{opacity: '0%'}}>Maybe All, Songs, Artists, Albums, Playlists search results sortings later on</div>
             <div className="all-results-wrapper">
                 <div className="top-result-container">
                     <h2>Top result</h2>
                     <div className="top-result-details-wrapper">
-                        <img src={topResult.thumbnail} style={topResult.type === 'Artist' ? { borderRadius: '50%' } : { borderRadius: '6px' }} />
+                        {topResult.thumbnail && <img src={topResult.thumbnail} style={topResult.type === 'Artist' ? { borderRadius: '50%' } : { borderRadius: '6px' }} />}
                         <div className="top-result-text">
                             <h2>{topResult.title}</h2>
                             <div className="top-result-type-artist">
-                                <p className="top-result-type">{topResult.type} • </p>
+                                {topResult.type && <p className="top-result-type">{topResult.type + ' • '}</p>}
                                 <p className="top-result-artist">{topResult.artist}</p>
                             </div>
                         </div>

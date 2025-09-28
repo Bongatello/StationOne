@@ -21,7 +21,7 @@ export function LibraryBar() {
 		if (parsedUserId?.userId) {
 			loadUser(parsedUserId.userId) // Load user data if not already available
 		}
-	}, [])
+	}, [userData.likedStations?.length])
 
 	async function addNewUserStation() {
 		await stationService.addStation(userData)
@@ -91,8 +91,8 @@ export function LibraryBar() {
 						<img src="https://misc.scdn.co/liked-songs/liked-songs-64.png" />
 					</div>
 					<div className='library-station-details'>
-						<h1 style={userData.likedSongs?._id === playerData.station._id ? { color: '#1ed761' } : { color: '#FFF' }}>Liked Songs</h1>
-						<p>Station • {userData.likedSongs?.songs?.length > 1 ? userData.likedSongs?.songs?.length + ' songs' : userData.likedSongs?.songs?.length + ' song'}</p>
+						<h1 style={userData.likedSongs?._id === playerData.station._id ? { color: '#FFF' } : { color: '#FFF' }}>Liked Songs</h1>
+						<p>Station • {userData.likedSongs?.songs?.length ? '0 songs' : userData.likedSongs?.songs?.length > 1 ? userData.likedSongs?.songs?.length + ' songs' : userData.likedSongs?.songs?.length + ' song'}</p>
 					</div>
 				</div>
 			</Link>
