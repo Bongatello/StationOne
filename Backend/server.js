@@ -1,7 +1,8 @@
 import express from 'express'
-import fetch from 'node-fetch'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import http from 'http'
+import { Server } from 'socket.io'
 import { spotifyYoutubeRoutes } from './api/spotify-youtube/spotifyYoutube.routes.js'
 import { stationsRoutes } from './api/stations/stations.routes.js'
 import { songsRoutes } from './api/songs/songs.routes.js'
@@ -13,7 +14,7 @@ dotenv.config()
 //express
 const app = express()
 const PORT = 3000
-app.use(express.json());
+app.use(express.json())
 
 //cors
 const corsOptions = {
@@ -30,6 +31,29 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
+//sockets
+const server = http.createServer(app)
+const io = new Server(server, {
+  cors: corsOptions
+})
+
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id)
+
+  socket.on('join-room', (roomId) => {
+    socket.join(roomId)
+    console.log(`${socket.id} joined room ${roomId}`)
+  })
+
+  socket.on('player-state', ({ roomId, state }) => {
+    socket.to(roomId).emit('player-state', state)
+    console.log(state)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id)
+  })
+})
 
 //API METHODS
 app.use('/api/sy', spotifyYoutubeRoutes)
@@ -38,6 +62,6 @@ app.use('/api/songs', songsRoutes)
 app.use('/api/user', usersRoutes)
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })

@@ -1,13 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { useSelector } from 'react-redux'
-import { getDuration } from '../services/util.service'
-import { togglePlayerState, setPlayerTime, getPlayingSong, onPrevSong, onNextSong } from '../store/player.actions'
+import { getDuration, makeId } from '../services/util.service'
+import { togglePlayerState, setPlayerTime, getPlayingSong, onPrevSong, onNextSong, setPlayerStation, setPlayingSong, setIsHost } from '../store/player.actions'
 import SvgIcon from './SvgIcon'
+import { socket } from '../services/socket.service.js'
+import { eventBus } from '../services/event-bus.service.js'
+
 
 export function AudioPlayer() {
   const playerData = useSelector(state => state.playerModule.player)
   const station = useSelector(state => state.playerModule.station)
+  const user = useSelector(state => state.userModule.user)
+
+  const [jamRoomId, setJamRoomId] = useState(undefined)
 
   const initialState = {
     volume: 0.5,
@@ -26,6 +32,62 @@ export function AudioPlayer() {
   useEffect(() => {
     getPlayingSong()
   }, [playerData.currentSong.spotifyId])
+
+  useEffect(() => {
+    if (playerData.isHost) {
+      socket.emit('player-state', {
+        jamRoomId,
+        state: {
+          currentSong: playerData.currentSong,
+          isPlaying: playerData.isPlaying,
+          currentTime: playerData.currentTime,
+          station: station
+        }
+      })
+    }
+  }, [playerData.currentSong, playerData.isPlaying, playerData.currentTime, station])
+
+  useEffect(() => {
+    socket.on('player-state', (state) => {
+      setPlayerStation(state.station._id, user) // update redux store
+      setPlayingSong(state.currentSong)
+      togglePlayerState(state.isPlaying)
+      setPlayerTime(state.currentTime)
+
+      if (playerRef.current) {
+        // Sync timestamp with a threshold to avoid jitter
+        const desiredTime = state.currentTime * playerRef.current.duration
+        if (Math.abs(playerRef.current.currentTime - desiredTime) > 0.5) {
+          playerRef.current.currentTime = desiredTime
+        }
+
+        // Play/pause
+/*         if (state.isPlaying && !playerData.isPlaying) {
+          playerRef.current.getInternalPlayer()?.playVideo?.()
+        } else if (!state.isPlaying && playerData.isPlaying) {
+          playerRef.current.getInternalPlayer()?.pauseVideo?.()
+        } */
+
+        // Song change
+        if (state.currentSong.url !== playerData.currentSong.url) {
+          getPlayingSong(state.currentSong.spotifyId)
+        }
+      }
+    })
+
+    return () => socket.off('player-state')
+  }, [playerData])
+
+  function handleJoinJamModal() {
+    eventBus.emit('show-modal', { type: 'join-jam', content: 'join-jam' })
+  }
+
+  function createJamRoom() {
+    const roomId = makeId(5)
+    socket.emit('join-room', roomId)
+    setJamRoomId(roomId)
+    setIsHost(true)
+  }
 
   function toggleMute() {
     if (state.muted) { //muted state
@@ -118,6 +180,11 @@ export function AudioPlayer() {
             <h1>{playerData.currentSong.name || playerData.currentSong.songName}</h1>
             <p>{typeof (playerData.currentSong.artists) === 'string' ? playerData.currentSong.artists : playerData.currentSong.artists.join(', ')}</p>
           </div>
+          <div className='invite-collaborators-wrapper' onClick={() => createJamRoom()}>
+            <SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
+          </div>
+          {jamRoomId && <p>{jamRoomId}</p>}
+          {!jamRoomId && <p onClick={() => handleJoinJamModal()}>Join a Jam</p>}
         </div>
 
 

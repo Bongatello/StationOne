@@ -15,8 +15,10 @@ export function LibraryBar() {
 
 
 	useEffect(() => {
-		//loaderFunctionForLibrary
-		loadUser('68bb2208d5ea1ed6ddb82b4a')
+		//loadUser(getUserIdFromLocalStorage())
+		const storedUser = localStorage.getItem('userDB')
+		const parsedUserId = JSON.parse(storedUser)
+		loadUser(parsedUserId.userId)
 	}, [userData.likedStations?.length])
 
 	async function addNewUserStation() {

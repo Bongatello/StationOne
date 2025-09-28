@@ -9,6 +9,7 @@ export const GET_PLAYER_STATE = 'GET_PLAYER_STATE'
 export const ON_NEXT_SONG = 'ON_NEXT_SONG'
 export const ON_PREV_SONG = 'ON_PREV_SONG'
 export const SET_CURRENT_STATION = 'SET_CURRENT_STATION'
+export const SET_IS_HOST = 'SET_IS_HOST'
 
 const song = {
     url: null
@@ -24,7 +25,8 @@ const initialState = {
             url: null
         },
         prevSong: song,
-        nextSong: song
+        nextSong: song,
+        isHost: false,
     }
 }
 
@@ -48,14 +50,14 @@ export function playerReducer(state = initialState, action = {}) {
             }
             newState = { ...state, player: newPlayer }
             break
-        
+
         case TOGGLE_PLAY_PLAYER:
             var currentState = action.newState
             var newPlayer = {
                 ...state.player,
                 isPlaying: currentState
             }
-            newState = {...state, player: newPlayer}
+            newState = { ...state, player: newPlayer }
             break
 
         case SET_PLAYER_TIME:
@@ -64,9 +66,9 @@ export function playerReducer(state = initialState, action = {}) {
                 ...state.player,
                 currentTime: playerTime
             }
-            newState={...state, player: newPlayer}
+            newState = { ...state, player: newPlayer }
             break
-        
+
         case SET_CURRENT_STATION:
             var currentStation = action.station
             var newState = {
@@ -75,35 +77,14 @@ export function playerReducer(state = initialState, action = {}) {
             }
             break
 
-/*         case ON_NEXT_SONG:
-            var nextSong = action.nextSong
-            var newPlayer = {
-                ...state.player,
-                nextSong: nextSong,
-                currentSong: state.player.nextSong,
-                prevSong: state.player.currentSong
-            }
-            newState={state, player: newPlayer}
-            break */
-            case ON_NEXT_SONG:
+        case ON_NEXT_SONG:
             var nextSong = action.nextSong
             var newPlayer = {
                 ...state.player,
                 currentSong: nextSong
             }
-            newState={...state, player: newPlayer}
+            newState = { ...state, player: newPlayer }
             break
-        
-/*         case ON_PREV_SONG:
-            var prevSong = action.prevSong
-            var newPlayer = {
-                ...state.player,
-                nextSong: state.player.currentSong,
-                currentSong: state.player.prevSong,
-                prevSong: prevSong
-            }
-            newState={state, player: newPlayer}
-            break */
 
         case ON_PREV_SONG:
             var prevSong = action.prevSong
@@ -111,7 +92,15 @@ export function playerReducer(state = initialState, action = {}) {
                 ...state.player,
                 currentSong: prevSong,
             }
-            newState={...state, player: newPlayer}
+            newState = { ...state, player: newPlayer }
+            break
+
+        case SET_IS_HOST:
+            var newPlayer = {
+                ...state.player,
+                isHost: action.isHost
+            }
+            newState = {...state, player: newPlayer}
             break
 
         default:

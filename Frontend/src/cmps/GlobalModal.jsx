@@ -1,6 +1,7 @@
 import { eventBus } from '../services/event-bus.service.js'
 import { useEffect, useRef, useState } from 'react'
 
+import { JoinJam } from './DynamicCmps/JoinJam.jsx'
 import { StationEdit } from './DynamicCmps/StationEdit.jsx'
 
 export function GlobalModal() {
@@ -49,8 +50,8 @@ function DynamicModal(props) {
             return <div>Hello World</div>
         case 'station-edit':
             return <StationEdit {...props} />
-        case 'number':
-            return <ShowSettings {...props} />
+        case 'join-jam':
+            return <JoinJam {...props} />
         case 'more-options':
             return <MoreOptions {...props} />
     }

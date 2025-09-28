@@ -15,6 +15,15 @@
         flex-direction: row;
         padding-left: 8px;
 
+        .invite-collaborators {
+            fill: $clrsubtxt;
+
+        }
+
+        .invite-collaborators:hover {
+            fill: $clrwhite;
+        }
+
         img {
             height: 56px;
             aspect-ratio: 1;
@@ -190,8 +199,8 @@
 
         &:hover {
             background: linear-gradient(to right,
-                $clrgreen var(--progress, 0%),
-                #4d4d4d var(--progress, 0%));
+                    $clrgreen var(--progress, 0%),
+                    #4d4d4d var(--progress, 0%));
         }
 
     }

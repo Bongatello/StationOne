@@ -1,13 +1,13 @@
 @import url('https://db.onlinewebfonts.com/c/424dca828dee407629efe273d0a28630?family=Spotify+Mix');
 @import url('https://db.onlinewebfonts.com/c/91bf51a8358ebe7c72e49ea84fd8db7f?family=Spotify+Mix+Extrabold');
 
-.library-bar{
+.library-bar {
 
-  a{
+  a {
     text-decoration: none;
   }
 
-  .header-create-wrapper{
+  .header-create-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -19,7 +19,8 @@
     height: 36px;
     min-width: 201px;
     max-width: 388px;
-    h1{
+
+    h1 {
       letter-spacing: -0.03rem;
       color: $clrwhite;
       font-size: 1rem;
@@ -27,7 +28,7 @@
     }
 
 
-    .create{
+    .create {
       font-family: 'Spotify Mix', sans-serif;
       letter-spacing: -0.03rem;
       display: flex;
@@ -35,13 +36,14 @@
       justify-content: space-between;
       background-color: $clrgray;
       border-radius: 50px;
-      border:0;
+      border: 0;
       width: 100px;
       height: 36px;
       fill: $clrsubtxt;
       padding-right: 16px;
       padding-left: 16px;
-      h1{
+
+      h1 {
         padding-bottom: 2px;
         height: 19px;
         color: $clrwhite;
@@ -49,17 +51,19 @@
       }
     }
   }
-  .sort-filter-library-content{
+
+  .sort-filter-library-content {
     display: flex;
     flex-direction: column;
     margin: 8px 16px 8px 16px;
-    .filter-by-cat{
+
+    .filter-by-cat {
       display: flex;
       justify-content: start;
       gap: 8px;
       margin-bottom: 8px;
 
-      button{
+      button {
         font-family: 'Spotify Mix', sans-serif;
         background-color: #2b2b2b;
         color: white;
@@ -67,17 +71,25 @@
         height: 32px;
         padding: 4px 12px 4px 12px;
         border-radius: 100px;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-      button:hover{
+
+      button:hover {
         background-color: #343434;
       }
     }
-    .sort-by{
+
+    .sort-by {
       display: flex;
       justify-content: space-between;
       padding: 2px 16px 0 0;
       height: 34px;
-      button{
+
+      button {
         background-color: $clrdarkgray;
         fill: $clrsubtxt;
         border: 0;
@@ -87,24 +99,28 @@
         padding: 0;
 
       }
-      .text-query{
+
+      .text-query {
         display: flex;
         justify-content: center;
         height: 32px;
         width: 32px;
         border-radius: 100px;
       }
-      .text-query:hover{
+
+      .text-query:hover {
         background-color: #272727;
         fill: white;
       }
-      .sortby-method{
+
+      .sortby-method {
         margin-right: -7px;
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: 5px;
-        svg{
+
+        svg {
           height: 16px;
         }
       }

@@ -86,6 +86,7 @@ export function SongList({ song, index }) {
                 <p className="song-added">{typeof (song.dateAdded) === 'number' ? timeAddedAgo() : formatDate(song.dateAdded)}</p>
                 <p className="song-length">
                     {user.name === station.addedBy && <div onClick={() => removeSongFromStation()}>{<SvgIcon iconName={"songListRemoveSong"} />}</div>}
+                    {!(user.name === station.addedBy) && <div></div>}
                     {getDuration('ms', song.durationMs)}
                 </p>
             </div>

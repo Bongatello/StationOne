@@ -14,7 +14,7 @@ export function AppHeader() {
         <header className="app-header">
             <nav className=''>
                 <NavLink to="/StationOne/" className="/logo">
-                    <img src='/StationOne/img/sologo.png' />
+                    <img src='https://res.cloudinary.com/dszyainah/image/upload/v1758998253/mujg4jvm45wugenrzbpp.png' />
                 </NavLink>
 
                 <div className="header-middle">

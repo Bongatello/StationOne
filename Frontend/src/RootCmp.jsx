@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { HomePage } from './pages/HomePage'
 import { Browse } from './pages/Browse.jsx'
@@ -15,10 +15,19 @@ import { StationOneLogin } from './pages/StationOneLogin.jsx'
 
 
 export function RootCmp() {
-    const isLoggedIn = true
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('userDB')
+        if (storedUser) setUser(JSON.parse(storedUser))
+    }, [])
+
+    function handleLogin(userData) {
+        setUser(userData)
+    }
     return (
         <>
-            {isLoggedIn &&
+            {user ? (
                 <div className="main-container">
                     <div className="main-header"><AppHeader /></div>
                     <div className="main-librarybar"><LibraryBar /></div>
@@ -35,14 +44,11 @@ export function RootCmp() {
                     <div className="main-footer"><AppFooter /></div>
                     <GlobalModal />
                 </div>
-            }
-            {!isLoggedIn &&
-                <div className='user-login-prompt'>
-                    <Routes>
-                        <Route path="*" element={<StationOneLogin />} />
-                    </Routes>
+            ) : (
+                <div className="user-login-prompt">
+                    <StationOneLogin onLogin={handleLogin} />
                 </div>
-            }
+            )}
         </>
     )
 }

@@ -4,7 +4,9 @@ Features:
 Most significant features:
 -Modals (smart modal component)                                                                                     done, just needs more dynamic cmps
 -socket io? (advanced)
-
+-playing gif wherever needed
+-mobile version
+-clone playlist
 
 Less significant feautres:
 -Get more songs from the spotify playlists (limited to 100 currently)

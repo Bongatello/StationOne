@@ -76,21 +76,18 @@
             }
 
             h1 {
-                font-size: clamp(1rem, 5vw, 6rem);
-                /* scales as screen resizes */
-                white-space: nowrap;
-                /* keep single line */
+                font-size: clamp(2rem, 5vw, 6rem);
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
                 overflow: hidden;
-                /* prevent scrollbars */
-                text-overflow: clip;
-                /* no ellipsis */
-                margin-top: -30px;
-                margin-bottom: -20px;
+                text-overflow: ellipsis;
+                margin-top: -1%;
+                margin-bottom: -1%;
                 font-family: 'Spotify Mix Extrabold', sans-serif;
             }
 
             .station-details {
-
                 display: flex;
                 align-items: center;
                 gap: 4px;
@@ -116,11 +113,13 @@
                 }
             }
         }
+
     }
 
 
     .under-details-wrapper {
         background-color: #1212124D;
+
         .station-actions-songs-wrapper {
             padding-left: 1.5%;
             padding-right: 1.5%;

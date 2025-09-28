@@ -3,15 +3,43 @@
     width: 100%;
 
     .home-station-image {
+        position: relative;
         height: 171.5px;
         width: 171.5px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        img{
-            max-height: 171.5px;
-            max-width: auto;
-            border-radius: 6px
+
+        img {
+            position: absolute;
+            height: 171.5px;
+            width: 100%;
+            border-radius: 6px; 
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .play-button {
+            position: absolute;
+            bottom: 5px; // adjust positioning
+            right: 12px;
+            opacity: 0;
+            transform: scale(1) translateY(0);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+
+            svg {
+                width: 24px;
+                height: 24px;
+                fill: black;
+                background: $clrgreen; // Spotify green
+                border-radius: 50%;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
         }
     }
 
@@ -24,5 +52,8 @@
         font-size: 0.875rem;
         color: $clrsubtxt;
     }
-
+    .home-station-image:hover .play-button {
+        opacity: 1;
+        transform: scale(1) translateY(-5px);
+    }
 }

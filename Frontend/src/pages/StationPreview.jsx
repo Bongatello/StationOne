@@ -10,11 +10,12 @@ import SvgIcon from '../cmps/SvgIcon.jsx'
 //service-functions/actions
 import { addLikedStation, loadUser, removeLikedStation } from '../store/user.actions.js'
 import { setSelectedStation } from '../store/station.actions.js'
-import { togglePlayerState, setPlayingSong, setPlayerStation } from '../store/player.actions'
-import { formatStationDuration } from '../services/util.service.js'
+import { togglePlayerState, setPlayingSong, setPlayerStation, setIsHost } from '../store/player.actions'
+import { formatStationDuration, makeId } from '../services/util.service.js'
 import { songsService } from '../services/songs/songs.service.js'
 import { eventBus } from '../services/event-bus.service.js'
-
+import { AutoResizeTitle } from '../cmps/AutoResizeTitle.jsx'
+import { socket } from '../services/socket.service.js'
 
 export function StationPreview() {
 	const playerData = useSelector(state => state.playerModule)
@@ -28,6 +29,7 @@ export function StationPreview() {
 	const location = useLocation()
 	const route = location.pathname.split("/")[2]
 	const imgRef = useRef(null)
+	const [jamRoomId, setJamRoomId] = useState(undefined)
 
 	useEffect(() => {
 		setStationDuration(getStationDuration())
@@ -38,7 +40,10 @@ export function StationPreview() {
 	}, [station.songs?.length])
 
 	useEffect(() => {
-		loadUser('68bb2208d5ea1ed6ddb82b4a') //not really supposed to be here
+		const storedUser = localStorage.getItem('userDB')
+		const parsedUserId = JSON.parse(storedUser)
+		loadUser(parsedUserId.userId)
+		/* loadUser('68bb2208d5ea1ed6ddb82b4a') //not really supposed to be here */
 		delete station.name
 		setIsQuerySongs(false)
 		setQuerySongs([])
@@ -112,11 +117,21 @@ export function StationPreview() {
 		eventBus.emit('show-modal', { type: 'station-edit', content: 'station-edit' })
 	}
 
+	function handleJoinJamModal() {
+		eventBus.emit('show-modal', {type: 'join-jam', content: 'join-jam'})
+	}
+
+	function createJamRoom() {
+		const roomId = makeId(5)		
+		socket.emit('join-room', roomId)
+		setJamRoomId(roomId)
+		setIsHost(true)
+	}
 
 	if (!station.name) {
 		if (route === "station") return params.stationId === station._id ? '' : <p></p>
 		if (route === "playlist") return params.playlistId === station._id ? '' : <p></p>
-	}	
+	}
 
 	return (
 		<div className="station-page-container"
@@ -145,7 +160,9 @@ export function StationPreview() {
 
 				<div className="station-details-container" >
 					<p>Public Station</p>
-					<h1 onClick={() => handleOpenEditModal()} >{station.name}</h1>
+					<AutoResizeTitle onClick={() => handleOpenEditModal()}>
+						{station.name}
+					</AutoResizeTitle>
 
 					<div className="station-details">
 						<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy}</p>
@@ -173,7 +190,7 @@ export function StationPreview() {
 							</div>
 
 							{station.addedBy === userData.name && //very dangerous, will change it to station._id === userData._id later on, since having 2 users with same name could cause collision!!
-								<div className='invite-collaborators-wrapper action-wrapper'>
+								<div className='invite-collaborators-wrapper action-wrapper' /* onClick={() => createJamRoom()} */>
 									<SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
 								</div>
 							}

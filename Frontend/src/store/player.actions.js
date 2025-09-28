@@ -1,13 +1,13 @@
 import { store } from './store.js'
 import { playerService } from '../services/player/player.service.js'
-import { SET_CURRENT_SONG, GET_CURRENT_SONG, TOGGLE_PLAY_PLAYER, SET_PLAYER_TIME, ON_NEXT_SONG, ON_PREV_SONG, SET_CURRENT_STATION } from './player.reducer.js'
+import { SET_CURRENT_SONG, GET_CURRENT_SONG, TOGGLE_PLAY_PLAYER, SET_PLAYER_TIME, ON_NEXT_SONG, ON_PREV_SONG, SET_CURRENT_STATION, SET_IS_HOST } from './player.reducer.js'
 import { stationService } from '../services/station/station.service.js'
 import { userService } from '../services/user/user.service.js'
 import { editUser } from './user.actions.js'
 
 
 export async function getPlayingSong() {
-    try{
+    try {
         const song = await playerService.getCurrentSong()
         store.dispatch(getCmdGetCurrentSong(song))
         console.log('PlayerActions: successfully loaded song')
@@ -18,7 +18,7 @@ export async function getPlayingSong() {
 }
 
 export async function setPlayingSong(newSong) {
-    try{
+    try {
         await playerService.setCurrentSong(newSong)
         store.dispatch(getCmdSetCurrentSong(newSong))
         console.log('PlayerActions: successfully set current song')
@@ -29,8 +29,7 @@ export async function setPlayingSong(newSong) {
 }
 
 export async function togglePlayerState(newState) {
-    try{
-        //const newState = await playerService.setToggleState(state)
+    try {
         store.dispatch(getCmdTogglePlayPlayer(newState))
         console.log('PlayerActions: successfully set new player state: ', newState)
     } catch (err) {
@@ -40,7 +39,7 @@ export async function togglePlayerState(newState) {
 }
 
 export async function setPlayerTime(time) {
-    try{
+    try {
         store.dispatch(getCmdSetPlayerTime(time))
     } catch (err) {
         console.log('PlayerActions: unable to set new player time: ', err)
@@ -49,33 +48,40 @@ export async function setPlayerTime(time) {
 }
 
 export async function onNextSong(station, currSongId) {
-    try{
+    try {
         const nextSong = await playerService.getPrevNextSong('next', station, currSongId)
         store.dispatch(getCmdOnNextSong(nextSong))
-    } catch (err){
+    } catch (err) {
         console.log('PlayerActions: unable to get next song: ', err)
         throw err
     }
 }
 
 export async function onPrevSong(station, currSongId) {
-    try{
+    try {
         const prevSong = await playerService.getPrevNextSong('prev', station, currSongId)
         store.dispatch(getCmdOnPrevSong(prevSong))
-    } catch (err){
+    } catch (err) {
         console.log('PlayerActions: unable to get previous song: ', err)
         throw err
     }
 }
 
 export async function setPlayerStation(stationId, user) {
-    try{
+    try {
         const station = await stationService.get(stationId)
-        console.log('DEBUGGING::: ', station, user)
         await editUser(user, station) // this func should add recently played station to user recently played stations
-        console.log('add new station to recently played')
         store.dispatch(getCmdSetPlayerStation(station))
-    } catch(err) {
+    } catch (err) {
+        console.log('PlayerActions: Unable to set player station, ', err)
+        throw err
+    }
+}
+
+export async function setIsHost(isHost) {
+    try {
+        store.dispatch(getCmdSetIsHost(isHost))
+    } catch (err) {
         console.log('PlayerActions: Unable to set player station, ', err)
         throw err
     }
@@ -130,5 +136,12 @@ function getCmdSetPlayerStation(station) {
     return {
         type: SET_CURRENT_STATION,
         station
+    }
+}
+
+function getCmdSetIsHost(isHost) {
+    return {
+        type: SET_IS_HOST,
+        isHost
     }
 }
