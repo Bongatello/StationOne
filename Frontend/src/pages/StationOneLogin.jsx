@@ -23,7 +23,7 @@ export function StationOneLogin({ onLogin }) {
         <option value="68bb2208d5ea1ed6ddb82b4a">User 2</option>
       </select>
 
-      <button onClick={() => handleLogin}>Confirm</button>
+      <button onClick={() => handleLogin()}>Confirm</button>
     </div>
   )
 }
