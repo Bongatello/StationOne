@@ -47,6 +47,7 @@ io.on('connection', (socket) => {
 
   socket.on('player-state', ({ roomId, state }) => {
     socket.broadcast.to(roomId).emit('player-state', state)
+    console.log(state)
   })
 
   socket.on('disconnect', () => {

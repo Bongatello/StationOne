@@ -42,47 +42,49 @@ export function AudioPlayer() {
         state: {
           currentSong: playerData.currentSong,
           isPlaying: playerData.isPlaying,
-          currentTime: playerData.currentTime,
+          /* currentTime: playerData.currentTime, */
           station: station
         }
       })
     }
-  }, [playerData.currentSong, playerData.isPlaying, playerData.currentTime, station])
+  }, [playerData.currentSong, playerData.isPlaying, station])
 
   useEffect(() => {
-  if (!playerData.isHost) {
-    // Create a throttled version of the handler
-    const throttledHandler = throttle((state) => {
-      console.log('Received state on client:', state)
-      setPlayingSong(state.currentSong)
-      
-      if (playerData.isPlaying !== state.isPlaying) {
-        togglePlayerState(state.isPlaying)
-      }
+    if (!playerData.isHost) {
+      // Create a throttled version of the handler
+      console.log('received state updatee socket')
 
-      setPlayerTime(state.currentTime)
+      const throttledHandler = throttle((state) => {
+        console.log('Received state on client:', state)
+        setPlayingSong(state.currentSong)
 
-      if (playerRef.current) {
-        const desiredTime = state.currentTime * playerRef.current.duration
-        if (Math.abs(playerRef.current.currentTime - desiredTime) > 0.5) {
-          playerRef.current.currentTime = desiredTime
+        if (playerData.isPlaying !== state.isPlaying) {
+          togglePlayerState(state.isPlaying)
         }
+
+        if (state.currentTime) setPlayerTime(state.currentTime)
+
+        if (playerRef.current) {
+          const desiredTime = state.currentTime * playerRef.current.duration
+          if (Math.abs(playerRef.current.currentTime - desiredTime) > 0.5) {
+            playerRef.current.currentTime = desiredTime
+          }
+        }
+
+        // Handle song change
+        if (state.currentSong.url !== playerData.currentSong.url) {
+          getPlayingSong(state.currentSong.spotifyId)
+        }
+      }, 500) // Throttle to once every 500ms
+
+      socket.on('player-state', throttledHandler)
+
+      return () => {
+        socket.off('player-state', throttledHandler)
+        throttledHandler.cancel() // Clean up throttled function
       }
-
-      // Handle song change
-      if (state.currentSong.url !== playerData.currentSong.url) {
-        getPlayingSong(state.currentSong.spotifyId)
-      }
-    }, 500) // Throttle to once every 500ms
-
-    socket.on('player-state', throttledHandler)
-
-    return () => {
-      socket.off('player-state', throttledHandler)
-      throttledHandler.cancel() // Clean up throttled function
     }
-  }
-}, [playerData])
+  }, [playerData])
 
   function handleJoinJamModal() {
     eventBus.emit('show-modal', { type: 'join-jam', content: 'join-jam' })
@@ -139,6 +141,17 @@ export function AudioPlayer() {
   function handleSeekChange(e) {
     const inputTarget = e.target
     setPlayerTime(parseFloat(inputTarget.value))
+    if (playerData.isHost) {
+      socket.emit('player-state', {
+        roomId: jamRoomId,
+        state: {
+          currentSong: playerData.currentSong,
+          isPlaying: playerData.isPlaying,
+          currentTime: parseFloat(inputTarget.value),
+          station: station
+        }
+      })
+    }
   }
 
   function handleSeekMouseUp(e) {
@@ -164,7 +177,7 @@ export function AudioPlayer() {
   }
 
 
-  
+
   return (
     <div>
       <div style={{ display: 'none' }}>
@@ -188,7 +201,7 @@ export function AudioPlayer() {
 
           <div className='title-artists'>
             <h1>{playerData.currentSong?.name || playerData.currentSong?.songName || 'Play a song for details!'}</h1>
-            <p>{playerData.currentSong? (typeof (playerData.currentSong?.artists) === 'string' ? playerData.currentSong?.artists : playerData.currentSong?.artists?.join(', ')) : 'Play a song for details!'}</p>
+            <p>{playerData.currentSong ? (typeof (playerData.currentSong?.artists) === 'string' ? playerData.currentSong?.artists : playerData.currentSong?.artists?.join(', ')) : 'Play a song for details!'}</p>
           </div>
         </div>
 
@@ -223,11 +236,11 @@ export function AudioPlayer() {
 
 
         <div className='audio-player-volume'>
+          {playerData.isHost && <p>{jamRoomId}</p>}
+          {!playerData.isHost && <p onClick={() => handleJoinJamModal()}>Join a Jam</p>}
           <div className='invite-collaborators-wrapper' onClick={() => createJamRoom()}>
             <SvgIcon iconName={"connectToDevice"} className={"connect-to-device"} />
           </div>
-          {playerData.isHost && <p>{jamRoomId}</p>}
-          {!playerData.isHost && <p onClick={() => handleJoinJamModal()}>Join a Jam</p>}
           <button onClick={() => toggleMute()} className='mute-button'>{state.muted ? <SvgIcon iconName={"unmuteSVG"} /> : <SvgIcon iconName={"muteSVG"} />}</button>
           <input type="range"
             className='volume-bar'
