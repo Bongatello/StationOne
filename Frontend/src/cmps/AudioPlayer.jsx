@@ -6,7 +6,7 @@ import { togglePlayerState, setPlayerTime, getPlayingSong, onPrevSong, onNextSon
 import SvgIcon from './SvgIcon'
 import { socket } from '../services/socket.service.js'
 import { eventBus } from '../services/event-bus.service.js'
-
+import { throttle } from 'lodash'
 
 export function AudioPlayer() {
   const playerData = useSelector(state => state.playerModule.player)
@@ -50,30 +50,39 @@ export function AudioPlayer() {
   }, [playerData.currentSong, playerData.isPlaying, playerData.currentTime, station])
 
   useEffect(() => {
-    if (!playerData.isHost) {
-      socket.on('player-state', (state) => {
-        console.log('Received state on client:', state)
-        setPlayingSong(state.currentSong)
-        if (!(playerData.isPlaying === state.isPlaying)) togglePlayerState(state.isPlaying)
-        setPlayerTime(state.currentTime)
+  if (!playerData.isHost) {
+    // Create a throttled version of the handler
+    const throttledHandler = throttle((state) => {
+      console.log('Received state on client:', state)
+      setPlayingSong(state.currentSong)
+      
+      if (playerData.isPlaying !== state.isPlaying) {
+        togglePlayerState(state.isPlaying)
+      }
 
-        if (playerRef.current) {
-          // Sync timestamp with a threshold to avoid jitter
-          const desiredTime = state.currentTime * playerRef.current.duration
-          if (Math.abs(playerRef.current.currentTime - desiredTime) > 0.5) {
-            playerRef.current.currentTime = desiredTime
-          }
+      setPlayerTime(state.currentTime)
+
+      if (playerRef.current) {
+        const desiredTime = state.currentTime * playerRef.current.duration
+        if (Math.abs(playerRef.current.currentTime - desiredTime) > 0.5) {
+          playerRef.current.currentTime = desiredTime
         }
+      }
 
-        // Song change
-        if (state.currentSong.url !== playerData.currentSong.url) {
-          getPlayingSong(state.currentSong.spotifyId)
-        }
-      })
+      // Handle song change
+      if (state.currentSong.url !== playerData.currentSong.url) {
+        getPlayingSong(state.currentSong.spotifyId)
+      }
+    }, 500) // Throttle to once every 500ms
 
-      return () => socket.off('player-state')// Cleanup
+    socket.on('player-state', throttledHandler)
+
+    return () => {
+      socket.off('player-state', throttledHandler)
+      throttledHandler.cancel() // Clean up throttled function
     }
-  }, [playerData])
+  }
+}, [playerData])
 
   function handleJoinJamModal() {
     eventBus.emit('show-modal', { type: 'join-jam', content: 'join-jam' })
