@@ -22,3 +22,4 @@ Fixes:
 -Look for more bugs or potential fixes in code by letting friends use the site? just like beta testing
 -fix station name not shrinking when being wider than screen
 -Change library list to get album/station/playlist type
+-Can't skip songs in albums
