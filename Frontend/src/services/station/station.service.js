@@ -14,6 +14,7 @@ export const stationService = {
   addStation,
   setSpotifyStations,
   addExistingStation,
+  getSpotifyAlbum,
 }
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || '//localhost:3000'
 const USER_URL = `${BASE_URL}/api/station`
@@ -135,11 +136,22 @@ async function setSpotifyStations(genre) {
   }
 } */
 
-async function addExistingStation(stationId) {
+async function addExistingStation(playlistId) {
   try {
-    const stationToAdd = await axios.get(`http://localhost:3000/api/sy/playlist`, { params: { playlistId: stationId } })
+    const stationToAdd = await axios.get(`http://localhost:3000/api/sy/playlist`, { params: { playlistId: playlistId } })
     await axios.post(USER_URL, stationToAdd.data)
-    setSelectedStation(stationId)
+    setSelectedStation(playlistId)
+  } catch (err) {
+    console.log('StationService: Could not add existing station to DB, ', err)
+    throw err
+  }
+}
+
+async function getSpotifyAlbum(albumId) {
+  try {
+    const stationToAdd = await axios.get(`http://localhost:3000/api/sy/album`, { params: { albumId: albumId } })
+    
+    return stationToAdd.data
   } catch (err) {
     console.log('StationService: Could not add existing station to DB, ', err)
     throw err

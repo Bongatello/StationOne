@@ -58,7 +58,7 @@ export function HomePage() {
 
 
 
-    if (!stations || !stations.length || !spotifyStations) {
+    if (!spotifyStations) {
         return <p>Loading stations...</p>
     }
     return (

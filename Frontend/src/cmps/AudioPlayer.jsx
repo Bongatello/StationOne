@@ -42,7 +42,6 @@ export function AudioPlayer() {
         state: {
           currentSong: playerData.currentSong,
           isPlaying: playerData.isPlaying,
-          /* currentTime: playerData.currentTime, */
           station: station
         }
       })
@@ -56,25 +55,20 @@ export function AudioPlayer() {
 
       const throttledHandler = throttle((state) => {
         console.log('Received state on client:', state)
-        setPlayingSong(state.currentSong)
+        if (state.currentSong) setPlayingSong(state.currentSong) //currentSong change
 
-        if (playerData.isPlaying !== state.isPlaying) {
-          togglePlayerState(state.isPlaying)
-        }
+        if (playerData.isPlaying !== state.isPlaying) togglePlayerState(state.isPlaying) //play/pause from host
 
-        if (state.currentTime) setPlayerTime(state.currentTime)
+        if (state.currentTime) setPlayerTime(state.currentTime) //if we have received a currentTime update (probably a timeline skip)
 
-        if (playerRef.current) {
+        if (playerRef.current) { //
           const desiredTime = state.currentTime * playerRef.current.duration
           if (Math.abs(playerRef.current.currentTime - desiredTime) > 0.5) {
             playerRef.current.currentTime = desiredTime
           }
         }
 
-        // Handle song change
-        if (state.currentSong.url !== playerData.currentSong.url) {
-          getPlayingSong(state.currentSong.spotifyId)
-        }
+        if (state.currentSong.url !== playerData.currentSong.url) getPlayingSong(state.currentSong.spotifyId)// Handle song change
       }, 500) // Throttle to once every 500ms
 
       socket.on('player-state', throttledHandler)

@@ -66,7 +66,7 @@ export function SearchResultsPage() {
     /* if (!loadedStatus) return <div></div> */
     return (
         <section className="search-results-page">
-            <div className="results-sorting-methods" style={{opacity: '0%'}}>Maybe All, Songs, Artists, Albums, Playlists search results sortings later on</div>
+            <div className="results-sorting-methods" style={{ opacity: '0%' }}>Maybe All, Songs, Artists, Albums, Playlists search results sortings later on</div>
             <div className="all-results-wrapper">
                 <div className="top-result-container">
                     <h2>Top result</h2>
@@ -108,7 +108,9 @@ export function SearchResultsPage() {
                     <h2>Albums</h2>
                     <div ref={containerRef} className="albums-list" style={{ gridTemplateColumns: `repeat(${visibleCount}, 1fr)` }}>
                         {queryAlbums.slice(0, visibleCount).map((album, index) => (
-                            <SearchResultCard key={album.spotifyId} item={album} type="album" index={index} />
+                            <Link to={`/StationOne/album/${album.spotifyApiId}`}>
+                                <SearchResultCard key={album.spotifyId} item={album} type="album" index={index} />
+                            </Link>
                         ))}
                     </div>
                 </div>

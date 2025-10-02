@@ -38,6 +38,7 @@ export function RootCmp() {
                             <Route path="/StationOne/search/:searchParams" element={<SearchResultsPage />} />
                             <Route path="/StationOne/station/:stationId" element={<StationPreview />} />
                             <Route path="/StationOne/playlist/:playlistId" element={<StationPreview />} />
+                            <Route path="/StationOne/album/:albumId" element={<StationPreview />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </div>

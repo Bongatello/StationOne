@@ -16,6 +16,7 @@ import { songsService } from '../services/songs/songs.service.js'
 import { eventBus } from '../services/event-bus.service.js'
 import { AutoResizeTitle } from '../cmps/AutoResizeTitle.jsx'
 import { socket } from '../services/socket.service.js'
+import { stationService } from '../services/station/station.service.js'
 
 export function StationPreview() {
 	const playerData = useSelector(state => state.playerModule)
@@ -33,8 +34,9 @@ export function StationPreview() {
 
 	useEffect(() => {
 		setStationDuration(getStationDuration())
-		if (route === 'station') setSelectedStation(params.stationId)
-		if (route === 'playlist') setSelectedStation(params.playlistId)
+		if (route === 'station') setSelectedStation(params.stationId, 'station')
+		if (route === 'playlist') setSelectedStation(params.playlistId, 'playlist')
+		if (route === 'album') setSelectedStation(params.albumId, 'album')
 		colorThiefCover()
 		console.log('Updated song list')
 	}, [station.songs?.length])
@@ -44,12 +46,13 @@ export function StationPreview() {
 		const parsedUserId = JSON.parse(storedUser)
 		loadUser(parsedUserId.userId) */
 		/* loadUser('68bb2208d5ea1ed6ddb82b4a') //not really supposed to be here */
-		delete station.name
+		delete station.name //if params was changed (useEffect dependency), delete station name so station wouldn't be shown (check the if statement above the return of the component)
 		setIsQuerySongs(false)
 		setQuerySongs([])
 		setStationDuration(getStationDuration())
-		if (route === 'station') setSelectedStation(params.stationId)
-		if (route === 'playlist') setSelectedStation(params.playlistId)
+		if (route === 'station') setSelectedStation(params.stationId, 'station')
+		if (route === 'playlist') setSelectedStation(params.playlistId, 'playlist')
+		if (route === 'album') setSelectedStation(params.albumId, 'album')
 		colorThiefCover()
 		console.log('New selected station: ', station)
 	}, [params])
@@ -103,7 +106,7 @@ export function StationPreview() {
 	function playPauseLogic() {
 		if (!(station._id === playerData.station._id)) {
 			setPlayingSong(station.songs[0])
-			setPlayerStation(params.stationId || params.playlistId, userData)
+			setPlayerStation(params.stationId || params.playlistId || params.albumId, userData)
 			songsService.findOnYoutube(station.songs[0])
 			togglePlayerState(true)
 		}
@@ -131,6 +134,7 @@ export function StationPreview() {
 	if (!station.name) {
 		if (route === "station") return params.stationId === station._id ? '' : <p></p>
 		if (route === "playlist") return params.playlistId === station._id ? '' : <p></p>
+		if (route === "album") return params.albumId === station._id ? '' : <p></p>
 	}
 
 	return (
@@ -159,13 +163,14 @@ export function StationPreview() {
 
 
 				<div className="station-details-container" >
-					<p>Public Station</p>
+					{!(route === "album") && <p>Public Playlist</p>}
+					{route === "album" && <p>{station.albumType}</p>}
 					<AutoResizeTitle onClick={() => handleOpenEditModal()}>
 						{station.name}
 					</AutoResizeTitle>
 
 					<div className="station-details">
-						<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy}</p>
+						<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy ? station.addedBy : station.artists}</p>
 						{station.songs.length > 0 &&
 							<div className='songs-length-wrapper'>
 								<p>• {station.songs.length} {station.songs.length > 1 ? 'songs' : 'song'}, </p>
@@ -214,9 +219,9 @@ export function StationPreview() {
 									<ul key={song.id}>
 										<SongList song={song} index={index} />
 									</ul>
-
 								)}
 							</div>
+							{/* {route === "album" && <div className='album-credits'>{station.copyrights}</div>} */}
 
 						</div>
 					</div>

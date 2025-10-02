@@ -75,7 +75,7 @@ export function SongList({ song, index }) {
                     {!(playerData.player.isPlaying && song.spotifyId === playerData.player.currentSong.spotifyId) && <p className='playing-song-stopped'>{index + 1}</p>}
                 </div>
                 <div className='song-title'>
-                    <img src={song.cover || song.images[0]?.url} />
+                    {song.cover && <img src={song.cover || song.images[0]?.url} />}
                     <div className='song-name-artists'>
                         <p>{song.name || song.songName}</p>
                         <section className="explicit-and-artists">
@@ -84,8 +84,8 @@ export function SongList({ song, index }) {
                         </section>
                     </div>
                 </div>
-                <p className="song-album">{song.album || song.albumName}</p>
-                <p className="song-added">{typeof (song.dateAdded) === 'number' ? timeAddedAgo() : formatDate(song.dateAdded)}</p>
+                {song.album && <p className="song-album">{song.album || song.albumName}</p>}
+                {song.dateAdded && <p className="song-added">{typeof (song.dateAdded) === 'number' ? timeAddedAgo() : formatDate(song.dateAdded)}</p>}
                 <p className="song-length">
                     {user.name === station.addedBy && <div onClick={() => removeSongFromStation()}>{<SvgIcon iconName={"songListRemoveSong"} />}</div>}
                     {!(user.name === station.addedBy) && <div></div>}

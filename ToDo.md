@@ -8,6 +8,8 @@ Most significant features:
 -mobile version
 -clone playlist
 
+
+
 Less significant feautres:
 -Get more songs from the spotify playlists (limited to 100 currently)
 -Add explicit icon to explicit songs on stations
@@ -19,3 +21,4 @@ Fixes:
 -add res status codes to errors in throw/catch on the backend side
 -Look for more bugs or potential fixes in code by letting friends use the site? just like beta testing
 -fix station name not shrinking when being wider than screen
+-Change library list to get album/station/playlist type
