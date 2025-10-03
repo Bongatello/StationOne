@@ -150,7 +150,6 @@ async function addExistingStation(playlistId) {
 async function getSpotifyAlbum(albumId) {
   try {
     const stationToAdd = await axios.get(`http://localhost:3000/api/sy/album`, { params: { albumId: albumId } })
-    
     return stationToAdd.data
   } catch (err) {
     console.log('StationService: Could not add existing station to DB, ', err)

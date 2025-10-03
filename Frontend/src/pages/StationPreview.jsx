@@ -215,7 +215,7 @@ export function StationPreview() {
 								<p className="song-length"><SvgIcon iconName={"durationSvg"} /></p>
 							</div>
 							<div className="station-songs">
-								{station.songs.map((song, index) =>
+								{station.songs?.map((song, index) =>
 									<ul key={song.id}>
 										<SongList song={song} index={index} />
 									</ul>

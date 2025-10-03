@@ -2,6 +2,8 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import http from 'http'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { Server } from 'socket.io'
 import { spotifyYoutubeRoutes } from './api/spotify-youtube/spotifyYoutube.routes.js'
 import { stationsRoutes } from './api/stations/stations.routes.js'
@@ -15,6 +17,10 @@ dotenv.config()
 const app = express()
 const PORT = 3000
 app.use(express.json())
+
+//pathing
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 //cors
 const corsOptions = {
@@ -61,6 +67,14 @@ app.use('/api/station', stationsRoutes)
 app.use('/api/songs', songsRoutes)
 app.use('/api/user', usersRoutes)
 
+
+
+
+app.use(express.static(path.join(__dirname, 'client/dist')))
+
+app.get('/*all', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'))
+})
 
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
