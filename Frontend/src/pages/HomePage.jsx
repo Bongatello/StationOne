@@ -15,6 +15,12 @@ export function HomePage() {
     const firstImgRef = useRef(null);
 
     useEffect(() => {
+        const storedUser = localStorage.getItem('userDB')
+        const parsedUserId = JSON.parse(storedUser)
+
+        if (parsedUserId?.userId) {
+            loadUser(parsedUserId.userId) // Load user data if not already available
+        }
         getStations()
         if (!spotifyStations) getSpotifyStations(genres.join(','))
 
