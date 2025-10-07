@@ -1,0 +1,143 @@
+.mobile-audio-player-wrapper {
+    margin: 0 8px 0 8px;
+    background-color: brown;
+    border-radius: 4px;
+    display: block;
+    position: relative;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; */
+    height: 56px;
+
+    .song-details-buttons-wrapper {
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        padding: 8px;
+
+        .song-details-wrapper {
+            display: flex;
+            flex-direction: row;
+
+            img {
+                height: 40px;
+                aspect-ratio: 1;
+                border-radius: 4px;
+                margin-right: 12px;
+            }
+
+            .title-artists {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                h1 {
+                    font-weight: 500;
+                    margin: 0;
+                    font-size: 0.875rem;
+                    color: $clrwhite;
+                }
+
+                p {
+                    margin: 0;
+                    font-size: 0.75rem;
+                    color: $clrsubtxt;
+                }
+            }
+
+        }
+
+        .buttons-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+
+            .play-pause {
+                background-color: transparent;
+                border: 0;
+                border-radius: 50%;
+                aspect-ratio: 1;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                fill: white;
+            }
+        }
+    }
+
+    .audio-player-buttons-wrapper {
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-content: center;
+        bottom: 0;
+        transform: translateY(30%);
+        width: 100%;
+
+        .timeline-wrapper {
+            width: 100%;
+
+            .timeline-bar {
+                margin-left: 1%;
+                width: 98%;
+            }
+        }
+
+    }
+
+    input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right,
+                white var(--progress, 0%),
+                #ffffff56 var(--progress, 0%));
+        border-radius: 50px;
+        outline: none;
+        cursor: pointer;
+
+        &::-webkit-slider-runnable-track {
+            height: 4px;
+            border-radius: 50px;
+            background: transparent;
+        }
+
+        &::-moz-range-track {
+            height: 4px;
+            border-radius: 50px;
+            background: transparent;
+        }
+
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: $clrwhite;
+            border: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            margin-top: -4px;
+        }
+
+        &::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: $clrwhite;
+            border: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+    }
+}

@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { useSelector } from 'react-redux'
-import { getDuration, makeId } from '../services/util.service'
-import { togglePlayerState, setPlayerTime, getPlayingSong, onPrevSong, onNextSong, setPlayerStation, setPlayingSong, setIsHost } from '../store/player.actions'
-import SvgIcon from './SvgIcon'
+import { getDuration, makeId } from '../services/util.service.js'
+import { togglePlayerState, setPlayerTime, getPlayingSong, onPrevSong, onNextSong, setPlayerStation, setPlayingSong, setIsHost } from '../store/player.actions.js'
+import SvgIcon from './SvgIcon.jsx'
 import { socket } from '../services/socket.service.js'
 import { eventBus } from '../services/event-bus.service.js'
 import { throttle } from 'lodash'
 
-export function AudioPlayer() {
+export function MobileAudioPlayer() {
   const playerData = useSelector(state => state.playerModule.player)
   const station = useSelector(state => state.playerModule.station)
-  const user = useSelector(state => state.userModule.user)
+  const user = useSelector(state => state.userModule.user) // will be used for liked songs part
 
   const [jamRoomId, setJamRoomId] = useState(undefined)
 
   const initialState = {
-    volume: 0.5,
+    volume: 1,
     muted: false,
     seeking: false,
   }
@@ -30,9 +30,7 @@ export function AudioPlayer() {
   const playerRef = useRef(initialRef)
 
   useEffect(() => {
-
     getPlayingSong()
-
   }, [playerData.currentSong.spotifyId])
 
   useEffect(() => {
@@ -49,30 +47,22 @@ export function AudioPlayer() {
   }, [playerData.currentSong, playerData.isPlaying, station])
 
   useEffect(() => {
-    if (!playerData.isHost) {
-      // Create a throttled version of the handler
-      console.log('received state updatee socket')
-
+    if (!playerData.isHost && jamRoomId) {
       const throttledHandler = throttle((state) => {
         console.log('Received state on client:', state)
         if (state.currentSong) setPlayingSong(state.currentSong) //currentSong change
-
         if (playerData.isPlaying !== state.isPlaying) togglePlayerState(state.isPlaying) //play/pause from host
-
         if (state.currentTime) setPlayerTime(state.currentTime) //if we have received a currentTime update (probably a timeline skip)
-
         if (playerRef.current) { //
           const desiredTime = state.currentTime * playerRef.current.duration
           if (Math.abs(playerRef.current.currentTime - desiredTime) > 0.5) {
             playerRef.current.currentTime = desiredTime
           }
         }
-
-        if (state.currentSong.url !== playerData.currentSong.url) getPlayingSong(state.currentSong.spotifyId)// Handle song change
+        if (state.currentSong.url !== playerData.currentSong.url) getPlayingSong(state.currentSong.spotifyId)// Handle song change, maybe unnecessary
       }, 500) // Throttle to once every 500ms
 
       socket.on('player-state', throttledHandler)
-
       return () => {
         socket.off('player-state', throttledHandler)
         throttledHandler.cancel() // Clean up throttled function
@@ -95,21 +85,6 @@ export function AudioPlayer() {
       setJamRoomId(undefined)
       setIsHost(false)
     }
-  }
-
-  function toggleMute() {
-    if (state.muted) { //muted state
-      setState(prevState => ({ ...prevState, muted: false }))
-      console.log('unmuted player, volume: ', state.volume)
-    }
-    else { //unmuted state
-      setState(prevState => ({ ...prevState, muted: true }))
-      console.log('muted player, volume: ', state.volume)
-    }
-  }
-
-  function handleInputVolume(inputVolume) {
-    setState(prevState => ({ ...prevState, volume: inputVolume }))
   }
 
   //-----------------------------------------------------------------------------------------------------------
@@ -189,28 +164,27 @@ export function AudioPlayer() {
           height="0px"
         />
       </div>
-      <div className='audio-player-wrapper'>
 
-        <div className='song-details-wrapper'>
-          <img src={playerData.currentSong?.cover || 'https://res.cloudinary.com/dszyainah/image/upload/v1758998059/tqfjyzy4lhao3o1kwy6m.png'} />
+      <div className='mobile-audio-player-wrapper'>
 
-          <div className='title-artists'>
-            <h1>{playerData.currentSong?.name || playerData.currentSong?.songName || 'Play a song for details!'}</h1>
-            <p>{playerData.currentSong ? (typeof (playerData.currentSong?.artists) === 'string' ? playerData.currentSong?.artists : playerData.currentSong?.artists?.join(', ')) : 'Play a song for details!'}</p>
+        <div className='song-details-buttons-wrapper'>
+          <div className='song-details-wrapper'>
+            <img src={playerData.currentSong?.cover || 'https://res.cloudinary.com/dszyainah/image/upload/v1758998059/tqfjyzy4lhao3o1kwy6m.png'} />
+            <div className='title-artists'>
+              <h1>{playerData.currentSong?.name || playerData.currentSong?.songName || 'Play a song for details!'}</h1>
+              <p>{playerData.currentSong ? (typeof (playerData.currentSong?.artists) === 'string' ? playerData.currentSong?.artists : playerData.currentSong?.artists?.join(', ')) : 'Play a song for details!'}</p>
+            </div>
+          </div>
+          <div className='buttons-wrapper'>
+            <button onClick={() => togglePlayerState(!playerData.isPlaying)} className='play-pause'>{playerData.isPlaying ? <SvgIcon iconName={"pauseSVG"} /> : <SvgIcon iconName={"playSVG"} />}</button>
           </div>
         </div>
 
 
         <div className='audio-player-buttons-wrapper'>
-          <div className='buttons-wrapper'>
-            <button onClick={() => getPrevSong()} className='prev-song'><SvgIcon iconName={"nextPrevSVG"} /></button>
-            <button onClick={() => togglePlayerState(!playerData.isPlaying)} className='play-pause'>{playerData.isPlaying ? <SvgIcon iconName={"pauseSVG"} /> : <SvgIcon iconName={"playSVG"} />}</button>
-            <button onClick={() => getNextSong()} className='next-song'><SvgIcon iconName={"nextPrevSVG"} /></button>
-          </div>
 
 
           <div className='timeline-wrapper'>
-            <p>{playerRef.current?.currentTime ? getDuration('seconds', Math.floor(playerRef.current.currentTime)) : '0:00'}</p>
             <input
               type="range"
               className='timeline-bar'
@@ -225,29 +199,7 @@ export function AudioPlayer() {
                 "--progress": `${playerData.currentTime * 100}%`,
               }}
             />
-            <p>{playerRef.current?.duration ? getDuration('seconds', playerRef.current?.duration) : getDuration('ms', playerData.currentSong?.durationMs)}</p>
           </div>
-        </div>
-
-
-        <div className='audio-player-volume'>
-          {playerData.isHost && <p>{jamRoomId}</p>}
-          {!playerData.isHost && <p onClick={() => handleJoinJamModal()}>Join a Jam</p>}
-          <div className='invite-collaborators-wrapper' onClick={() => createJamRoom()}>
-            <SvgIcon iconName={"connectToDevice"} className={"connect-to-device"} />
-          </div>
-          <button onClick={() => toggleMute()} className='mute-button'>{state.muted ? <SvgIcon iconName={"unmuteSVG"} /> : <SvgIcon iconName={"muteSVG"} />}</button>
-          <input type="range"
-            className='volume-bar'
-            min={0}
-            max={1}
-            step={"any"}
-            value={state.volume}
-            onChange={(e) => handleInputVolume(parseFloat(e.target.value))}
-            style={{
-              "--progress": `${state.volume * 100}%`,
-            }}
-          />
         </div>
       </div>
     </div>

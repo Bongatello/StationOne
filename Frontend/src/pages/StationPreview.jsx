@@ -11,7 +11,7 @@ import SvgIcon from '../cmps/SvgIcon.jsx'
 import { addLikedStation, loadUser, removeLikedStation } from '../store/user.actions.js'
 import { setSelectedStation } from '../store/station.actions.js'
 import { togglePlayerState, setPlayingSong, setPlayerStation, setIsHost } from '../store/player.actions'
-import { formatStationDuration, makeId } from '../services/util.service.js'
+import { formatStationDuration, makeId, getCapitalizedWord } from '../services/util.service.js'
 import { songsService } from '../services/songs/songs.service.js'
 import { eventBus } from '../services/event-bus.service.js'
 import { AutoResizeTitle } from '../cmps/AutoResizeTitle.jsx'
@@ -42,10 +42,6 @@ export function StationPreview() {
 	}, [station.songs?.length])
 
 	useEffect(() => {
-		/* const storedUser = localStorage.getItem('userDB')
-		const parsedUserId = JSON.parse(storedUser)
-		loadUser(parsedUserId.userId) */
-		/* loadUser('68bb2208d5ea1ed6ddb82b4a') //not really supposed to be here */
 		delete station.name //if params was changed (useEffect dependency), delete station name so station wouldn't be shown (check the if statement above the return of the component)
 		setIsQuerySongs(false)
 		setQuerySongs([])
@@ -87,10 +83,16 @@ export function StationPreview() {
 		return formattedDuration
 	}
 
-	function isLikedByUser(targetID) { //probably needs to be edited due to mongoDB and userRedux changes
+	function isLikedByUser(targetID) {
 		const likedByUser = userData
 		if (!likedByUser.likedStations?.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} className={"add-to-library"} />
 		return <SvgIcon iconName={"removeFromLibrary"} className={"remove-from-library"} />
+	}
+
+	function isLikedByUserMobile(targetID) {
+		const likedByUser = userData
+		if (!likedByUser.likedStations?.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"emptyHeart"} className={"add-to-library"} />
+		return <SvgIcon iconName={"fullHeart"} className={"remove-from-library"} />
 	}
 
 	function colorThiefCover() {
@@ -120,17 +122,6 @@ export function StationPreview() {
 		eventBus.emit('show-modal', { type: 'station-edit', content: 'station-edit' })
 	}
 
-	function handleJoinJamModal() {
-		eventBus.emit('show-modal', { type: 'join-jam', content: 'join-jam' })
-	}
-
-	function createJamRoom() {
-		const roomId = makeId(5)
-		socket.emit('join-room', roomId)
-		setJamRoomId(roomId)
-		setIsHost(true)
-	}
-
 	if (!station.name) {
 		if (route === "station") return params.stationId === station._id ? '' : <p></p>
 		if (route === "playlist") return params.playlistId === station._id ? '' : <p></p>
@@ -145,6 +136,7 @@ export function StationPreview() {
 			rgb(${color?.join(",")}) 0%,
 			#121212 41%
 		)`}}>
+			{/* ---Desktop Station Details--- */}
 			<div className="station-cover-details-wrapper">
 
 				<div className="station-cover">
@@ -164,7 +156,7 @@ export function StationPreview() {
 
 				<div className="station-details-container" >
 					{!(route === "album") && <p>Public Playlist</p>}
-					{route === "album" && <p>{station.albumType}</p>}
+					{route === "album" && <p>{getCapitalizedWord(station.albumType)}</p>}
 					<AutoResizeTitle onClick={() => handleOpenEditModal()}>
 						{station.name}
 					</AutoResizeTitle>
@@ -181,10 +173,43 @@ export function StationPreview() {
 
 				</div>
 			</div>
+			{/* ---Mobile Station Details--- */}
+			<div className="station-cover-details-wrapper-mobile">
+
+				<div className="station-cover">
+					{station.thumbnail &&
+						<img ref={imgRef} src={station.thumbnail} crossOrigin="anonymous" onLoad={() => {
+							const colorThief = new ColorThief()
+							setColor(colorThief.getColor(imgRef.current))
+						}} />
+					}
+					{!station.thumbnail &&
+						<div className='default-cover'>
+							<SvgIcon iconName={"stationDefaultCover"} className={"default-cover-svg"} />
+						</div>
+					}
+				</div>
+
+
+				<div className="station-details-container" >
+					<AutoResizeTitle onClick={() => handleOpenEditModal()}>
+						{station.name}
+					</AutoResizeTitle>
+					<p style={{ color: 'white', fontWeight: 'bold' }}>{station.addedBy ? station.addedBy : station.artists}</p>
+
+					{station.songs.length > 0 &&
+						<div className='songs-length-wrapper'>
+							<p>{stationDuration}</p>
+						</div>
+					}
+
+				</div>
+			</div>
 
 			<div className='under-details-wrapper'>
 				{station.songs.length > 0 && // if station includes songs, the user will see the actions and the song list, else will see the next option
 					<div className="station-actions-songs-wrapper">
+						{/* ---Desktop Station Actions--- */}
 						<div className="station-actions">
 							<div className="play-pause-button-wrapper action-wrapper" onClick={() => playPauseLogic()}>
 								{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
@@ -195,7 +220,7 @@ export function StationPreview() {
 							</div>
 
 							{station.addedBy === userData.name && //very dangerous, will change it to station._id === userData._id later on, since having 2 users with same name could cause collision!!
-								<div className='invite-collaborators-wrapper action-wrapper' /* onClick={() => createJamRoom()} */>
+								<div className='invite-collaborators-wrapper action-wrapper'>
 									<SvgIcon iconName={"inviteCollaborators"} className={"invite-collaborators"} />
 								</div>
 							}
@@ -205,8 +230,27 @@ export function StationPreview() {
 							</div>
 						</div>
 
-						<div className="station-songs-container">
+						{/* ---Mobile Station Actions--- */}
 
+						<div className='station-actions-mobile'>
+							<div className="play-pause-button-wrapper action-wrapper" onClick={() => playPauseLogic()}>
+								{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
+							</div>
+
+							<div className="add-remove-library-wrapper action-wrapper" onClick={() => addRemoveFromList()}>
+								{isLikedByUserMobile(station._id)}
+							</div>
+
+							<div className="share-button">
+								<SvgIcon iconName={'shareButton'} /* className={'share-button'} */ />
+							</div>
+
+							<div className="extra-options-wrapper action-wrapper">
+								<SvgIcon iconName={"extraOptionsMobile"} />
+							</div>
+						</div>
+
+						<div className="station-songs-container">
 							<div className="song-preview-headlines">
 								<p className="song-index">#</p>
 								<p className="song-title">Title</p>
@@ -214,6 +258,7 @@ export function StationPreview() {
 								<p className="song-added">Date Added</p>
 								<p className="song-length"><SvgIcon iconName={"durationSvg"} /></p>
 							</div>
+
 							<div className="station-songs">
 								{station.songs?.map((song, index) =>
 									<ul key={song.id}>
@@ -221,8 +266,8 @@ export function StationPreview() {
 									</ul>
 								)}
 							</div>
-							{/* {route === "album" && <div className='album-credits'>{station.copyrights}</div>} */}
 
+							{/* {route === "album" && <div className='album-credits'>{station.copyrights}</div>} */}
 						</div>
 					</div>
 				}

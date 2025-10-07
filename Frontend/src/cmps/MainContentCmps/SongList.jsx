@@ -64,6 +64,7 @@ export function SongList({ song, index }) {
 
     return (
         <div className="song-preview-container">
+            {/* ---Desktop Song Preview--- */}
             <div className={song.spotifyId === playerData.player.currentSong.spotifyId ? "playing-song-preview song-preview" : "song-preview"}>
                 <div className="song-index" onClick={() => { playPauseLogic() }}>
 
@@ -91,6 +92,25 @@ export function SongList({ song, index }) {
                     {!(user.name === station.addedBy) && <div></div>}
                     {getDuration('ms', song.durationMs)}
                 </p>
+            </div>
+            {/* ---Mobile Song Preview--- */}
+            <div className={song.spotifyId === playerData.player.currentSong.spotifyId ? "playing-song-preview song-preview-mobile" : "song-preview-mobile"} onClick={() => { playPauseLogic() }}>
+                <div className='song-title'>
+                    {song.cover && <img src={song.cover || song.images[0]?.url} />}
+                    <div className='song-name-artists'>
+                        <div className='title-visualizer'>
+                            {playerData.player.isPlaying && song.spotifyId === playerData.player.currentSong.spotifyId && <img className='playing-song-visualizer' src='https://open.spotifycdn.com/cdn/images/equaliser-animated-green.f5eb96f2.gif' height={'14px'} width={'14px'}></img>}
+                            <p>{song.name || song.songName}</p>
+                        </div>
+                        <section className="explicit-and-artists">
+                            {/* song.isExplicit && <h6>E</h6> */}
+                            <p>{typeof (song.artists) === 'string' ? song.artists : song.artists.join(', ')}</p>
+                        </section>
+                    </div>
+                </div>
+                <div className='song-options'>
+                    <SvgIcon iconName={"extraOptions"} />
+                </div>
             </div>
         </div>
     )

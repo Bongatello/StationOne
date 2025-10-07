@@ -1,3 +1,7 @@
+.song-preview-mobile {
+    display: none;
+}
+
 .song-preview {
     display: grid;
     grid-template-columns: 20px minmax(490px, 53%) minmax(252px, 25%) 15% 5%;
@@ -18,9 +22,11 @@
         .song-index-number {
             display: block;
         }
+
         .playing-song-visualizer {
             display: none;
         }
+
         .playing-song-stopped {
             display: none;
         }
@@ -37,13 +43,13 @@
         flex-direction: row;
 
         img {
+            margin-right: 10px;
             border-radius: 6px;
             height: 40px;
             width: 40px;
         }
 
         .song-name-artists {
-            padding-left: 10px;
 
             p {
                 display: -webkit-box;
@@ -110,10 +116,12 @@
         .song-index-number {
             display: none;
         }
+
         .playing-song-visualizer {
             display: none;
         }
-        .playing-song-stopped{
+
+        .playing-song-stopped {
             display: none;
         }
 
@@ -140,9 +148,11 @@
         .song-index-number {
             display: none;
         }
+
         .playing-song-visualizer {
             display: block;
         }
+
         .playing-song-stopped {
             display: block;
         }
@@ -157,4 +167,125 @@
             }
         }
     }
+}
+
+@media only screen and (max-width: 768px) {
+    .song-preview {
+        display: none;
+    }
+
+    .song-preview-mobile {
+        display: grid;
+        grid-template-columns: 95% 5%;
+        grid-template-areas: '_title _options';
+        grid-gap: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        font-size: 0.85em;
+        color: $clrsubtxt;
+        align-items: center;
+        border-radius: 7px;
+        height: 54px;
+
+        .song-title {
+            grid-area: _title;
+            display: flex;
+            flex-direction: row;
+
+            img {
+                margin-right: 10px;
+                border-radius: 6px;
+                height: 40px;
+                width: 40px;
+            }
+
+            .song-name-artists {
+                .title-visualizer {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    img {
+                        height: 16px;
+                        width: 16px;
+                        border-radius: 0;
+                    }
+                }
+
+                p {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    font-size: 1rem;
+                    color: $clrwhite;
+                }
+
+                .explicit-and-artists {
+                    display: flex;
+                    flex-direction: row;
+
+                    p {
+                        display: -webkit-box;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        font-size: 0.875rem;
+                        color: $clrsubtxt;
+                    }
+
+                    h6 {
+                        font-size: 0.875rem;
+                        margin-right: 3px;
+                    }
+                }
+            }
+        }
+
+        .song-options {
+            grid-area: _options;
+
+            i {
+                svg {
+                    fill: $clrsubtxt;
+                }
+            }
+        }
+    }
+
+    .song-preview:hover {
+        background-color: initial;
+
+        .song-index {
+            .playing-song-stopped {
+                display: block;
+            }
+
+            svg {
+                fill: $clrwhite;
+                display: none;
+            }
+        }
+
+        .song-length {
+            svg {
+                display: block;
+                align-self: center;
+                justify-self: center;
+            }
+        }
+    }
+
+    .playing-song-preview {
+        .song-title {
+            color: $clrgreen;
+
+            .song-name-artists {
+                p {
+                    color: $clrgreen;
+                }
+            }
+        }
+    }
+
 }
