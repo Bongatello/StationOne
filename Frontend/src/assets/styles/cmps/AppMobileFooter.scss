@@ -1,0 +1,45 @@
+.mobile-footer-links {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    height: 70px;
+    align-items: center;
+
+    .footer-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: $clrsubtxt;
+
+        svg {
+            height: 24px;
+            width: 24px;
+            margin-bottom: 4px;
+        }
+
+        font-size: 0.6875rem;
+    }
+
+    .footer-link-active {
+        fill: white;
+        stroke: transparent;
+    }
+
+    .footer-link-passive {
+        fill: $clrsubtxt
+    }
+
+    .footer-link-home-passive {
+        stroke: $clrsubtxt;
+        stroke-width: 2px;
+        fill: transparent;
+    }
+
+    button {
+        fill: $clrsubtxt;
+        background-color: transparent;
+        border: 0;
+    }
+
+    .home-link {}
+}

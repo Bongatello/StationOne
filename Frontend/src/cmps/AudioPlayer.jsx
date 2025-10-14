@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import { useSelector } from 'react-redux'
 import { getDuration, makeId } from '../services/util.service'

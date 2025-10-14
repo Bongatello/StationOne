@@ -1,6 +1,5 @@
-import { storageService } from '../async-storage.service.js'
 import { songsService } from '../songs/songs.service.js'
-import { makeId, makeLorem, saveToStorage, loadFromStorage } from '../util.service.js'
+import { saveToStorage, loadFromStorage } from '../util.service.js'
 
 export const playerService = {
   getCurrentSong,

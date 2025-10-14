@@ -36,3 +36,22 @@ Fixes:
 -More changes to the updated mobile station
 
 -More mobile pages (library, home and search, should be easy if using the existing ones)
+
+
+
+
+Notes to remember for the next day:
+
+Maybe making a globap ReactPlayer instead of having it inside the MediaPlayer/MobileMediaPlayer etc. would be better, because when going changing between them and the experimental full screen media player it just stops the song, and restarts it.
+
+Pretty much finished the footer for mobile except for the functionality of create button and colorthief for the song/player bar and will need to work on liked-songs station asap (for the heart button)
+
+Library page for mobile works, but maybe some changes will have to happen
+
+Mobile search page needs to be created, currently shows an empty page
+
+Remember to rely on mobile app more because its the actual thing, since the mobile-webapp isnt actually updated
+
+Margins on homepage are different on mobile
+
+Add option to listen to a song from search and song query on playlists

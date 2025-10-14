@@ -7,6 +7,8 @@ import { NotFound } from './pages/NotFound.jsx'
 import { StationPreview } from './pages/StationPreview.jsx'
 import { SearchResultsPage } from './pages/SearchResultsPage.jsx'
 import { StationOneLogin } from './pages/StationOneLogin.jsx'
+import { MobileLibrary } from './pages/MobileLibrary.jsx'
+import { MobileSearch } from './pages/MobileSearch.jsx'
 
 import { AppHeader } from './cmps/AppHeader'
 import { AppDesktopFooter } from './cmps/AppDesktopFooter'
@@ -17,6 +19,7 @@ import { AppMobileFooter } from './cmps/AppMobileFooter.jsx'
 export function RootCmp() {
     const [user, setUser] = useState(null)
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+    const fullScreenPlayer = useRef(false)
 
     useEffect(() => {
         const storedUser = localStorage.getItem('userDB')
@@ -24,6 +27,13 @@ export function RootCmp() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+
+    function handleFullScreenMediaChange(ev) {
+        console.log(fullScreenPlayer.current)
+        fullScreenPlayer.current = !fullScreenPlayer.current
+        
+        /* if (ev.target.classList.contains("main-fullscreen-mobile-player")) console.log('yes') */
+    }
 
     function handleResize() {
         const newIsMobile = window.innerWidth < 768
@@ -43,7 +53,7 @@ export function RootCmp() {
                     <Outlet />
                 </div>
                 {!isMobile && <div className="main-desktop-footer"><AppDesktopFooter /></div>}
-                {isMobile && <div className="main-mobile-footer"><AppMobileFooter /></div>}
+                {isMobile && <div className={fullScreenPlayer.current ? "main-fullscreen-mobile-player" : "main-mobile-footer"} onClick={(ev) => handleFullScreenMediaChange(ev)}><AppMobileFooter /></div>}
                 <GlobalModal />
             </div>
         )
@@ -67,12 +77,14 @@ export function RootCmp() {
                 <Route path="/StationOne/station/:stationId" element={<StationPreview />} />
                 <Route path="/StationOne/playlist/:playlistId" element={<StationPreview />} />
                 <Route path="/StationOne/album/:albumId" element={<StationPreview />} />
+                <Route path="/StationOne/library" element={<MobileLibrary />} />
+                <Route path="/StationOne/mobile-search" element={<MobileSearch />} />
             </Route>
 
-            {/* Fullscreen route (no RootCmp layout) */}
-            <Route path="/StationOne/mediaplayer" element={<Browse />} />
+            {/* Fullscreen mediaplayer route (witout main layout) */}
+            <Route path="/StationOne/mediaplayer" element={<Browse />} /> {/* Maybe wont be required? Thinking about another way to make the mediaplayer expand into fullscreen */}
 
-            {/* Catch-all */}
+            {/* Catch other routes */}
             <Route path="*" element={<NotFound />} />
         </Routes>
     )
