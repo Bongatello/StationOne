@@ -1,3 +1,5 @@
+import { storageService } from "./async-storage.service"
+
 export function makeId(length = 6) {
     var txt = ''
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -16,6 +18,10 @@ export function saveToStorage(key, value) {
 export function loadFromStorage(key) {
     const data = localStorage.getItem(key)
     return (data) ? JSON.parse(data) : undefined
+}
+
+export function removeFromStorage(key, value) {
+    localStorage.removeItem(key, JSON.stringify(value))
 }
 
 export function getDuration(type, value) {
@@ -56,6 +62,6 @@ export function getTopResult(searchValue, songs, artists, albums, playlists) {
 }
 
 export function getCapitalizedWord(word) {
-    const firstLetter = word.charAt(0)
-    return firstLetter.toUpperCase() + word.substring(1)
+    const firstLetter = word?.charAt(0)
+    return firstLetter?.toUpperCase() + word?.substring(1)
 }

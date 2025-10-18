@@ -1,8 +1,9 @@
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import SvgIcon from './SvgIcon'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { removeFromStorage } from '../services/util.service.js'
 
 export function AppHeader() {
     const location = useLocation()
@@ -10,6 +11,10 @@ export function AppHeader() {
     const navigate = useNavigate()
     const [hoveringExplore, setHoveringExplore] = useState(false)
     const user = useSelector(state => state.userModule.user)
+
+    function handleLogout() {
+
+    }
 
 
     return (
@@ -65,7 +70,7 @@ export function AppHeader() {
                     </div>
                 </div>
                 <div className='user-logo-header-wrapper'>
-                    <div className='user-logo-header'>
+                    <div className='user-logo-header' onClick={() => removeFromStorage('userDB', 'userId')}>
                         <p>{user.name?.charAt(0)}</p>
                     </div>
                 </div>

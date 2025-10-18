@@ -14,9 +14,9 @@ export async function loadUser(userId) {
 }
 
 
-export async function addLikedStation(user, station) {
+export async function addLikedStation(user, station, route) {
     try {
-        await userService.addToLikedStations(user, station)
+        await userService.addToLikedStations(user, station, route)
         store.dispatch(getCmdAddLikedStation(station))
     }
     catch (err) {

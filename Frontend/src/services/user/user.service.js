@@ -47,10 +47,13 @@ async function loadUserData(userId) {
 }
 
 
-async function addToLikedStations(user, station) {
-  const { _id, name, addedBy, thumbnail } = station
-  const miniStation = { _id, name, addedBy, thumbnail }
-
+async function addToLikedStations(user, station, route) {
+  const { _id, name, addedBy, thumbnail, spotifyApiId } = station
+  const miniStation = { name, addedBy, thumbnail, route }
+  if (miniStation.route === 'station') miniStation._id = _id 
+  else if (miniStation.route === 'album') miniStation._id = spotifyApiId  
+  else if (miniStation.route === 'playlist') miniStation._id = spotifyApiId
+  
   const userToEdit = {
     _id: user._id,
     likedStations: user.likedStations

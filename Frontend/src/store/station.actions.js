@@ -18,8 +18,9 @@ export async function getStations() {
 
 export async function setSelectedStation(stationId, type) {
     try {
-        var selectedStation = await stationService.get(stationId)
-        if (!selectedStation && !type === "album") await stationService.addExistingStation(stationId)
+        var selectedStation 
+        if (type === "station") selectedStation = await stationService.get(stationId)
+        if (type === "playlist") selectedStation = await stationService.getSpotifyPlaylist(stationId)
         if (type === 'album') selectedStation = await stationService.getSpotifyAlbum(stationId)
         store.dispatch(getCmdSetSelectedStation(selectedStation))
         console.log('StationActions: successfully loaded station ', selectedStation)

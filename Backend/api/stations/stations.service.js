@@ -99,6 +99,7 @@ async function updateStation(station) {
 
 function _getEmptyStation() {
     return {
+        thumbnail: "https://res.cloudinary.com/dszyainah/image/upload/v1758998059/tqfjyzy4lhao3o1kwy6m.png",
         songs: [],
         tags: [],
         isPrivate: true

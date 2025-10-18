@@ -62,14 +62,14 @@ export function StationPreview() {
 	}
 
 	async function addRemoveFromList() {
-		const likedStations = userData.likedStations //probably needs to be edited due to mongoDB and userRedux changes addLikedStation
+		const likedStations = userData.likedStations
 		const index = likedStations.findIndex(likedStation => likedStation._id === station._id)
-		if (index === -1) {
-			await addLikedStation(userData, station)
-			console.log('added station ', station._id, ' to liked list')
+		if (index === -1) { //if findIndex didnt find anything
+			await addLikedStation(userData, station, route)
+			console.log('added ', route, ' to liked list')
 		}
 		else {
-			await removeLikedStation(userData, station) //probably needs to be edited due to mongoDB and userRedux changes
+			await removeLikedStation(userData, station)
 			console.log('removed station ', station._id, ' from liked list')
 		}
 	}

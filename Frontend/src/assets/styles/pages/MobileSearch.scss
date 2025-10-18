@@ -1,0 +1,28 @@
+.mobile-search-page{
+    height: calc(100% - 32px); //100% without the padding (top+bottom)
+    width: calc(100% - 32px); //100% without the padding (left+right)
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+    h1{
+        font-size: 1.5rem;
+        color: white;
+    }
+    h2{
+        font-size: 1rem;
+        color: white;
+    }
+    .search-bar-wrapper{
+        .search-bar-input{
+            display: flex;
+            position: relative;
+            i{
+                position: absolute;
+            }
+            input{
+                position: absolute;
+            }
+        }
+    }
+}

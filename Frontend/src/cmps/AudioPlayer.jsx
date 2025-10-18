@@ -51,7 +51,6 @@ export function AudioPlayer() {
   useEffect(() => {
     if (!playerData.isHost) {
       // Create a throttled version of the handler
-      console.log('received state updatee socket')
 
       const throttledHandler = throttle((state) => {
         console.log('Received state on client:', state)

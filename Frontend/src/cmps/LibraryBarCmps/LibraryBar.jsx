@@ -29,6 +29,7 @@ export function LibraryBar() {
 
 	async function playPauseLogic() {
 		try {
+			console.log('Debugging- Station id: ',station._id)
 			if (!(station._id === playerData.station._id)) {
 				setPlayerStation(station._id, userData)
 				const tempStation = await stationService.get(station._id)

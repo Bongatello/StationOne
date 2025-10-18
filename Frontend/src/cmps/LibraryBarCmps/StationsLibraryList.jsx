@@ -15,14 +15,15 @@ export function StationsLibraryList({ station, userData, playerData }) {
 
     async function playPauseLogic() {
         try {
-            if (!(station._id === playerData.station._id)) {
+            if (!station.songs) return
+            else if (!(station._id === playerData.station._id)) {
                 setPlayerStation(station._id, userData)
                 const tempStation = await stationService.get(station._id)
                 songsService.findOnYoutube(tempStation.songs[0])
                 togglePlayerState(true)
             }
             else {
-                togglePlayerState(!playerData.isPlaying)
+                togglePlayerState(!playerData.player.isPlaying)
             }
         } catch (err) {
             console.log('StationsLibraryList(cmp): There was an error playing/pausing station, ', err)
@@ -31,7 +32,7 @@ export function StationsLibraryList({ station, userData, playerData }) {
     }
 
     return (
-        <Link to={`/StationOne/station/${station._id}`}>
+        <Link to={`/StationOne/${station.route}/${station._id}`}>
 
             <div className='library-station-object'>
                 <div className='svg-thumbnail'>
