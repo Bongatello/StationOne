@@ -7,6 +7,7 @@ export const usersService = {
     addUser,
     deleteUser,
     updateUser,
+    usernameAvailability,
 }
 
 const collectionName = "Users"
@@ -16,7 +17,15 @@ async function query() {
     try {
         const collection = await dbService.getCollection(collectionName)
         const users = await collection.find({}).toArray() //ill need to add criteria to find {} later on, according to the query parameters, but for now i will just look for all users
-        return users
+        const usersWithoutPassword =[]
+        users.forEach(user => {
+            var withoutPass = {
+                _id: user._id,
+                name: user.name,
+            }
+            usersWithoutPassword.push(withoutPass)
+        })
+        return usersWithoutPassword
     } catch (err) {
         console.log('UsersService Error: Cannot retrieve/query collection')
         throw err
@@ -34,21 +43,18 @@ async function getById(userId) {
     }
 }
 
-async function addUser(user) {
+async function addUser(username, password) {
     try {
-        const { userName } = user
         const collection = await dbService.getCollection(collectionName)
-        const checkAvaialbe = await collection.findOne({ name: ObjectId.createFromHexString(userName) })
-        if (checkAvaialbe) throw 'Username already taken'
 
         const userToAdd = {}
-        userToAdd.name = userName
-        userToAdd.image = "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_960_720.png"
+        userToAdd.name = username
+        userToAdd.password = password
         userToAdd.likedSongs = []
         userToAdd.likedStations = []//should only include mini stations (_id, name, addedBy, thumbnail)
         userToAdd.recentStations = []
         await collection.insertOne(userToAdd)
-        return userToAdd
+        return
 
     } catch (err) {
         console.log('UserService Error: Cannot add user')
@@ -83,6 +89,18 @@ async function updateUser(userToEdit) {
             })
     } catch (err) {
         console.log('UsersService Error: Cannot update specified user')
+        throw err
+    }
+}
+
+async function usernameAvailability(username) {
+    try {
+        const collection = await dbService.getCollection(collectionName)
+        const user = await collection.findOne({ name: username })
+        if (user) return user
+        return
+    } catch (err) {
+        console.log('Could not check username availability, ', err)
         throw err
     }
 }

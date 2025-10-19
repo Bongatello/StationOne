@@ -9,6 +9,7 @@ import { spotifyYoutubeRoutes } from './api/spotify-youtube/spotifyYoutube.route
 import { stationsRoutes } from './api/stations/stations.routes.js'
 import { songsRoutes } from './api/songs/songs.routes.js'
 import { usersRoutes } from './api/users/users.routes.js'
+import { authRoutes } from './api/auth/auth.routes.js'
 //CONFIG
 //env file
 dotenv.config()
@@ -66,6 +67,7 @@ app.use('/api/sy', spotifyYoutubeRoutes)
 app.use('/api/station', stationsRoutes)
 app.use('/api/songs', songsRoutes)
 app.use('/api/user', usersRoutes)
+app.use('/api/auth', authRoutes)
 
 
 
