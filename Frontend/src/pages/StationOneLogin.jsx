@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { authService } from '../services/auth.service.js'
 
 export function StationOneLogin({ onLogin }) {
   const emptyUser = {
@@ -7,15 +8,32 @@ export function StationOneLogin({ onLogin }) {
   }
 
   const [selectedUserId, setSelectedUserId] = useState('68d7c7d1808badfa56070d4e')
-  const [credentials, setCredentials] = useState(emptyUser)
-  const handleLogin = () => {
+  const [isSignUp, setIsSignUp] = useState(true)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = (userId) => {
     // Save selected userId to localStorage
-    localStorage.setItem('userDB', JSON.stringify({ userId: selectedUserId }))
-    if (onLogin) onLogin({ _id: selectedUserId }) // notify RootCmp
+    localStorage.setItem('userDB', JSON.stringify({userId: userId._id}))
   }
 
-  const onSubmitForm = () => {
-    if(!credentials) return
+  const onSubmitForm = async (ev) => {
+    ev.preventDefault()
+    if (!username || !password) return
+
+    const userCreds = { username: username, password: password }
+
+    try {
+      var userId
+      if (isSignUp === true) userId = await authService.authSignup(userCreds)
+      else if (isSignUp === false) userId = await authService.authLogin(userCreds)
+      console.log('UID: ', userId)
+      handleLogin(userId)
+      window.location.reload()
+    } catch (err) {
+      console.log('There was an error submitting login form, Please re-try, ', err)
+      throw err
+    }
   }
 
   return (
@@ -51,11 +69,17 @@ export function StationOneLogin({ onLogin }) {
 
         <button onClick={() => handleLogin()}>Confirm</button>
       </div>
-
-      <form className='login-page-create' onSubmit={onSubmitForm}>
-        <input placeholder='Username' value={credentials.username}/>
-        <input placeholder='Password' value={credentials.password} />
-        <button>Sign-up</button>
+      <div className='login-signup-switch'>
+        <label class="switch">
+          <input type="checkbox" value={isSignUp} onChange={() => setIsSignUp(!isSignUp)} />
+          <span class="slider round"></span>
+        </label>
+        <p>Already a member?</p>
+      </div>
+      <form className='login-page-create' onSubmit={(ev) => onSubmitForm(ev)}>
+        <input placeholder='Username' onChange={(ev) => setUsername(ev.target.value)} value={username} />
+        <input placeholder='Password' onChange={(ev) => setPassword(ev.target.value)} value={password} />
+        <button>{isSignUp ? 'Sign-up' : 'Log-in'}</button>
       </form>
     </div>
   )

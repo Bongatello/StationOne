@@ -70,7 +70,10 @@ export function AppHeader() {
                     </div>
                 </div>
                 <div className='user-logo-header-wrapper'>
-                    <div className='user-logo-header' onClick={() => removeFromStorage('userDB', 'userId')}>
+                    <div className='user-logo-header' onClick={() => {
+                        removeFromStorage('userDB', 'userId')
+                        window.location.href = '/StationOne/'
+                        }}>
                         <p>{user.name?.charAt(0)}</p>
                     </div>
                 </div>
