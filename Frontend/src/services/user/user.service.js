@@ -63,9 +63,9 @@ async function addToLikedStations(user, station, route) {
   return 'Station added to user liked stations!'
 }
 
-async function removeFromLikedStations(user, stationId) {
+async function removeFromLikedStations(user, stationId, spotifyApiId) {
   try {
-    const index = user.likedStations.findIndex(likedStation => likedStation._id === stationId)
+    const index = user.likedStations.findIndex(likedStation => likedStation._id === stationId ? true : likedStation._id === spotifyApiId)
 
     if (index === -1) throw 'Station could not be found within user liked stations.'
 

@@ -44,6 +44,7 @@ async function loadStations() {
 
 async function get(stationId) {
   const station = await axios.get(`${USER_URL}/${stationId}`)
+   console.log('Got station for debugging ~~~~~~~~~ ', station.data) // station is an empty string when trying to look for a spotifyApiId station, need to make a different function for those.
   return station.data
 }
 
@@ -138,8 +139,8 @@ async function setSpotifyStations(genre) {
 
 async function getSpotifyPlaylist(playlistId) {
   try {
-    console.log('im here -------------------------')
     const playlist = await axios.get(`http://localhost:3000/api/sy/playlist`, { params: { playlistId: playlistId } })
+    console.log('Got station for debugging ~~~~~~~~~ ', playlist.data)
     return playlist.data
   } catch (err) {
     console.log('StationService: Could not get playlist from spotify, ', err)
@@ -150,6 +151,7 @@ async function getSpotifyPlaylist(playlistId) {
 async function getSpotifyAlbum(albumId) {
   try {
     const album = await axios.get(`http://localhost:3000/api/sy/album`, { params: { albumId: albumId } })
+    console.log('Got station for debugging ~~~~~~~~~ ', album.data)
     return album.data
   } catch (err) {
     console.log('StationService: Could not get album from spotify, ', err)

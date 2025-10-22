@@ -45,7 +45,7 @@ export async function updateDefaultAndLikedList() {
 export async function editStation(station, user) {
     try {
         const editedStation = await stationService.editStation(station)
-        if (station.thumbnail || station.name) {
+        if (station.thumbnail || station.name || station.containsSongs) {
             const editedLikedStations = user.likedStations.map(likedStation => likedStation._id === station._id ? {...likedStation, ...station} : likedStation)
             const userToEdit = {
                 _id: user._id,

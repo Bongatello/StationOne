@@ -27,7 +27,7 @@ export async function addLikedStation(user, station, route) {
 
 export async function removeLikedStation(user, station) {
     try {
-        await userService.removeFromLikedStations(user, station._id)
+        await userService.removeFromLikedStations(user, station._id, station.spotifyApiId)
         store.dispatch(getCmdRemoveLikedStation(station))
     }
     catch (err) {

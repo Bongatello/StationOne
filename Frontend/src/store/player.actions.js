@@ -67,9 +67,13 @@ export async function onPrevSong(station, currSongId) {
     }
 }
 
-export async function setPlayerStation(stationId, user) {
+export async function setPlayerStation(route, stationId, user) {
     try {
-        const station = await stationService.get(stationId)
+        console.log('Setting player station to: ', stationId)
+        var station
+        if (route === "station") station = await stationService.get(stationId)
+        else if (route === "playlist") station = await stationService.getSpotifyPlaylist(stationId)
+        else if (route === "album") station = await stationService.getSpotifyAlbum(stationId)
         await editUser(user, station) // this func should add recently played station to user recently played stations
         store.dispatch(getCmdSetPlayerStation(station))
     } catch (err) {

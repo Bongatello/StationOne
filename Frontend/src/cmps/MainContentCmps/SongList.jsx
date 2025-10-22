@@ -3,7 +3,7 @@ import { togglePlayerState, getPlayingSong, setPlayingSong, setPlayerStation } f
 import { getDuration } from "../../services/util.service";
 import { songsService } from '../../services/songs/songs.service.js';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import { editStation } from '../../store/station.actions.js';
 import SvgIcon from '../SvgIcon.jsx';
 import { makeNewPlaylistCover } from '../../services/station/station.service.js';
@@ -14,6 +14,9 @@ export function SongList({ song, index }) {
     const station = useSelector(state => state.stationModule.selectedStation)
     const user = useSelector(state => state.userModule.user)
     const params = useParams()
+    const location = useLocation()
+    const route = location.pathname.split("/")[2]
+
     function timeAddedAgo() {
         const currentTime = Date.now()
         const timeSinceAdded = currentTime - song.dateAdded
@@ -54,7 +57,7 @@ export function SongList({ song, index }) {
     function playPauseLogic() {
         if (!(song.spotifyId === playerData.player.currentSong.spotifyId)) {
             songsService.findOnYoutube(song)
-            setPlayerStation(params.stationId ?? params.playlistId, user)
+            setPlayerStation(route, params.stationId || params.playlistId || params.albumId, user)
             togglePlayerState(true)
         }
         else {

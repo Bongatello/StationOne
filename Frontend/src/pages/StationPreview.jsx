@@ -15,8 +15,6 @@ import { formatStationDuration, makeId, getCapitalizedWord } from '../services/u
 import { songsService } from '../services/songs/songs.service.js'
 import { eventBus } from '../services/event-bus.service.js'
 import { AutoResizeTitle } from '../cmps/AutoResizeTitle.jsx'
-import { socket } from '../services/socket.service.js'
-import { stationService } from '../services/station/station.service.js'
 
 export function StationPreview() {
 	const playerData = useSelector(state => state.playerModule)
@@ -30,7 +28,6 @@ export function StationPreview() {
 	const location = useLocation()
 	const route = location.pathname.split("/")[2]
 	const imgRef = useRef(null)
-	const [jamRoomId, setJamRoomId] = useState(undefined)
 
 	useEffect(() => {
 		setStationDuration(getStationDuration())
@@ -63,14 +60,14 @@ export function StationPreview() {
 
 	async function addRemoveFromList() {
 		const likedStations = userData.likedStations
-		const index = likedStations.findIndex(likedStation => likedStation._id === station._id)
+		const index = likedStations.findIndex(likedStation => likedStation._id === station._id ? true : likedStation._id === station.spotifyApiId)
 		if (index === -1) { //if findIndex didnt find anything
 			await addLikedStation(userData, station, route)
 			console.log('added ', route, ' to liked list')
 		}
 		else {
 			await removeLikedStation(userData, station)
-			console.log('removed station ', station._id, ' from liked list')
+			console.log('removed', route, 'from liked list')
 		}
 	}
 
@@ -83,13 +80,13 @@ export function StationPreview() {
 		return formattedDuration
 	}
 
-	function isLikedByUser(targetID) {
+	function isLikedByUser(station) {
 		const likedByUser = userData
-		if (!likedByUser.likedStations?.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"addToLibrary"} className={"add-to-library"} />
+		if (!likedByUser.likedStations?.some(userStation => userStation._id === station._id ? true : userStation._id === station.spotifyApiId)) return <SvgIcon iconName={"addToLibrary"} className={"add-to-library"} />
 		return <SvgIcon iconName={"removeFromLibrary"} className={"remove-from-library"} />
 	}
 
-	function isLikedByUserMobile(targetID) {
+	function isLikedByUserMobile(targetID) { //possible to merge into isLikedByUser and check if width of media is under/over 768px
 		const likedByUser = userData
 		if (!likedByUser.likedStations?.some(userStation => userStation._id === targetID)) return <SvgIcon iconName={"emptyHeart"} className={"add-to-library"} />
 		return <SvgIcon iconName={"fullHeart"} className={"remove-from-library"} />
@@ -106,14 +103,14 @@ export function StationPreview() {
 	}
 
 	function playPauseLogic() {
-		if (!(station._id === playerData.station._id)) {
-			setPlayingSong(station.songs[0])
-			setPlayerStation(params.stationId || params.playlistId || params.albumId, userData)
-			songsService.findOnYoutube(station.songs[0])
-			togglePlayerState(true)
+		if ((route === 'station' && playerData.station?._id === station._id) || (!(route === 'station') && playerData.station?.spotifyApiId === station.spotifyApiId)) {
+			togglePlayerState(!playerData.player.isPlaying)
 		}
 		else {
-			togglePlayerState(!playerData.player.isPlaying)
+			setPlayingSong(station.songs[0])
+			setPlayerStation(route, params.stationId || params.playlistId || params.albumId, userData)
+			songsService.findOnYoutube(station.songs[0])
+			togglePlayerState(true)
 		}
 	}
 
@@ -212,11 +209,11 @@ export function StationPreview() {
 						{/* ---Desktop Station Actions--- */}
 						<div className="station-actions">
 							<div className="play-pause-button-wrapper action-wrapper" onClick={() => playPauseLogic()}>
-								{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
+								{playerData.player.isPlaying && ((route === 'station' && playerData.station?._id === station._id) || (!(route === 'station') && playerData.station?.spotifyApiId === station.spotifyApiId)) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
 							</div>
 
 							<div className="add-remove-library-wrapper action-wrapper" onClick={() => addRemoveFromList()}>
-								{isLikedByUser(station._id)}
+								{isLikedByUser(station)}
 							</div>
 
 							{station.addedBy === userData.name && //very dangerous, will change it to station._id === userData._id later on, since having 2 users with same name could cause collision!!
@@ -228,13 +225,18 @@ export function StationPreview() {
 							<div className="extra-options-wrapper action-wrapper">
 								<SvgIcon iconName={"extraOptions"} />
 							</div>
+							<p>{`Player Data SpotifyID: ${playerData.station?.spotifyApiId}`}
+								{` Player Data ID: ${playerData.station?._id}`}
+								{` Station SpotifyID: ${station.spotifyApiId}`}
+								{` Station ID: ${station._id}`}
+								{((playerData.station?._id === station._id) || (playerData.station?.spotifyApiId === station._id) || (playerData.station?._id === station.spotifyApiId) || (playerData.station?.spotifyApiId === station.spotifyApiId)) ? 'true' : 'false'}</p>
 						</div>
 
 						{/* ---Mobile Station Actions--- */}
 
 						<div className='station-actions-mobile'>
 							<div className="play-pause-button-wrapper action-wrapper" onClick={() => playPauseLogic()}>
-								{playerData.player.isPlaying && (playerData.station._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
+								{playerData.player.isPlaying && (playerData.station?._id === station._id) ? <SvgIcon iconName={"pauseButton"} /> : <SvgIcon iconName={"playButton"} />}
 							</div>
 
 							<div className="add-remove-library-wrapper action-wrapper" onClick={() => addRemoveFromList()}>

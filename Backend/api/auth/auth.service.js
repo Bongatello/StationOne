@@ -47,7 +47,6 @@ async function login(username, password) {
 
 async function signup(user) {
     const saltRounds = 10
-    console.log("Debugging: ", user.password)
     const { username, password } = user
 
     if (!username || !password) throw 'Missing required signup information' //move to controller

@@ -11,6 +11,7 @@ import { throttle } from 'lodash'
 export function AudioPlayer() {
   const playerData = useSelector(state => state.playerModule.player)
   const station = useSelector(state => state.playerModule.station)
+  const playerDataForDebug = useSelector(state => state.playerModule)
   const user = useSelector(state => state.userModule.user)
 
   const [jamRoomId, setJamRoomId] = useState(undefined)
@@ -158,7 +159,7 @@ export function AudioPlayer() {
   }
 
   async function getNextSong() {
-    console.log(station)
+    console.log('DeBuGgInG: ~~~~~~~~~~~~ ', playerDataForDebug.station)
     await onNextSong(station, playerData.currentSong.spotifyId)
   }
 

@@ -5,13 +5,16 @@ import { StationsLibraryList } from './StationsLibraryList.jsx'
 import { loadUser } from '../../store/user.actions.js'
 import SvgIcon from '../SvgIcon.jsx'
 import { stationService } from '../../services/station/station.service.js'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 
 export function LibraryBar() {
 	const userData = useSelector(state => state.userModule.user)
 	const [isQueryByText, setIsQueryByText] = useState(false)
 	const playerData = useSelector(state => state.playerModule)
+	const location = useLocation()
+	const route = location.pathname.split("/")[2]
+
 
 
 	useEffect(() => {
@@ -29,8 +32,7 @@ export function LibraryBar() {
 
 	async function playPauseLogic() {
 		try {
-			console.log('Debugging- Station id: ',station._id)
-			if (!(station._id === playerData.station._id)) {
+			if (!(station._id === playerData.station?._id)) {
 				setPlayerStation(station._id, userData)
 				const tempStation = await stationService.get(station._id)
 				songsService.findOnYoutube(tempStation.songs[0])
@@ -85,14 +87,13 @@ export function LibraryBar() {
 								e.stopPropagation()
 								playPauseLogic()
 							}}>
-								{(!playerData.player.isPlaying || !(userData.likedSongs?._id === playerData.station._id)) && <SvgIcon iconName={"libraryPauseButton"} />} {/* song is not playing OR song is not selected, show play button */}
-								{playerData.player.isPlaying && userData.likedSongs?._id === playerData.station._id && <SvgIcon iconName={"libraryPlayButton"} />} {/* song is playing AND song is selected, show pause button */}
+								<SvgIcon iconName={"libraryPauseButton"} /> {/* song is not playing OR song is not selected, show play button */}
 							</div>
 						}
 						<img src="https://misc.scdn.co/liked-songs/liked-songs-64.png" />
 					</div>
 					<div className='library-station-details'>
-						<h1 style={userData.likedSongs?._id === playerData.station._id ? { color: '#FFF' } : { color: '#FFF' }}>Liked Songs</h1>
+						<h1 style={userData.likedSongs?._id === playerData.station?._id ? { color: '#FFF' } : { color: '#FFF' }}>Liked Songs</h1>
 						<p>Station • {userData.likedSongs?.songs?.length ? '0 songs' : userData.likedSongs?.songs?.length > 1 ? userData.likedSongs?.songs?.length + ' songs' : userData.likedSongs?.songs?.length + ' song'}</p>
 					</div>
 				</div>

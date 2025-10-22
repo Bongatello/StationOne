@@ -55,3 +55,11 @@ Remember to rely on mobile app more because its the actual thing, since the mobi
 Margins on homepage are different on mobile
 
 Add option to listen to a song from search and song query on playlists
+
+
+
+
+
+10/21/25 - working on fixing common issues with playability of albums and stations, currently stopped at play/pause button of each since its really working right
+
+-Fix an issue with playing station/album/playlist not being shown right on the librarybar

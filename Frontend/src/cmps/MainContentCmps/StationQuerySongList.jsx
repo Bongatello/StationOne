@@ -27,6 +27,8 @@ export function StationQuerySongList({song}){
             songs: songs
         }
         if (songs.length === 4 || songs.length === 1 || songs.length === 0) editedStation.thumbnail = makeNewPlaylistCover(songs)
+        if (songs.length<1) editedStation.containsSongs = false
+        else editedStation.containsSongs = true
         await editStation(editedStation, user)
         await setPlayerStation(params.stationId || params.playlistId)
         return
