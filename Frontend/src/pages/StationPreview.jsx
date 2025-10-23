@@ -225,11 +225,7 @@ export function StationPreview() {
 							<div className="extra-options-wrapper action-wrapper">
 								<SvgIcon iconName={"extraOptions"} />
 							</div>
-							<p>{`Player Data SpotifyID: ${playerData.station?.spotifyApiId}`}
-								{` Player Data ID: ${playerData.station?._id}`}
-								{` Station SpotifyID: ${station.spotifyApiId}`}
-								{` Station ID: ${station._id}`}
-								{((playerData.station?._id === station._id) || (playerData.station?.spotifyApiId === station._id) || (playerData.station?._id === station.spotifyApiId) || (playerData.station?.spotifyApiId === station.spotifyApiId)) ? 'true' : 'false'}</p>
+							
 						</div>
 
 						{/* ---Mobile Station Actions--- */}

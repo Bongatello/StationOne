@@ -5,6 +5,7 @@ import { songsService } from '../../services/songs/songs.service'
 import { stationService } from '../../services/station/station.service'
 import SvgIcon from '../SvgIcon'
 import { useEffect } from 'react'
+import { msTimeout } from '../../services/util.service'
 
 export function StationsLibraryList({ station, userData, playerData }) {
 
@@ -17,33 +18,17 @@ export function StationsLibraryList({ station, userData, playerData }) {
 
     async function playPauseLogic() {
         console.log('Clicked!', station)
+        console.log(playerData.player.isPlaying ? 'not playing anything' : !station._id ? 'no station id' : (station._id === playerData.station.spotifyApiId) ? 'station id matches spotifyapiid' : (station._id === playerData.station._id) ? 'station id matches id' : 'nothing works')
         try {
             if (station.route === 'station' && !station.containsSongs) return
-            /* else if (!(station._id === playerData.station?._id)) {
-                setPlayerStation(station._id, userData)
-                const tempStation = await stationService.get(station._id)
-                songsService.findOnYoutube(tempStation.songs[0])
-                togglePlayerState(true)
-            }
-            else {
-                togglePlayerState(!playerData.player.isPlaying)
-            } */
-
             if ((station.route === 'station' && playerData.station?._id === station._id) || (!(station.route === 'station') && playerData.station?.spotifyApiId === station._id)) {
                 togglePlayerState(!playerData.player.isPlaying)
-                console.log('Im here')
-                console.log('route: ', station.route)
-                console.log('playerData.station?._id === station._id: ', playerData.station?._id === station._id)
-                console.log(`!(station.route === 'station'): `,!(station.route === 'station'))
-                console.log('playerData.station?.spotifyApiId === station.spotifyApiId', playerData.station?.spotifyApiId === station.spotifyApiId)
-                console.log(((station.route === 'station' && playerData.station?._id === station._id) || (!(station.route === 'station') && playerData.station?.spotifyApiId === station._id)))
             }
             else { //untested, needs test before going to the next task
-                console.log('debugging data: ', route, station._id || station.spotifyApiId, userData)
-                await setPlayerStation(route, station._id || station.spotifyApiId, userData)
-                console.log(playerData.station)
-                /* setPlayingSong(playerData.station.songs[0])
-                songsService.findOnYoutube(playerData.station.songs[0]) */
+                console.log('debugging data: ', station.route, station._id || station.spotifyApiId, userData)
+                const newPlayerStation = await setPlayerStation(station.route, station._id || station.spotifyApiId, userData)
+                setPlayingSong(newPlayerStation.songs[0])
+                songsService.findOnYoutube(newPlayerStation.songs[0])
                 togglePlayerState(true)
             }
         } catch (err) {
@@ -63,13 +48,13 @@ export function StationsLibraryList({ station, userData, playerData }) {
                             e.stopPropagation()
                             playPauseLogic()
                         }}>
-                            {playerData.player.isPlaying && ((route === 'station' && playerData.station?._id === station._id) || (!(route === 'station') && playerData.station?.spotifyApiId === station.spotifyApiId)) ? <SvgIcon iconName={"libraryPlayButton"} /> : <SvgIcon iconName={"libraryPauseButton"} />} {/* song is not playing OR song is not selected, show play button */}
+                            {!playerData.player.isPlaying ? <SvgIcon iconName={'libraryPlayButton'}/> : !station._id ? <SvgIcon iconName={'libraryPlayButton'}/> : (playerData.station.spotifyApiId !== undefined) && (station._id === playerData.station.spotifyApiId) ? <SvgIcon iconName={"libraryPauseButton"} /> : (playerData.station._id !== undefined) && (station._id === playerData.station._id) ? <SvgIcon iconName={"libraryPauseButton"} />  : <SvgIcon iconName={"libraryPlayButton"} />} {/* song is not playing OR song is not selected, show play button, older logic: ((route === 'station' && playerData.station?._id === station._id) || ((route !== 'station') && (playerData.station?.spotifyApiId === station._id))) */}
                         </div>
                     }
                     <img src={station.thumbnail} />
                 </div>
                 <div className='library-station-details'>
-                    <h1 style={station._id === playerData.station?._id ? { color: '#1ed761' } : { color: '#FFF' }}>{station.name}</h1>
+                    <h1 style={((playerData.station._id !== undefined) && (playerData.station._id === station._id)) || ((playerData.station.spotifyApiId !== undefined) && (playerData.station.spotifyApiId === station._id)) ? { color: '#1ed761' } : { color: '#FFF' }}>{station.name}</h1>
                     <p>Station • {station.addedBy}</p>
                 </div>
             </div>
@@ -77,7 +62,3 @@ export function StationsLibraryList({ station, userData, playerData }) {
         </Link>
     )
 }
-
-//${station._id}
-
-//<img src={station.thumbnail}/>

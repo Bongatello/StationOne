@@ -192,7 +192,7 @@ export function AudioPlayer() {
       <div className='audio-player-wrapper'>
 
         <div className='song-details-wrapper'>
-          <img src={playerData.currentSong?.cover || 'https://res.cloudinary.com/dszyainah/image/upload/v1758998059/tqfjyzy4lhao3o1kwy6m.png'} />
+          <img src={playerData.currentSong?.cover || station.thumbnail || 'https://res.cloudinary.com/dszyainah/image/upload/v1758998059/tqfjyzy4lhao3o1kwy6m.png'} />
 
           <div className='title-artists'>
             <h1>{playerData.currentSong?.name || playerData.currentSong?.songName || 'Play a song for details!'}</h1>

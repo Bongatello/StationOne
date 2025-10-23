@@ -76,6 +76,7 @@ export async function setPlayerStation(route, stationId, user) {
         else if (route === "album") station = await stationService.getSpotifyAlbum(stationId)
         await editUser(user, station) // this func should add recently played station to user recently played stations
         store.dispatch(getCmdSetPlayerStation(station))
+        return station
     } catch (err) {
         console.log('PlayerActions: Unable to set player station, ', err)
         throw err

@@ -65,3 +65,9 @@ export function getCapitalizedWord(word) {
     const firstLetter = word?.charAt(0)
     return firstLetter?.toUpperCase() + word?.substring(1)
 }
+
+export function msTimeout(millisec) {
+    return new Promise(resolve => {
+        setTimeout(() => { resolve('') }, millisec);
+    })
+}
