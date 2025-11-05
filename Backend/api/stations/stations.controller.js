@@ -27,7 +27,7 @@ export async function createStation(req, res) {
   try {
     const station = req.body
     console.log(station)
-    if (!(station.index || station.name) || !station.addedBy) throw 'Cannot get index/addedBy or they are not provided (createStation)'
+    if (!(station.index || station.name) || !station.addedBy || !station.route || !station._id) throw 'Cannot get index/addedBy/route/id or they are not provided (createStation)'
     const newStation = await stationsService.addStation(station)
     res.send(newStation)
   } catch (err) {

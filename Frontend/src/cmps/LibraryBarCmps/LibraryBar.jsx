@@ -11,6 +11,8 @@ import { Link, useLocation } from 'react-router-dom'
 export function LibraryBar() {
 	const userData = useSelector(state => state.userModule.user)
 	const [isQueryByText, setIsQueryByText] = useState(false)
+	const [activeFilter, setActiveFilter] = useState(null) // null, 'playlist', or 'album'
+	const [secondaryFilter, setSecondaryFilter] = useState(null) // null, 'byYou', or 'bySpotify'
 	const playerData = useSelector(state => state.playerModule)
 	const location = useLocation()
 	const route = location.pathname.split("/")[2]
@@ -30,21 +32,49 @@ export function LibraryBar() {
 		await stationService.addStation(userData)
 	}
 
-	async function playPauseLogic() {
-		try {
-			if (!(station._id === playerData.station?._id)) {
-				setPlayerStation(station._id, userData)
-				const tempStation = await stationService.get(station._id)
-				songsService.findOnYoutube(tempStation.songs[0])
-				togglePlayerState(true)
-			}
-			else {
-				togglePlayerState(!playerData.isPlaying)
-			}
-		} catch (err) {
-			console.log('StationsLibraryList(cmp): There was an error playing/pausing station, ', err)
-			throw err
+	function handleFilterClick(filterType) {
+		// Toggle filter: if clicking the same filter, reset to show all
+		if (activeFilter === filterType) {
+			setActiveFilter(null)
+			setSecondaryFilter(null) // Reset secondary filter when primary is cleared
+		} else {
+			setActiveFilter(filterType)
+			setSecondaryFilter(null) // Reset secondary filter when changing primary filter
 		}
+	}
+
+	function handleSecondaryFilterClick(filterType) {
+		// Toggle secondary filter
+		if (secondaryFilter === filterType) {
+			setSecondaryFilter(null)
+		} else {
+			setSecondaryFilter(filterType)
+		}
+	}
+
+	function handleClearFilters() {
+		setActiveFilter(null)
+		setSecondaryFilter(null)
+	}
+
+	function getFilteredStations() {
+		let filtered = userData.likedStations || []
+		
+		// Apply primary filter
+		if (activeFilter) {
+			filtered = filtered.filter(station => station.route === activeFilter)
+		}
+		
+		// Apply secondary filter (only for playlists)
+		if (activeFilter === 'playlist' && secondaryFilter) {
+			if (secondaryFilter === 'byYou') {
+				filtered = filtered.filter(station => station.addedBy === userData.name)
+			} else if (secondaryFilter === 'bySpotify') {
+				filtered = filtered.filter(station => station.addedBy !== userData.name)
+			}
+		}
+		
+		return filtered
 	}
 
 
@@ -65,10 +95,43 @@ export function LibraryBar() {
 			</div>
 			<div className='sort-filter-library-content'>
 				<div className='filter-by-cat'>
-					<button>Playlists</button>
-					<button>Artists</button>
-					<button>Albums</button>
-					<button className='not-used'>Podcasts & Shows</button>
+					{/* X button - only visible when a filter is active */}
+					<button 
+						className='filter-clear'
+						onClick={handleClearFilters}
+						style={{ display: activeFilter ? 'block' : 'none' }}
+					>×</button>
+					{/* Primary filter buttons */}
+					<button 
+						onClick={() => handleFilterClick('playlist')}
+						className={activeFilter === 'playlist' ? 'active' : ''}
+						style={{ display: activeFilter && activeFilter !== 'playlist' ? 'none' : 'block' }}
+					>Playlists</button>
+					<button 
+						style={{ display: activeFilter ? 'none' : 'block' }}
+					>Artists</button>
+					<button 
+						onClick={() => handleFilterClick('album')}
+						className={activeFilter === 'album' ? 'active' : ''}
+						style={{ display: activeFilter && activeFilter !== 'album' ? 'none' : 'block' }}
+					>Albums</button>
+					<button 
+						className='not-used'
+						style={{ display: activeFilter ? 'none' : 'block' }}
+					>Podcasts & Shows</button>
+					{/* Secondary filter buttons - only visible when playlist is active */}
+					{activeFilter === 'playlist' && (
+						<>
+							<button 
+								onClick={() => handleSecondaryFilterClick('byYou')}
+								className={secondaryFilter === 'byYou' ? 'active' : ''}
+							>By you</button>
+							<button 
+								onClick={() => handleSecondaryFilterClick('bySpotify')}
+								className={secondaryFilter === 'bySpotify' ? 'active' : ''}
+							>By spotify</button>
+						</>
+					)}
 				</div>
 				<div className='sort-by'>
 					<button className='text-query'><SvgIcon iconName={"stationSpotifyQuery"} /></button>
@@ -82,11 +145,7 @@ export function LibraryBar() {
 				<div className='library-station-object'>
 					<div className='svg-thumbnail'>
 						{
-							<div onClick={(e) => {
-								e.preventDefault()
-								e.stopPropagation()
-								playPauseLogic()
-							}}>
+							<div>
 								<SvgIcon iconName={"libraryPauseButton"} /> {/* song is not playing OR song is not selected, show play button */}
 							</div>
 						}
@@ -98,7 +157,7 @@ export function LibraryBar() {
 					</div>
 				</div>
 			</Link>
-			{userData.likedStations?.map(station => <StationsLibraryList station={station} userData={userData} playerData={playerData} />)}
+			{getFilteredStations().map(station => <StationsLibraryList key={station._id || station.spotifyApiId} station={station} userData={userData} playerData={playerData} />)}
 
 
 		</div>

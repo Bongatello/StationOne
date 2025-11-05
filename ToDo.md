@@ -20,8 +20,6 @@ Fixes:
 -add res status codes to errors in throw/catch on the backend side
 -Look for more bugs or potential fixes in code by letting friends use the site? just like beta testing
 -fix station name shrinking weirdly
--Change library list to get album/station/playlist type
--Can't skip songs in albums
 
 
 
@@ -42,7 +40,7 @@ Fixes:
 
 Notes to remember for the next day:
 
-Maybe making a globap ReactPlayer instead of having it inside the MediaPlayer/MobileMediaPlayer etc. would be better, because when going changing between them and the experimental full screen media player it just stops the song, and restarts it.
+Maybe making a global ReactPlayer instead of having it inside the MediaPlayer/MobileMediaPlayer etc. would be better, because when going changing between them and the experimental full screen media player it just stops the song, and restarts it.
 
 Pretty much finished the footer for mobile except for the functionality of create button and colorthief for the song/player bar and will need to work on liked-songs station asap (for the heart button)
 
@@ -56,10 +54,3 @@ Margins on homepage are different on mobile
 
 Add option to listen to a song from search and song query on playlists
 
-
-
-
-
-10/21/25 - working on fixing common issues with playability of albums and stations, currently stopped at play/pause button of each since its really working right
-
--Fix an issue with playing station/album/playlist not being shown right on the librarybar

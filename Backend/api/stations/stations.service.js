@@ -45,12 +45,13 @@ async function addStation(station) {
         const collection = await dbService.getCollection(collectionName)
         var stationToAdd = {}
         if (station.index) {
-            const { index, addedBy } = station
+            const { index, addedBy, route, _id } = station
             const name = 'My Station #' + index
-            stationToAdd = { ..._getEmptyStation(), name, addedBy }
+            stationToAdd = { ..._getEmptyStation(), name, addedBy, route, _id }
         }
         else if (station.name) {
-            stationToAdd = {...station}
+            const { name, addedBy, route, _id } = station
+            stationToAdd = {..._getEmptyStation(), name, addedBy, route, _id }
         }
         await collection.insertOne(stationToAdd)
         return stationToAdd

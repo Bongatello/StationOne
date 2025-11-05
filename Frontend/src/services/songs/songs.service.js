@@ -1,11 +1,9 @@
 import Axios from 'axios'
 import { setPlayingSong } from "../../store/player.actions"
 
-
 var axios = Axios.create({
     withCredentials: true,
 })
-
 const API_KEY = import.meta.env.VITE_YOUTUBE_DATA_API_KEY //my youtube api key is inside the .env file which is included in .gitignore
 
 export const songsService = {
@@ -63,9 +61,11 @@ async function findOnYoutube(song) { //upon removing notes, add spotifySongId to
 }
 
 async function getYoutubeSong(inputData) {
-    const res = await fetch(`${BASE_URL}/api/sy/youtube?q=${encodeURIComponent(inputData)}`)
-    const data = await res.json()
-    return data
+    const res = await axios.get(`${BASE_URL}/api/sy/youtube`, {
+        params: { q: inputData },
+        withCredentials: true,
+    })
+    return res.data
 }
 
 async function querySpotifyByText(text, limit, type) {

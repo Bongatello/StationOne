@@ -74,7 +74,7 @@ export async function setPlayerStation(route, stationId, user) {
         if (route === "station") station = await stationService.get(stationId)
         else if (route === "playlist") station = await stationService.getSpotifyPlaylist(stationId)
         else if (route === "album") station = await stationService.getSpotifyAlbum(stationId)
-        await editUser(user, station) // this func should add recently played station to user recently played stations
+        await editUser(user, station, route) // this func should add recently played station to user recently played stations
         store.dispatch(getCmdSetPlayerStation(station))
         return station
     } catch (err) {

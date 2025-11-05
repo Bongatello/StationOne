@@ -1,24 +1,25 @@
 import express from "express"
 import { getAllStations, getStationById, createStation, editStation, removeStation } from "./stations.controller.js"
+import { requireAuth } from "../auth/auth.middleware.js"
 
 
 const router = express.Router()
 
 
-//query stations (list stations)
+//query stations (list stations) - public
 router.get('/', getAllStations)
 
-//station get by id (read station)
+//station get by id (read station) - public
 router.get('/:stationId', getStationById)
 
-//create station
-router.post('/', createStation)
+//create station - protected
+router.post('/', requireAuth, createStation)
 
-//update station
-router.put('/', editStation)
+//update station - protected
+router.put('/', requireAuth, editStation)
 
-//delete station
-router.delete('/:stationId', removeStation)
+//delete station - protected
+router.delete('/:stationId', requireAuth, removeStation)
 
 
 

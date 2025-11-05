@@ -10,7 +10,13 @@ export async function signup (req, res) {
     const miniUser = await authService.login(user.username, user.password)
     const loginToken = await authService.createLoginToken(miniUser)
 
-    res.cookie('loginToken', loginToken)
+    res.cookie('loginToken', loginToken, {
+        httpOnly: true,
+        sameSite: 'lax', // set to 'none' with secure: true if front/back are on different domains over HTTPS
+        secure: false,
+        path: '/',
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+    })
     res.send(miniUser)
 }
 
@@ -21,7 +27,13 @@ export async function login (req, res) {
     console.log(user)
     const miniUser = await authService.login(user.username, user.password)
     const loginToken = await authService.createLoginToken(miniUser)
-    res.cookie('loginToken', loginToken)
+    res.cookie('loginToken', loginToken, {
+        httpOnly: true,
+        sameSite: 'lax', // set to 'none' with secure: true if front/back are on different domains over HTTPS
+        secure: false,
+        path: '/',
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+    })
     res.send(miniUser)
 }
 

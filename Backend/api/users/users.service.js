@@ -8,6 +8,7 @@ export const usersService = {
     deleteUser,
     updateUser,
     usernameAvailability,
+    isUserExpired,
 }
 
 const collectionName = "Users"
@@ -53,6 +54,8 @@ async function addUser(username, password) {
         userToAdd.likedSongs = []
         userToAdd.likedStations = []//should only include mini stations (_id, name, addedBy, thumbnail)
         userToAdd.recentStations = []
+        userToAdd.createdAt = new Date() // Store signup timestamp
+        userToAdd.isAdmin = false // Default to non-admin
         await collection.insertOne(userToAdd)
         return
 
@@ -101,6 +104,30 @@ async function usernameAvailability(username) {
         return
     } catch (err) {
         console.log('Could not check username availability, ', err)
+        throw err
+    }
+}
+
+async function isUserExpired(userId) {
+    try {
+        const user = await getById(userId)
+        
+        // If user is admin, they never expire
+        if (user.isAdmin) return false
+        
+        // If user doesn't have createdAt field (for existing users without it), allow access
+        if (!user.createdAt) return false
+        
+        // Calculate time difference
+        const now = new Date()
+        const createdAt = new Date(user.createdAt)
+        const timeDiff = now - createdAt
+        const hoursDiff = timeDiff / (1000 * 60 * 60)
+        
+        // Return true if more than 24 hours have passed
+        return hoursDiff > 24
+    } catch (err) {
+        console.log('Could not check if user is expired, ', err)
         throw err
     }
 }

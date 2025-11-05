@@ -24,8 +24,7 @@ export function StationsLibraryList({ station, userData, playerData }) {
             if ((station.route === 'station' && playerData.station?._id === station._id) || (!(station.route === 'station') && playerData.station?.spotifyApiId === station._id)) {
                 togglePlayerState(!playerData.player.isPlaying)
             }
-            else { //untested, needs test before going to the next task
-                console.log('debugging data: ', station.route, station._id || station.spotifyApiId, userData)
+            else {
                 const newPlayerStation = await setPlayerStation(station.route, station._id || station.spotifyApiId, userData)
                 setPlayingSong(newPlayerStation.songs[0])
                 songsService.findOnYoutube(newPlayerStation.songs[0])

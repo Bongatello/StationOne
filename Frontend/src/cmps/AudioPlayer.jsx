@@ -159,7 +159,6 @@ export function AudioPlayer() {
   }
 
   async function getNextSong() {
-    console.log('DeBuGgInG: ~~~~~~~~~~~~ ', playerDataForDebug.station)
     await onNextSong(station, playerData.currentSong.spotifyId)
   }
 

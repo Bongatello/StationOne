@@ -1,6 +1,6 @@
 import { storageService } from "./async-storage.service"
 
-export function makeId(length = 6) {
+export function makeId(length = 10) {
     var txt = ''
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 

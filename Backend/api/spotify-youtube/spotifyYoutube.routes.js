@@ -1,20 +1,21 @@
 import express from "express"
 import { genericGetSpotifyData, getSpotifyStations, getSpotifyPlaylist, getSpotifyAlbum } from "./spotifyYoutube.controller.js"
+import { requireAuth } from "../auth/auth.middleware.js"
 
 
 const router = express.Router()
 
-//spotify get songs
-router.get('/songs', genericGetSpotifyData)
+//spotify get songs - protected
+router.get('/songs', requireAuth, genericGetSpotifyData)
 
-router.get('/stations', getSpotifyStations)
+router.get('/stations', requireAuth, getSpotifyStations)
 
-router.get('/playlist', getSpotifyPlaylist)
+router.get('/playlist', requireAuth, getSpotifyPlaylist)
 
-router.get('/album', getSpotifyAlbum)
+router.get('/album', requireAuth, getSpotifyAlbum)
 
-//youtube get video
-router.get('/youtube', async (req, res) => {
+//youtube get video - protected
+router.get('/youtube', requireAuth, async (req, res) => {
   const inputData = req.query.q
   const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY
 

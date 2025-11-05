@@ -11,6 +11,7 @@ export function StationOneLogin({ onLogin }) {
   const [isSignUp, setIsSignUp] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
 
   const handleLogin = (userId) => {
     // Save selected userId to localStorage
@@ -23,6 +24,7 @@ export function StationOneLogin({ onLogin }) {
 
     const userCreds = { username: username, password: password }
 
+    setErrorMsg('')
     try {
       var userId
       if (isSignUp === true) userId = await authService.authSignup(userCreds)
@@ -32,7 +34,13 @@ export function StationOneLogin({ onLogin }) {
       window.location.reload()
     } catch (err) {
       console.log('There was an error submitting login form, Please re-try, ', err)
-      throw err
+      if (err.response?.data?.message) {
+        setErrorMsg(err.response.data.message)
+      } else if (err.response?.data) {
+        setErrorMsg(err.response.data)
+      } else {
+        setErrorMsg('Login failed. Please try again.')
+      }
     }
   }
 
@@ -78,7 +86,8 @@ export function StationOneLogin({ onLogin }) {
       </div>
       <form className='login-page-create' onSubmit={(ev) => onSubmitForm(ev)}>
         <input placeholder='Username' onChange={(ev) => setUsername(ev.target.value)} value={username} />
-        <input placeholder='Password' onChange={(ev) => setPassword(ev.target.value)} value={password} />
+        <input placeholder='Password' onChange={(ev) => setPassword(ev.target.value)} value={password} type="password" />
+        {errorMsg && <div style={{color: 'red', marginTop: '10px'}}>{errorMsg}</div>}
         <button>{isSignUp ? 'Sign-up' : 'Log-in'}</button>
       </form>
     </div>

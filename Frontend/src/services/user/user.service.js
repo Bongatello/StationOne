@@ -1,5 +1,5 @@
 import { saveToStorage, loadFromStorage } from '../util.service'
-import Axios from 'axios'
+import { httpService as axios } from '../http.service.js'
 
 export const userService = {
   addStation,
@@ -9,10 +9,6 @@ export const userService = {
   editUser,
   setRecentlyPlayed,
 }
-
-var axios = Axios.create({
-  withCredentials: true,
-})
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || '//localhost:3000'
 const USER_URL = `${BASE_URL}/api/user`
@@ -48,7 +44,8 @@ async function loadUserData(userId) {
 
 
 async function addToLikedStations(user, station, route) {
-  const { _id, name, addedBy, thumbnail, spotifyApiId } = station
+  const { _id, name, thumbnail, spotifyApiId } = station
+  const addedBy = station.addedBy || station.artists
   const miniStation = { name, addedBy, thumbnail, route }
   if (miniStation.route === 'station') miniStation._id = _id 
   else if (miniStation.route === 'album') miniStation._id = spotifyApiId  
@@ -93,24 +90,28 @@ async function editUser(userToEdit) {
   }
 }
 
-function setRecentlyPlayed(user, station) {
+function setRecentlyPlayed(user, station, route) {
+  console.log('Setting recently played station: ', station, user, route)
   var stationToAdd = {
-    _id: station._id,
+    _id: station._id || station.spotifyApiId,
     name: station.name,
-    thumbnail: station.thumbnail
+    thumbnail: station.thumbnail,
+    route: route,
   }
+  console.log('Station to add: ', stationToAdd)
   var userToEdit = {}
   userToEdit._id = user._id
-  if (user.recentStations) {
-    const idx = user.recentStations.findIndex(recent => recent._id === station._id)
-    if (idx > -1) return
-    userToEdit.recentStations = user.recentStations
-    userToEdit.recentStations.unshift(stationToAdd)
-  }
   if (!user.recentStations) {
     userToEdit.recentStations = []
     userToEdit.recentStations.push(stationToAdd)
   }
+  else if (user.recentStations) {
+    const idx = user.recentStations.findIndex(recent => recent._id === station._id || recent._id === station.spotifyApiId)
+    if (idx > -1) return
+    userToEdit.recentStations = user.recentStations
+    userToEdit.recentStations.unshift(stationToAdd)
+  }
   if (userToEdit.recentStations.length > 8) userToEdit.recentStations.splice(8, 1)
+  console.log('User to edit: ', userToEdit)
   return userToEdit
 }

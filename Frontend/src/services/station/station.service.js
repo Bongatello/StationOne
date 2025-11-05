@@ -1,9 +1,10 @@
 import { storageService } from '../async-storage.service.js'
 import { saveToStorage } from '../util.service'
 import { userService } from '../user/user.service.js'
-import axios from 'axios';
+import { httpService as axios } from '../http.service.js'
 import { addLikedStation } from '../../store/user.actions.js';
 import { setSelectedStation } from '../../store/station.actions.js';
+import { makeId } from '../util.service.js';
 
 export const stationService = {
   query,
@@ -86,6 +87,8 @@ async function addStation(user) {
       index: userStationsCount,
       addedBy: user.name,
       thumbnail: 'https://res.cloudinary.com/dszyainah/image/upload/v1758998059/tqfjyzy4lhao3o1kwy6m.png',
+      route: 'station',
+      _id: makeId(),
     }
     const addedStation = await axios.post(USER_URL, station)
     await addLikedStation(user, addedStation.data)

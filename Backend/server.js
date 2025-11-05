@@ -5,6 +5,7 @@ import http from 'http'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { Server } from 'socket.io'
+import cookieParser from 'cookie-parser'
 import { spotifyYoutubeRoutes } from './api/spotify-youtube/spotifyYoutube.routes.js'
 import { stationsRoutes } from './api/stations/stations.routes.js'
 import { songsRoutes } from './api/songs/songs.routes.js'
@@ -18,6 +19,7 @@ dotenv.config()
 const app = express()
 const PORT = 3000
 app.use(express.json())
+app.use(cookieParser())
 
 //pathing
 const __filename = fileURLToPath(import.meta.url)

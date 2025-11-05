@@ -37,10 +37,23 @@ async function login(username, password) {
     const match = await bcrypt.compare(password, user.password)
     if (!match) throw 'Invalid username or password'
 
+    // Check if user's access has expired (for non-admin users)
+    if (!user.isAdmin && user.createdAt) {
+        const now = new Date()
+        const createdAt = new Date(user.createdAt)
+        const timeDiff = now - createdAt
+        const hoursDiff = timeDiff / (1000 * 60 * 60)
+        
+        if (hoursDiff > 24) {
+            throw 'Your 24-hour trial period has expired. Please contact an administrator for access.'
+        }
+    }
+
     const miniUser = {
         _id: user._id,
         score: user.score,
         isAdmin: user.isAdmin,
+        createdAt: user.createdAt,
     }
     return miniUser
 }
