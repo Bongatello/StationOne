@@ -19,6 +19,7 @@ export const stationService = {
 }
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || '//localhost:3000'
 const USER_URL = `${BASE_URL}/api/station`
+const SPOTIFY_YOUTUBE_URL = `${BASE_URL}/api/sy`
 const STORAGE_KEY = 'stationsDB';
 
 function query(filterBy = {}) {
@@ -120,7 +121,7 @@ export function makeNewPlaylistCover(songs) {
 
 async function setSpotifyStations(genre) {
   try {
-    const spotifyStations = await axios.get(`http://localhost:3000/api/sy/stations`, { params: { genre: genre } })
+    const spotifyStations = await axios.get(`${SPOTIFY_YOUTUBE_URL}/stations`, { params: { genre: genre } })
     return spotifyStations.data
   } catch (err) {
     console.log('StationService: There was an error retrieveing spotify default stations, ', err)
@@ -142,7 +143,7 @@ async function setSpotifyStations(genre) {
 
 async function getSpotifyPlaylist(playlistId) {
   try {
-    const playlist = await axios.get(`http://localhost:3000/api/sy/playlist`, { params: { playlistId: playlistId } })
+    const playlist = await axios.get(`${SPOTIFY_YOUTUBE_URL}/playlist`, { params: { playlistId: playlistId } })
     console.log('Got station for debugging ~~~~~~~~~ ', playlist.data)
     return playlist.data
   } catch (err) {
@@ -153,7 +154,7 @@ async function getSpotifyPlaylist(playlistId) {
 
 async function getSpotifyAlbum(albumId) {
   try {
-    const album = await axios.get(`http://localhost:3000/api/sy/album`, { params: { albumId: albumId } })
+    const album = await axios.get(`${SPOTIFY_YOUTUBE_URL}/album`, { params: { albumId: albumId } })
     console.log('Got station for debugging ~~~~~~~~~ ', album.data)
     return album.data
   } catch (err) {
